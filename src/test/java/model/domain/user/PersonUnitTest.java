@@ -10,6 +10,9 @@ import static org.junit.Assert.*;
  */
 public class PersonUnitTest
 {
+    /**
+     * A method that tests the constructor and getters of the Person class
+     */
     @Test
     public void testPerson()
     {
@@ -20,6 +23,9 @@ public class PersonUnitTest
         assertEquals("michaelkyeyune@yahoo.com", person.getEmail());
     }
 
+    /**
+     * A method that tests the setters of the Person class
+     */
     @Test
     public void testPersonSetters()
     {
