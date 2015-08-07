@@ -37,10 +37,14 @@ public class CourseUnitTest
 
         assertFalse(course1.equals(course3));
 
-        Course course4  = new Course();
-        course4.setCourseCode("CSC3002S");
-        course4.setCourseYear(2015);
+        Course course4 = new Course();
 
-        assertTrue(course1.equals(course4));
+        assertFalse(course1.equals(course4));
+
+        Course course5  = new Course();
+        course5.setCourseCode("CSC3002S");
+        course5.setCourseYear(2015);
+
+        assertTrue(course1.equals(course5));
     }
 }

@@ -72,10 +72,11 @@ public class Course
         {
             Course course = (Course) object;
 
-            if(course.getCourseID().equals(this.getCourseID()))
-                return true;
-            else
+            if((course.courseCode == null) || (this.courseCode == null) ||
+                    !course.getCourseID().equals(this.getCourseID()))
                 return false;
+            else
+                return true;
         }
     }
 
