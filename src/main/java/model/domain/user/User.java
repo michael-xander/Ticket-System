@@ -1,6 +1,6 @@
 package model.domain.user;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 /**
  * User.java
@@ -15,7 +15,7 @@ public class User
     private String lastName;
     private String email;
     private Role role;
-    private ArrayList<Course> courses;
+    private LinkedHashSet<Course> courses = new LinkedHashSet<>();
 
     public Role getRole()
     {return role;}
@@ -53,10 +53,10 @@ public class User
     public String getPassword()
     { return password;}
 
-    public void setCourses(ArrayList<Course> courses)
+    public void setCourses(LinkedHashSet<Course> courses)
     { this.courses = courses;}
 
-    public ArrayList<Course> getCourses()
+    public LinkedHashSet<Course> getCourses()
     { return courses;}
 
     public void addCourse(Course course)
@@ -74,10 +74,10 @@ public class User
         {
             User user = (User) object;
 
-            if(user.userID.equals(this.userID))
-                return true;
-            else
+            if((user.userID == null) || (this.userID == null) || !user.userID.equals(this.userID))
                 return false;
+            else
+                return true;
         }
     }
 }
