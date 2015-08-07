@@ -1,6 +1,8 @@
 package model.domain.user;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 /**
  * Course.java
@@ -13,13 +15,33 @@ public class Course
     private String courseCode;
     private int courseYear;
     private ArrayList<User> teachingAssistants;
+    private TreeSet<LocalDate> testDates;
+    private TreeSet<LocalDate> assignmentDueDates;
     private User courseConvener;
     private String description;
 
-    private String getDescription()
+    public TreeSet<LocalDate> getTestDates()
+    { return testDates;}
+
+    public void setTestDates(TreeSet<LocalDate> testDates)
+    {this.testDates = testDates;}
+
+    public void addTestDate(LocalDate testDate)
+    {testDates.add(testDate);}
+
+    public TreeSet<LocalDate> getAssignmentDueDates()
+    {return assignmentDueDates;}
+
+    public void setAssignmentDueDates(TreeSet<LocalDate> assignmentDueDates)
+    {this.assignmentDueDates = assignmentDueDates;}
+
+    public void addAssignmentDueDate(LocalDate assignmentDueDate)
+    {assignmentDueDates.add(assignmentDueDate);}
+
+    public String getDescription()
     { return description;}
 
-    private void setDescription(String description)
+    public void setDescription(String description)
     { this.description = description;}
 
     public User getCourseConvener() {
