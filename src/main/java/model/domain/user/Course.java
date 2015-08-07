@@ -1,7 +1,7 @@
 package model.domain.user;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.TreeSet;
 
 /**
@@ -14,9 +14,9 @@ public class Course
 
     private String courseCode;
     private int courseYear;
-    private ArrayList<User> teachingAssistants;
-    private TreeSet<LocalDate> testDates;
-    private TreeSet<LocalDate> assignmentDueDates;
+    private LinkedHashSet<User> teachingAssistants = new LinkedHashSet<>();
+    private TreeSet<LocalDate> testDates = new TreeSet<>();
+    private TreeSet<LocalDate> assignmentDueDates = new TreeSet<>();
     private User courseConvener;
     private String description;
 
@@ -68,11 +68,11 @@ public class Course
         this.courseYear = courseYear;
     }
 
-    public ArrayList<User> getTeachingAssistants() {
+    public LinkedHashSet<User> getTeachingAssistants() {
         return teachingAssistants;
     }
 
-    public void setTeachingAssistants(ArrayList<User> teachingAssistants) {
+    public void setTeachingAssistants(LinkedHashSet teachingAssistants) {
         this.teachingAssistants = teachingAssistants;
     }
 
