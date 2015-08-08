@@ -75,7 +75,7 @@ public class CourseDaoImpl implements CourseDao
                 while(tempResultSet.next())
                 {
                     String dateString = tempResultSet.getString(2);
-                    course.addTestDate(LocalDate.parse(dateString));
+                    course.addAssignmentDueDate(LocalDate.parse(dateString));
                 }
 
             }
@@ -121,6 +121,7 @@ public class CourseDaoImpl implements CourseDao
                 String[] tempArr = resultSet.getString(1).split(" ");
                 course.setCourseCode(tempArr[0]);
                 course.setCourseYear(Integer.parseInt(tempArr[1].trim()));
+                course.setDescription(resultSet.getString(2));
 
                 PreparedStatement tempPreparedStatement = connection.prepareStatement("SELECT * FROM Course_Assignment_Dates WHERE CourseID = ?");
                 tempPreparedStatement.setString(1, course.getCourseID());
