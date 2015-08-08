@@ -20,6 +20,7 @@ public class DaoFactory
     private Logger logger = Logger.getLogger(DaoFactory.class.getName());
 
     private LoginDao loginDao;
+    private CourseDao courseDao;
 
     public DaoFactory(String DbUrl, String userName, String password)
     {
@@ -53,6 +54,13 @@ public class DaoFactory
                 logger.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
+    }
+
+    public CourseDao getCourseDao() {
+        if (courseDao == null)
+            courseDao = new CourseDaoImpl(dbUrl, userName, password);
+
+        return  courseDao;
     }
 
     public LoginDao getLoginDao()

@@ -7,5 +7,5 @@ package model.domain.user;
  */
 public enum Role
 {
-    ADMINISTRATOR, REGULAR
+    STUDENT, COURSE_CONVENER, TEACHING_ASSISTANT
 }
