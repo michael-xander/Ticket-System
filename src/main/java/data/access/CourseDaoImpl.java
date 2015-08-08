@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * A class CourseDaoImpl.java
+ * A DAO class for the Course class
  * Created by Michael on 2015/08/08.
  */
 public class CourseDaoImpl implements CourseDao
