@@ -1,7 +1,6 @@
 package model.domain.user;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
 import java.util.TreeSet;
 
 /**
