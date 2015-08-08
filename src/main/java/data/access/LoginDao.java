@@ -6,7 +6,6 @@ package data.access;
  * Created by Michael on 2015/08/07.
  */
 public interface LoginDao {
-
-    public boolean isUser(String userID, String password);
+    boolean isUser(String userID, String password);
 }
 
