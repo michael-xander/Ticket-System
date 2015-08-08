@@ -14,10 +14,8 @@ public class Course
 
     private String courseCode;
     private int courseYear;
-    private LinkedHashSet<User> teachingAssistants = new LinkedHashSet<>();
     private TreeSet<LocalDate> testDates = new TreeSet<>();
     private TreeSet<LocalDate> assignmentDueDates = new TreeSet<>();
-    private User courseConvener;
     private String description;
 
     public TreeSet<LocalDate> getTestDates()
@@ -44,13 +42,6 @@ public class Course
     public void setDescription(String description)
     { this.description = description;}
 
-    public User getCourseConvener() {
-        return courseConvener;
-    }
-
-    public void setCourseConvener(User courseConvener) {
-        this.courseConvener = courseConvener;
-    }
 
     public String getCourseCode() {
         return courseCode;
@@ -68,19 +59,6 @@ public class Course
         this.courseYear = courseYear;
     }
 
-    public LinkedHashSet<User> getTeachingAssistants() {
-        return teachingAssistants;
-    }
-
-    public void setTeachingAssistants(LinkedHashSet teachingAssistants) {
-        this.teachingAssistants = teachingAssistants;
-    }
-
-    public void addTeachingAssistant(User teachingAssistant)
-    { teachingAssistants.add(teachingAssistant);}
-
-    public int getNumberOfTeachingAssistants()
-    { return teachingAssistants.size();}
 
     public String getCourseID()
     { return courseCode + " " + courseYear;}

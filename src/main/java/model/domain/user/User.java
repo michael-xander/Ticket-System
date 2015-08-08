@@ -1,6 +1,7 @@
 package model.domain.user;
 
-import java.util.LinkedHashSet;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * User.java
@@ -14,14 +15,20 @@ public class User
     private String firstName;
     private String lastName;
     private String email;
-    private Role role;
-    private LinkedHashSet<Course> courses = new LinkedHashSet<>();
 
-    public Role getRole()
-    {return role;}
+    private HashMap<Course, Role> courseRoleHashMap = new HashMap<>();
 
-    public void setRole(Role role)
-    { this.role = role;}
+    public Role getRoleForCourse(Course course)
+    { return courseRoleHashMap.get(course);}
+
+    public void setRoleForCourse(Course course, Role role)
+    { courseRoleHashMap.replace(course, role);}
+
+    public Set<Course> getCourses()
+    { return courseRoleHashMap.keySet();}
+
+    public void addCourse(Course course, Role role)
+    { courseRoleHashMap.put(course, role);}
 
     public void setFirstName(String firstName)
     { this.firstName = firstName;}
@@ -53,17 +60,6 @@ public class User
     public String getPassword()
     { return password;}
 
-    public void setCourses(LinkedHashSet<Course> courses)
-    { this.courses = courses;}
-
-    public LinkedHashSet<Course> getCourses()
-    { return courses;}
-
-    public void addCourse(Course course)
-    { courses.add(course);}
-
-    public int getNumberOfCourses()
-    { return courses.size();}
 
     @Override
     public boolean equals(Object object)
