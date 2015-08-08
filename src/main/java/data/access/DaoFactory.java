@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  */
 public class DaoFactory
 {
-    private String DbUrl;
+    private String dbUrl;
     private String password;
     private String userName;
     private Connection connection;
@@ -23,7 +23,7 @@ public class DaoFactory
 
     public DaoFactory(String DbUrl, String userName, String password)
     {
-        this.DbUrl = DbUrl;
+        this.dbUrl = DbUrl;
         this.userName = userName;
         this.password = password;
     }
@@ -32,7 +32,7 @@ public class DaoFactory
     {
         try
         {
-            connection = DriverManager.getConnection(DbUrl, userName, password);
+            connection = DriverManager.getConnection(dbUrl, userName, password);
         }
         catch(SQLException ex)
         {
@@ -58,7 +58,7 @@ public class DaoFactory
     public LoginDao getLoginDao()
     {
         if(loginDao == null)
-            loginDao = new LoginDaoImpl(connection);
+            loginDao = new LoginDaoImpl(dbUrl, userName, password);
 
         return loginDao;
     }

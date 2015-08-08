@@ -1,9 +1,6 @@
 package data.access;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,17 +11,24 @@ import java.util.logging.Logger;
  */
 public class LoginDaoImpl implements LoginDao
 {
-    private Connection connection;
     private Logger logger = Logger.getLogger(LoginDaoImpl.class.getName());
+    private String dbUrl;
+    private String dbUser;
+    private String dbPassword;
 
-    public LoginDaoImpl(Connection connection)
-    {this.connection = connection;}
+    public LoginDaoImpl(String dbUrl, String dbUser, String dbPassword) {
+        this.dbUrl = dbUrl;
+        this.dbUser = dbUser;
+        this.dbPassword = dbPassword;
+    }
 
     @Override
     public boolean isUser(String userID, String password) {
-
-        PreparedStatement pst;
+        Connection connection = null;
+        PreparedStatement pst = null;
+        boolean isUser = false;
         try{
+            connection = DriverManager.getConnection(dbUrl,dbUser, dbPassword);
             pst = connection.prepareStatement("SELECT Password FROM Passwords WHERE UserID= ?");
             pst.setString(1, userID);
             ResultSet resultSet = pst.executeQuery();
@@ -32,19 +36,28 @@ public class LoginDaoImpl implements LoginDao
             if(resultSet.next())
             {
                 if(resultSet.getString(1).equals(password))
-                    return true;
-                else
-                    return false;
+                    isUser = true;
             }
-            else
-                return false;
         }
         catch (SQLException ex)
         {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        finally
+        {
+            try
+            {
+                if(pst != null)
+                    pst.close();
 
-        return false;
-
+                if(connection != null)
+                    connection.close();
+            }
+            catch (SQLException ex)
+            {
+                logger.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return isUser;
     }
 }
