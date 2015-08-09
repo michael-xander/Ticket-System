@@ -11,13 +11,13 @@ import java.util.List;
  */
 public interface CourseDao {
 
-    public Course getCourse(String courseID);
+    Course getCourse(String courseID);
 
-    public List<Course> getAllCourses();
+    List<Course> getAllCourses();
 
-    public void updateCourse(Course course);
+    void updateCourse(Course course);
 
-    public void addCourse(Course course);
+    void addCourse(Course course);
 
-    public void deleteCourse(Course course);
+    void deleteCourse(Course course);
 }
