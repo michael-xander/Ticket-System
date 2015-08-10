@@ -29,6 +29,11 @@ public class CourseDaoImpl implements CourseDao
         this.dbPassword = dbPassword;
     }
 
+    /**
+     * A method that returns the Course object from the database with given Course ID
+     * @param courseID - ID of the Course to check for
+     * @return Course object if exists in database of else null
+     */
     @Override
     public Course getCourse(String courseID)
     {
@@ -45,39 +50,7 @@ public class CourseDaoImpl implements CourseDao
 
             if(resultSet.next())
             {
-                course = new Course();
-                String[] tempArr = courseID.split(" ");
-                course.setCourseCode(tempArr[0]);
-                course.setCourseYear(Integer.parseInt(tempArr[1].trim()));
-
-                course.setDescription(resultSet.getString(2));
-                preparedStatement.clearParameters();
-                preparedStatement.close();
-
-                preparedStatement = connection.prepareStatement("SELECT * FROM Course_Test_Dates WHERE CourseID = ?");
-                preparedStatement.setString(1, courseID);
-                ResultSet tempResultSet = preparedStatement.executeQuery();
-
-                while(tempResultSet.next())
-                {
-                    String dateString = tempResultSet.getString(2);
-                    course.addTestDate(LocalDate.parse(dateString));
-                }
-
-                preparedStatement.clearParameters();
-                preparedStatement.close();
-
-                preparedStatement = connection.prepareStatement("SELECT * FROM Course_Assignment_Dates WHERE CourseID = ?");
-                preparedStatement.setString(1, courseID);
-
-                tempResultSet = preparedStatement.executeQuery();
-
-                while(tempResultSet.next())
-                {
-                    String dateString = tempResultSet.getString(2);
-                    course.addAssignmentDueDate(LocalDate.parse(dateString));
-                }
-
+                course = readCourse(connection, resultSet);
             }
         }
         catch (SQLException ex)
@@ -102,6 +75,47 @@ public class CourseDaoImpl implements CourseDao
         return course;
     }
 
+    /*
+     * A method that reads in course from the database
+     */
+    private Course readCourse(Connection connection, ResultSet resultSet) throws SQLException
+    {
+        Course course = new Course();
+        String[] tempArr = resultSet.getString(1).split(" ");
+        course.setCourseCode(tempArr[0]);
+        course.setCourseYear(Integer.parseInt(tempArr[1].trim()));
+        course.setDescription(resultSet.getString(2));
+
+        PreparedStatement tempPreparedStatement = connection.prepareStatement("SELECT * FROM Course_Assignment_Dates WHERE CourseID = ?");
+        tempPreparedStatement.setString(1, course.getCourseID());
+        ResultSet tempResultSet = tempPreparedStatement.executeQuery();
+
+        while(tempResultSet.next())
+        {
+            String dateString = tempResultSet.getString(2);
+            course.addAssignmentDueDate(LocalDate.parse(dateString));
+        }
+
+        tempPreparedStatement.clearParameters();
+        tempPreparedStatement.close();
+
+        tempPreparedStatement = connection.prepareStatement("SELECT * FROM Course_Test_Dates WHERE CourseID = ?");
+        tempPreparedStatement.setString(1, course.getCourseID());
+        tempResultSet = tempPreparedStatement.executeQuery();
+
+        while(tempResultSet.next())
+        {
+            String dateString = tempResultSet.getString(2);
+            course.addTestDate(LocalDate.parse(dateString));
+        }
+        tempPreparedStatement.close();
+        return course;
+    }
+
+    /**
+     * A method that returns all Courses in the database.
+     * @return - List of all Courses
+     */
     @Override
     public List<Course> getAllCourses()
     {
@@ -117,38 +131,8 @@ public class CourseDaoImpl implements CourseDao
 
             while(resultSet.next())
             {
-                Course course = new Course();
-                String[] tempArr = resultSet.getString(1).split(" ");
-                course.setCourseCode(tempArr[0]);
-                course.setCourseYear(Integer.parseInt(tempArr[1].trim()));
-                course.setDescription(resultSet.getString(2));
-
-                PreparedStatement tempPreparedStatement = connection.prepareStatement("SELECT * FROM Course_Assignment_Dates WHERE CourseID = ?");
-                tempPreparedStatement.setString(1, course.getCourseID());
-                ResultSet tempResultSet = tempPreparedStatement.executeQuery();
-
-                while(tempResultSet.next())
-                {
-                    String dateString = tempResultSet.getString(2);
-                    course.addAssignmentDueDate(LocalDate.parse(dateString));
-                }
-
-                tempPreparedStatement.clearParameters();
-                tempPreparedStatement.close();
-
-                tempPreparedStatement = connection.prepareStatement("SELECT * FROM Course_Test_Dates WHERE CourseID = ?");
-                tempPreparedStatement.setString(1, course.getCourseID());
-                tempResultSet = tempPreparedStatement.executeQuery();
-
-                while(tempResultSet.next())
-                {
-                    String dateString = tempResultSet.getString(2);
-                    course.addTestDate(LocalDate.parse(dateString));
-                }
-
+                Course course = readCourse(connection, resultSet);
                 courses.add(course);
-                tempPreparedStatement.clearParameters();
-                tempPreparedStatement.close();
             }
 
         }
@@ -174,6 +158,10 @@ public class CourseDaoImpl implements CourseDao
         return courses;
     }
 
+    /**
+     * A method that updates the values of the given Course in that database
+     * @param course - Course with values to be updated
+     */
     @Override
     public void updateCourse(Course course)
     {
@@ -210,6 +198,10 @@ public class CourseDaoImpl implements CourseDao
         }
     }
 
+    /**
+     * A method that adds provided Course to the database
+     * @param course - Course to be added
+     */
     @Override
     public void addCourse(Course course) {
         Connection connection = null;
@@ -271,6 +263,10 @@ public class CourseDaoImpl implements CourseDao
         }
     }
 
+    /**
+     * A method to delete a Course from the database
+     * @param course - course to delete
+     */
     @Override
     public void deleteCourse(Course course) {
         Connection connection = null;
