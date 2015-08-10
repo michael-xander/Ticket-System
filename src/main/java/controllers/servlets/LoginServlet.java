@@ -1,7 +1,7 @@
 package controllers.servlets;
 
 import data.access.DaoFactory;
-import data.access.LoginDao;
+import data.access.user.LoginDao;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

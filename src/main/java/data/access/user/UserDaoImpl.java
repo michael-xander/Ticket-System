@@ -1,6 +1,8 @@
-package data.access;
+package data.access.user;
 
-import model.domain.user.Course;
+import data.access.course.CourseDao;
+import data.access.course.CourseDaoImpl;
+import model.domain.course.Course;
 import model.domain.user.Role;
 import model.domain.user.User;
 

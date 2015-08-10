@@ -1,5 +1,7 @@
 package model.domain.user;
 
+import model.domain.course.Course;
+
 import java.util.HashMap;
 import java.util.Set;
 

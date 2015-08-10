@@ -1,4 +1,4 @@
-package data.access;
+package data.access.user;
 
 /**
  * LoginDao.java

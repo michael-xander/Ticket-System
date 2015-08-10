@@ -1,6 +1,6 @@
-package data.access;
+package data.access.course;
 
-import model.domain.user.Course;
+import model.domain.course.Course;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package data.access;
+package model.domain.message;
 
-import model.domain.user.Category;
-import model.domain.user.Course;
+import model.domain.category.Category;
+import model.domain.course.Course;
 
 /**
  * Created by william on 08-08-2015.

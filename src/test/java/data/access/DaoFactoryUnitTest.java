@@ -1,6 +1,9 @@
 package data.access;
 
-import model.domain.user.Course;
+import data.access.course.CourseDao;
+import data.access.user.LoginDao;
+import data.access.user.UserDao;
+import model.domain.course.Course;
 import model.domain.user.User;
 import org.junit.Test;
 

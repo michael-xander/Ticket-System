@@ -1,5 +1,6 @@
-package model.domain.user;
+package model.domain.course;
 
+import model.domain.course.Course;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
