@@ -1,4 +1,6 @@
-package data.access;
+package data.access.message;
+
+import model.domain.message.Query;
 
 import java.util.List;
 

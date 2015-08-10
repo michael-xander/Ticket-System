@@ -1,5 +1,12 @@
 package data.access;
 
+import data.access.course.CourseDao;
+import data.access.course.CourseDaoImpl;
+import data.access.user.LoginDao;
+import data.access.user.LoginDaoImpl;
+import data.access.user.UserDao;
+import data.access.user.UserDaoImpl;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

@@ -1,4 +1,6 @@
-package controllers.servlets;
+package controllers.configuration;
+
+import controllers.filters.AuthenticationFilter;
 
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;

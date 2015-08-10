@@ -1,5 +1,9 @@
-package data.access;
+package data.access.message;
 
+
+import data.access.course.CourseDao;
+import data.access.course.CourseDaoImpl;
+import model.domain.message.Query;
 
 import java.sql.*;
 import java.time.LocalDate;

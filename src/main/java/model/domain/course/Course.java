@@ -1,4 +1,4 @@
-package model.domain.user;
+package model.domain.course;
 
 import java.time.LocalDate;
 import java.util.TreeSet;

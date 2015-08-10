@@ -1,4 +1,4 @@
-package data.access;
+package model.domain.message;
 
 import java.time.LocalDate;
 
