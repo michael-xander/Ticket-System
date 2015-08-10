@@ -1,6 +1,7 @@
 package data.access;
 
 import model.domain.user.Course;
+import model.domain.user.User;
 import org.junit.Test;
 
 import java.util.List;
@@ -86,7 +87,7 @@ public class DaoFactoryUnitTest
     }
 
     /**
-     * A method thae tests the getAllCourses method of the Course DAO
+     * A method that tests the getAllCourses method of the Course DAO
      */
     @Test
     public void courseDaoGetAllCoursesTest()
@@ -110,5 +111,46 @@ public class DaoFactoryUnitTest
 
         assertFalse(tempCourse.getTestDates().isEmpty());
         assertFalse(tempCourse.getAssignmentDueDates().isEmpty());
+    }
+
+    /**
+     * A method that tests the getUser method for the User DAO
+     */
+    @Test
+    public void userDaoGetUserTest()
+    {
+        DaoFactory daoFactory = getDaoFactory();
+        UserDao userDao = daoFactory.getUserDao();
+
+        User user = userDao.getUser("ABC");
+        assertNull(user);
+
+        user = userDao.getUser("KYYMIC001");
+        assertNotNull(user);
+
+        assertTrue(user.getUserID().equals("KYYMIC001"));
+        assertTrue(user.getFirstName().equals("Michael"));
+        assertTrue(user.getLastName().equals("Kyeyune"));
+        assertTrue(user.getEmail().equals("kyymic001@myuct.ac.za"));
+        assertTrue(user.getPassword().equals("kyymic001"));
+        assertFalse(user.getCourses().isEmpty());
+    }
+
+    /**
+     * A method that tests the getAllUsers method for the User DAO
+     */
+    @Test
+    public void userDaoGetAllUsersTest()
+    {
+        DaoFactory daoFactory = getDaoFactory();
+        UserDao userDao = daoFactory.getUserDao();
+
+        List<User> users = userDao.getAllUsers();
+        assertNotNull(users);
+        User user = new User();
+
+        user.setUserID("KYYMIC001");
+
+        assertTrue(users.contains(user));
     }
 }

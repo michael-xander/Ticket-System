@@ -21,6 +21,7 @@ public class DaoFactory
 
     private LoginDao loginDao;
     private CourseDao courseDao;
+    private UserDao userDao;
 
     public DaoFactory(String DbUrl, String userName, String password)
     {
@@ -56,6 +57,10 @@ public class DaoFactory
         }
     }
 
+    /**
+     * A method to get a Course DAO instance.
+     * @return a Course DAO instance
+     */
     public CourseDao getCourseDao() {
         if (courseDao == null)
             courseDao = new CourseDaoImpl(dbUrl, userName, password);
@@ -63,11 +68,27 @@ public class DaoFactory
         return  courseDao;
     }
 
+    /**
+     * A method to get a Login DAO instance
+     * @return a Login DAO instance
+     */
     public LoginDao getLoginDao()
     {
         if(loginDao == null)
             loginDao = new LoginDaoImpl(dbUrl, userName, password);
 
         return loginDao;
+    }
+
+    /**
+     * A method to get a User DAO instance
+     * @return a User DAO instance
+     */
+    public UserDao getUserDao()
+    {
+        if(userDao == null)
+            userDao = new UserDaoImpl(dbUrl, userName, password);
+
+        return userDao;
     }
 }
