@@ -1,5 +1,7 @@
 package data.access.user;
 
+import data.access.Dao;
+
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,17 +11,12 @@ import java.util.logging.Logger;
  * A class that handles checking whether or not a user is
  * Created by Michael on 2015/08/07.
  */
-public class LoginDaoImpl implements LoginDao
+public class LoginDaoImpl extends Dao implements LoginDao
 {
     private Logger logger = Logger.getLogger(LoginDaoImpl.class.getName());
-    private String dbUrl;
-    private String dbUser;
-    private String dbPassword;
 
     public LoginDaoImpl(String dbUrl, String dbUser, String dbPassword) {
-        this.dbUrl = dbUrl;
-        this.dbUser = dbUser;
-        this.dbPassword = dbPassword;
+        super(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -28,7 +25,7 @@ public class LoginDaoImpl implements LoginDao
         PreparedStatement pst = null;
         boolean isUser = false;
         try{
-            connection = DriverManager.getConnection(dbUrl,dbUser, dbPassword);
+            connection = super.getConnection();
             pst = connection.prepareStatement("SELECT Password FROM Passwords WHERE UserID= ?");
             pst.setString(1, userID);
             ResultSet resultSet = pst.executeQuery();

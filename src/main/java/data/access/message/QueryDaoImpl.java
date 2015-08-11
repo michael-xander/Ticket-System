@@ -1,6 +1,9 @@
 package data.access.message;
 
 
+import data.access.Dao;
+import data.access.category.CategoryDao;
+import data.access.category.CategoryDaoImpl;
 import data.access.course.CourseDao;
 import data.access.course.CourseDaoImpl;
 import model.domain.message.Query;
@@ -15,18 +18,13 @@ import java.util.logging.Logger;
 /**
  * Created by marcelo on 08-08-2015.
  */
-public class QueryDaoImpl implements QueryDao {
+public class QueryDaoImpl extends Dao implements QueryDao {
 
     private Logger logger = Logger.getLogger(QueryDaoImpl.class.getName());
 
-    private String dbUrl;
-    private String dbUser;
-    private String dbPassword;
-
-    public QueryDaoImpl(String dbUrl, String dbUser, String dbPassword) {
-        this.dbUrl = dbUrl;
-        this.dbUser = dbUser;
-        this.dbPassword = dbPassword;
+    public QueryDaoImpl(String dbUrl, String dbUser, String dbPassword)
+    {
+        super(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -38,58 +36,14 @@ public class QueryDaoImpl implements QueryDao {
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            connection = getConnection();
             preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE QueryID = ?");
             preparedStatement.setInt(1, queryID);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if(resultSet.next())
             {
-                CourseDao courseDao = new CourseDaoImpl(dbUrl,dbUser,dbPassword);
-                CategoryDao categoryDao = new CategoryDaoImpl(dbUrl,dbUser,dbPassword);
-                query = new Query();
-                query.setMessageID(resultSet.getInt("messageID"));
-                query.setSender(resultSet.getString("sender"));
-                query.setText(resultSet.getString("text"));
-                query.setDate(LocalDate.parse(resultSet.getString("date")));
-                query.setSubject(resultSet.getString("subject"));
-                query.setCourse(courseDao.getCourse(resultSet.getString("courseID")));
-                query.setCategory(categoryDao.getCategory(resultSet.getInt("categoryID")));
-                //set the status of the query
-                switch(resultSet.getString("status")){
-                    case "OPENED":
-                        query.setStatus(Query.Status.OPENED);
-                        break;
-                    case "PENDING":
-                        query.setStatus(Query.Status.PENDING);
-                        break;
-                    case "VIEWED":
-                        query.setStatus(Query.Status.VIEWED);
-                        break;
-                    case "REPLIED":
-                        query.setStatus(Query.Status.REPLIED);
-                        break;
-                    case "ARCHIVED":
-                        query.setStatus(Query.Status.ARCHIVED);
-                        break;
-                }
-
-                //get the privacy of the query
-                switch(resultSet.getString("privacy")){
-                    case "General":
-                        query.setPrivacy(Query.Privacy.GENERAL);
-                        break;
-                    case "Public":
-                        query.setPrivacy(Query.Privacy.PUBLIC);
-                        break;
-                    case "Private":
-                        query.setPrivacy(Query.Privacy.PRIVATE);
-                        break;
-                }
-
-
-                preparedStatement.clearParameters();
-                preparedStatement.close();
+                query = readQuery(connection, resultSet);
             }
         }
         catch (SQLException ex)
@@ -114,6 +68,21 @@ public class QueryDaoImpl implements QueryDao {
         return query;
     }
 
+    private Query readQuery(Connection connection, ResultSet resultSet) throws SQLException
+    {
+        Query query = new Query();
+        query.setMessageID(resultSet.getInt(1));
+        query.setSender(resultSet.getString(2));
+        query.setSubject(resultSet.getString(3));
+        query.setText(resultSet.getString(4));
+        query.setDate(LocalDate.parse(resultSet.getString(5)));
+        query.setCourseID(resultSet.getString(6));
+        query.setCategoryID(resultSet.getString(7));
+        query.setStatus(Query.Status.valueOf(resultSet.getString(8)));
+        query.setPrivacy(Query.Privacy.valueOf(resultSet.getString(9)));
+        return query;
+    }
+
     @Override
          public List<Query> getAllQueries()
     {
@@ -123,57 +92,13 @@ public class QueryDaoImpl implements QueryDao {
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            connection = getConnection();
             preparedStatement = connection.prepareStatement("SELECT * FROM Queries");
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next())
             {
-                Query query = new Query();
-                String[] tempArr = resultSet.getString(1).split(" ");
-
-                CourseDao courseDao = new CourseDaoImpl(dbUrl,dbUser,dbPassword);
-                CategoryDao categoryDao = new CategoryDaoImpl(dbUrl,dbUser,dbPassword);
-                query = new Query();
-                query.setMessageID(resultSet.getInt("messageID"));
-                query.setSender(resultSet.getString("sender"));
-                query.setText(resultSet.getString("text"));
-                query.setDate(LocalDate.parse(resultSet.getString("date")));
-                query.setSubject(resultSet.getString("subject"));
-                query.setCourse(courseDao.getCourse(resultSet.getString("courseID")));
-                query.setCategory(categoryDao.getCategory(resultSet.getInt("categoryID")));
-
-                //get the status of the query
-                switch(resultSet.getString("status")){
-                    case "OPENED":
-                        query.setStatus(Query.Status.OPENED);
-                        break;
-                    case "PENDING":
-                        query.setStatus(Query.Status.PENDING);
-                        break;
-                    case "VIEWED":
-                        query.setStatus(Query.Status.VIEWED);
-                        break;
-                    case "REPLIED":
-                        query.setStatus(Query.Status.REPLIED);
-                        break;
-                    case "ARCHIVED":
-                        query.setStatus(Query.Status.ARCHIVED);
-                        break;
-                }
-
-                //get the privacy of the query
-                switch(resultSet.getString("privacy")){
-                    case "General":
-                        query.setPrivacy(Query.Privacy.GENERAL);
-                        break;
-                    case "Public":
-                        query.setPrivacy(Query.Privacy.PUBLIC);
-                        break;
-                    case "Private":
-                        query.setPrivacy(Query.Privacy.PRIVATE);
-                        break;
-                }
+                Query query = readQuery(connection, resultSet);
                 queries.add(query);
             }
 
@@ -201,7 +126,7 @@ public class QueryDaoImpl implements QueryDao {
     }
 
     @Override
-    public List<Query> getAllQueriesFromUser(int userID)
+    public List<Query> getAllQueriesFromUser(String userID)
     {
         ArrayList<Query> queries = new ArrayList<>();
         Connection connection = null;
@@ -209,55 +134,14 @@ public class QueryDaoImpl implements QueryDao {
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE UserID = ?");
-            preparedStatement.setInt(1, userID);
+            connection = getConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE SenderID = ?");
+            preparedStatement.setString(1, userID);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next())
             {
-                Query query = new Query();
-                String[] tempArr = resultSet.getString(1).split(" ");
-
-                CourseDao courseDao = new CourseDaoImpl(dbUrl,dbUser,dbPassword);
-                CategoryDao categoryDao = new CategoryDaoImpl(dbUrl,dbUser,dbPassword);
-                query = new Query();
-                query.setMessageID(resultSet.getInt("messageID"));
-                query.setSender(resultSet.getString("sender"));
-                query.setText(resultSet.getString("text"));
-                query.setDate(LocalDate.parse(resultSet.getString("date")));
-                query.setSubject(resultSet.getString("subject"));
-                query.setCourse(courseDao.getCourse(resultSet.getString("courseID")));
-                query.setCategory(categoryDao.getCategory(resultSet.getInt("categoryID")));
-                //set the status of the query
-                switch(resultSet.getString("status")){
-                    case "OPENED":
-                        query.setStatus(Query.Status.OPENED);
-                        break;
-                    case "PENDING":
-                        query.setStatus(Query.Status.PENDING);
-                        break;
-                    case "VIEWED":
-                        query.setStatus(Query.Status.VIEWED);
-                        break;
-                    case "REPLIED":
-                        query.setStatus(Query.Status.REPLIED);
-                        break;
-                    case "ARCHIVED":
-                        query.setStatus(Query.Status.ARCHIVED);
-                        break;
-                }
-                switch(resultSet.getString("privacy")){
-                    case "General":
-                        query.setPrivacy(Query.Privacy.GENERAL);
-                        break;
-                    case "Public":
-                        query.setPrivacy(Query.Privacy.PUBLIC);
-                        break;
-                    case "Private":
-                        query.setPrivacy(Query.Privacy.PRIVATE);
-                        break;
-                }
+                Query query = readQuery(connection, resultSet);
                 queries.add(query);
             }
 
@@ -291,21 +175,18 @@ public class QueryDaoImpl implements QueryDao {
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            preparedStatement = connection.prepareStatement("INSERT INTO Queries (MessageID, CourseID, CategoryID, Sender, Text, Subject, Date, Status, Privacy ) VALUES (?,?,?,?,?,?,?,?,?)");
-            preparedStatement.setInt(1, query.getMessageID());
-            preparedStatement.setString(2, query.getCourse().getCourseID());
-            preparedStatement.setInt(3, query.getCategory().getCategoryID());
-            preparedStatement.setString(4, query.getSender());
-            preparedStatement.setString(5, query.getText());
-            preparedStatement.setString(6, query.getDate().toString());
-            preparedStatement.setString(7, query.getSubject());
-            preparedStatement.setString(8, query.getStatus().name());
-            preparedStatement.setString(9, query.getPrivacy().name());
+            connection = getConnection();
+            preparedStatement = connection.prepareStatement("INSERT INTO Queries (SenderID, Subject, Content, QueryDate, CourseID, CategoryID, QueryStatus, PrivacySetting) VALUES (?,?,?,?,?,?,?,?)");
+            preparedStatement.setString(1, query.getSenderID());
+            preparedStatement.setString(2, query.getSubject());
+            preparedStatement.setString(3, query.getText());
+            preparedStatement.setString(4, query.getDate().toString());
+            preparedStatement.setString(5, query.getCourseID());
+            preparedStatement.setString(6, query.getCategoryID());
+            preparedStatement.setString(7, query.getStatus().toString());
+            preparedStatement.setString(8, query.getPrivacy().toString());
             preparedStatement.executeUpdate();
 
-            preparedStatement.clearParameters();
-            preparedStatement.close();
         }
         catch (SQLException ex)
         {
@@ -335,13 +216,15 @@ public class QueryDaoImpl implements QueryDao {
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl,dbUser, dbPassword);
+            connection = getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM Queries WHERE QueryID = ?");
             preparedStatement.setInt(1, query.getMessageID());
             preparedStatement.executeUpdate();
 
-            preparedStatement.clearParameters();
-            preparedStatement.close();
+            //removing the reply of the query from the query table
+            ReplyDao replyDao = new ReplyDaoImpl(super.getDbUrl(), super.getDbUser(), super.getDbPassword());
+            replyDao.deleteReply(query.getMessageID());
+
         }
         catch(SQLException ex)
         {

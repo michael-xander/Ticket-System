@@ -136,7 +136,7 @@ public class DaoFactoryUnitTest
         assertTrue(user.getLastName().equals("Kyeyune"));
         assertTrue(user.getEmail().equals("kyymic001@myuct.ac.za"));
         assertTrue(user.getPassword().equals("kyymic001"));
-        assertFalse(user.getCourses().isEmpty());
+        assertFalse(user.getCourseIDs().isEmpty());
     }
 
     /**
