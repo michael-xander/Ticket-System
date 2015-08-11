@@ -156,6 +156,38 @@ public class CategoryDaoImpl extends Dao implements CategoryDao
 
     @Override
     public void updateCategory(Category category) {
+        Connection connection  = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            connection = super.getConnection();
+            preparedStatement = connection.prepareStatement("UPDATE Categories SET CategoryName = ?, Description = ?, CourseID = ? WHERE CategoryID = ?");
+            preparedStatement.setString(1, category.getCategoryName());
+            preparedStatement.setString(2, category.getCategoryDescription());
+            preparedStatement.setString(3, category.getCourseID());
+            preparedStatement.setInt(4, category.getCategoryID());
+            preparedStatement.executeUpdate();
+        }
+        catch(SQLException ex)
+        {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+
+                if(connection != null)
+                    connection.close();
+            }
+            catch(SQLException ex)
+            {
+                logger.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
 
     }
 
