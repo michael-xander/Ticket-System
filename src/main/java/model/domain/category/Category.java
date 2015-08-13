@@ -1,6 +1,5 @@
 package model.domain.category;
 
-import model.domain.course.Course;
 
 /**
  * Category.java
