@@ -1,4 +1,4 @@
-package data.access.user;
+package data.access;
 
 /**
  * PersonDaoUnitTest.java

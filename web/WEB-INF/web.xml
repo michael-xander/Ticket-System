@@ -3,40 +3,4 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-    <display-name>TickSys</display-name>
-
-    <jsp-config>
-        <jsp-property-group>
-            <url-pattern>*.jsp</url-pattern>
-            <page-encoding>UTF-8</page-encoding>
-            <include-prelude>/WEB-INF/jsp/base.jsp</include-prelude>
-            <trim-directive-whitespaces>true</trim-directive-whitespaces>
-            <default-content-type>text/html</default-content-type>
-        </jsp-property-group>
-    </jsp-config>
-
-    <context-param>
-        <param-name>dbUrl</param-name>
-        <param-value>jdbc:mysql://localhost:3306/ticket_system</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>dbUserName</param-name>
-        <param-value>ticSysDev</param-value>
-    </context-param>
-
-    <context-param>
-        <param-name>dbPassword</param-name>
-        <param-value>ticSysDev458</param-value>
-    </context-param>
-
-    <session-config>
-        <session-timeout>30</session-timeout>
-        <cookie-config>
-            <http-only>true</http-only>
-        </cookie-config>
-        <tracking-mode>COOKIE</tracking-mode>
-    </session-config>
-
-    <distributable />
 </web-app>
