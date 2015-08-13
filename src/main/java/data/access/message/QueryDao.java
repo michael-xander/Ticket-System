@@ -13,7 +13,7 @@ public interface QueryDao {
 
     List<Query> getAllQueries();
 
-    List<Query> getAllQueriesFromUser(int userID);
+    List<Query> getAllQueriesFromUser(String userID);
 
     void addQuery(Query query);
 

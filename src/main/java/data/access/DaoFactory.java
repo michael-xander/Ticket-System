@@ -1,7 +1,13 @@
 package data.access;
 
+import data.access.category.CategoryDao;
+import data.access.category.CategoryDaoImpl;
 import data.access.course.CourseDao;
 import data.access.course.CourseDaoImpl;
+import data.access.message.QueryDao;
+import data.access.message.QueryDaoImpl;
+import data.access.message.ReplyDao;
+import data.access.message.ReplyDaoImpl;
 import data.access.user.LoginDao;
 import data.access.user.LoginDaoImpl;
 import data.access.user.UserDao;
@@ -29,6 +35,9 @@ public class DaoFactory
     private LoginDao loginDao;
     private CourseDao courseDao;
     private UserDao userDao;
+    private QueryDao queryDao;
+    private ReplyDao replyDao;
+    private CategoryDao categoryDao;
 
     public DaoFactory(String DbUrl, String userName, String password)
     {
@@ -62,6 +71,41 @@ public class DaoFactory
                 logger.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
+    }
+
+    /**
+     * A method to get a Category DAO instance.
+     * @return a Category DAO instance
+     */
+    public CategoryDao getCategoryDao()
+    {
+        if(categoryDao == null)
+            categoryDao = new CategoryDaoImpl(dbUrl, userName, password);
+
+        return categoryDao;
+    }
+    /**
+     * A method to get a Query DAO instance.
+     * @return a Query DAO instance
+     */
+    public QueryDao getQueryDao()
+    {
+        if(queryDao == null)
+            queryDao = new QueryDaoImpl(dbUrl, userName, password);
+
+        return queryDao;
+    }
+
+    /**
+     * A method to get a Reply DAO instance.
+     * @return a Reply DAO instance
+     */
+    public ReplyDao getReplyDao()
+    {
+        if(replyDao == null)
+            replyDao = new ReplyDaoImpl(dbUrl, userName, password);
+
+        return replyDao;
     }
 
     /**

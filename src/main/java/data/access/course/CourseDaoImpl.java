@@ -1,5 +1,6 @@
 package data.access.course;
 
+import data.access.Dao;
 import model.domain.course.Course;
 
 import java.sql.*;
@@ -10,23 +11,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A class CourseDaoImpl.java
+ * CourseDaoImpl.java
  * A DAO class for the Course class
  * Created by Michael on 2015/08/08.
  */
-public class CourseDaoImpl implements CourseDao
+public class CourseDaoImpl extends Dao implements CourseDao
 {
-    private String dbUser;
-    private String dbPassword;
-    private String dbUrl;
-
     private Logger logger = Logger.getLogger(CourseDaoImpl.class.getName());
 
     public CourseDaoImpl(String dbUrl, String dbUser, String dbPassword)
     {
-        this.dbUrl = dbUrl;
-        this.dbUser = dbUser;
-        this.dbPassword = dbPassword;
+        super(dbUrl, dbUser, dbPassword);
     }
 
     /**
@@ -43,7 +38,7 @@ public class CourseDaoImpl implements CourseDao
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            connection = super.getConnection();
             preparedStatement = connection.prepareStatement("SELECT * FROM Courses WHERE CourseID = ?");
             preparedStatement.setString(1, courseID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -125,7 +120,7 @@ public class CourseDaoImpl implements CourseDao
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            connection = super.getConnection();
             preparedStatement = connection.prepareStatement("SELECT * FROM Courses");
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -170,7 +165,7 @@ public class CourseDaoImpl implements CourseDao
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            connection = super.getConnection();
             preparedStatement = connection.prepareStatement("UPDATE Courses SET Description = ? WHERE CourseID = ?");
             preparedStatement.setString(1, course.getDescription());
             preparedStatement.setString(2, course.getCourseID());
@@ -209,7 +204,7 @@ public class CourseDaoImpl implements CourseDao
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            connection = super.getConnection();
             preparedStatement = connection.prepareStatement("INSERT INTO Courses (CourseID, Description) VALUES (?,?)");
             preparedStatement.setString(1, course.getCourseID());
             preparedStatement.setString(2, course.getDescription());
@@ -274,7 +269,7 @@ public class CourseDaoImpl implements CourseDao
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl,dbUser, dbPassword);
+            connection = super.getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM Courses WHERE CourseID = ?");
             preparedStatement.setString(1, course.getCourseID());
             preparedStatement.executeUpdate();

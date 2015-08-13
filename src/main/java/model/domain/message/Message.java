@@ -10,7 +10,7 @@ public class Message {
 
     //variables
     private int messageID;
-    private String sender;
+    private String senderID;
     private String text;
     private LocalDate date;
 
@@ -28,8 +28,8 @@ public class Message {
         this.messageID = messageID;
     }
 
-    public void setSender(String sender) {
-        this.sender = sender;
+    public void setSender(String senderID) {
+        this.senderID = senderID;
     }
 
 
@@ -43,8 +43,8 @@ public class Message {
         return messageID;
     }
 
-    public String getSender(){
-        return sender;
+    public String getSenderID(){
+        return senderID;
     }
 
     public String getText(){

@@ -1,5 +1,6 @@
 package model.domain.category;
 
+
 /**
  * Category.java
  * A class that represents a category in the Ticket System class
@@ -10,7 +11,7 @@ public class Category {
     private int categoryID;
     private String name;
     private String description;
-    public int rank;
+    private String courseID;
 
     public int getCategoryID(){
         return categoryID;
@@ -36,12 +37,9 @@ public class Category {
         this.description=description;
     }
 
-    public int getCategoryRank(){
-        return rank;
-    }
+    public String getCourseID()
+    { return courseID;}
 
-    public void setCategoryRank(int rank){
-        this.rank=rank;
-    }
-
+    public void setCourse(String courseID)
+    { this.courseID = courseID;}
 }

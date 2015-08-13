@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * CourseDao.java
- * An interface for the Course
+ * An interface for the Course DAO
  * Created by Michael on 2015/08/08.
  */
 public interface CourseDao {

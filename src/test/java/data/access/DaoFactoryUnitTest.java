@@ -1,12 +1,15 @@
 package data.access;
 
 import data.access.course.CourseDao;
+import data.access.message.ReplyDao;
 import data.access.user.LoginDao;
 import data.access.user.UserDao;
 import model.domain.course.Course;
+import model.domain.message.Message;
 import model.domain.user.User;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Properties;
 
@@ -136,7 +139,7 @@ public class DaoFactoryUnitTest
         assertTrue(user.getLastName().equals("Kyeyune"));
         assertTrue(user.getEmail().equals("kyymic001@myuct.ac.za"));
         assertTrue(user.getPassword().equals("kyymic001"));
-        assertFalse(user.getCourses().isEmpty());
+        assertFalse(user.getCourseIDs().isEmpty());
     }
 
     /**
@@ -155,5 +158,41 @@ public class DaoFactoryUnitTest
         user.setUserID("KYYMIC001");
 
         assertTrue(users.contains(user));
+    }
+
+    /**
+     * A method to test the getReply method for the Reply DAO
+     */
+    @Test
+    public void replyDaoGetReplyTest()
+    {
+        DaoFactory daoFactory = getDaoFactory();
+        ReplyDao replyDao = daoFactory.getReplyDao();
+        Message reply = replyDao.getReply(0);
+
+        assertNull(reply);
+
+        reply = replyDao.getReply(1);
+        assertNotNull(reply);
+        assertTrue(reply.getMessageID() == 1);
+        assertNotNull(reply.getMessageID());
+        assertNotNull(reply.getSenderID());
+        assertNotNull(reply.getText());
+        assertNotNull(reply.getDate());
+    }
+
+    /**
+     * A method to test the addReply and deleteReply methods for the Reply DAO
+     */
+    @Test
+    public void replyDaoAddDeleteTest()
+    {
+        DaoFactory daoFactory = getDaoFactory();
+        ReplyDao replyDao = daoFactory.getReplyDao();
+        Message reply = new Message();
+        reply.setMessageID(-1);
+        reply.setSender("KYYMIC001");
+        reply.setText("Testing");
+        reply.setDate(LocalDate.of(2017, 7 ,7));
     }
 }

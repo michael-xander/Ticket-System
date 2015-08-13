@@ -11,9 +11,9 @@ import model.domain.course.Course;
 
 public class Query extends Message {
 
-    private Course course;
+    private String courseID;
     private String subject;
-    private Category category;  // Category class exits somewhere
+    private String categoryID;
     public Status status;
     public Privacy privacy;
 
@@ -23,21 +23,21 @@ public class Query extends Message {
 
     }
 
-    public Course getCourse() {
-        return course;
+    public String getCourseID() {
+        return courseID;
     }
 
-    public void setCourse(Course course) {
+    public void setCourseID(String courseID) {
 
-        this.course = course;
+        this.courseID = courseID;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getCategoryID() {
+        return categoryID;
     }
 
-    public void setCategory(Category category){
-        this.category = category;
+    public void setCategoryID(String categoryID){
+        this.categoryID = categoryID;
     }
 
     // set and get the status for the query a

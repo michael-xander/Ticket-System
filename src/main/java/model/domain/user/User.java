@@ -18,19 +18,19 @@ public class User
     private String lastName;
     private String email;
 
-    private HashMap<Course, Role> courseRoleHashMap = new HashMap<>();
+    private HashMap<String, Role> courseRoleHashMap = new HashMap<>();
 
-    public Role getRoleForCourse(Course course)
-    { return courseRoleHashMap.get(course);}
+    public Role getRoleForCourse(String  courseID)
+    { return courseRoleHashMap.get(courseID);}
 
-    public void setRoleForCourse(Course course, Role role)
-    { courseRoleHashMap.replace(course, role);}
+    public void setRoleForCourse(String courseID, Role role)
+    { courseRoleHashMap.replace(courseID, role);}
 
-    public Set<Course> getCourses()
+    public Set<String> getCourseIDs()
     { return courseRoleHashMap.keySet();}
 
-    public void addCourse(Course course, Role role)
-    { courseRoleHashMap.put(course, role);}
+    public void addCourse(String courseID, Role role)
+    { courseRoleHashMap.put(courseID, role);}
 
     public void setFirstName(String firstName)
     { this.firstName = firstName;}

@@ -1,5 +1,6 @@
 package data.access.user;
 
+import data.access.Dao;
 import data.access.course.CourseDao;
 import data.access.course.CourseDaoImpl;
 import model.domain.course.Course;
@@ -17,19 +18,14 @@ import java.util.logging.Logger;
  * A DAO for the User class
  * Created by Michael on 2015/08/08.
  */
-public class UserDaoImpl implements UserDao
+public class UserDaoImpl extends Dao implements UserDao
 {
-    private String dbUser;
-    private String dbUrl;
-    private String dbPassword;
 
     private Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
 
     public UserDaoImpl(String dbUrl, String dbUser, String dbPassword)
     {
-        this.dbUrl = dbUrl;
-        this.dbUser = dbUser;
-        this.dbPassword = dbPassword;
+        super(dbUrl, dbUser, dbPassword);
     }
 
     /**
@@ -45,7 +41,7 @@ public class UserDaoImpl implements UserDao
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            connection = super.getConnection();
             preparedStatement = connection.prepareStatement("SELECT * FROM Users WHERE UserID = ?");
             preparedStatement.setString(1, userID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -103,13 +99,11 @@ public class UserDaoImpl implements UserDao
         preparedStatement.setString(1, user.getUserID());
         tempResultSet = preparedStatement.executeQuery();
 
-        CourseDao courseDao = new CourseDaoImpl(dbUrl, dbUser, dbPassword);
         while(tempResultSet.next())
         {
             String courseID = tempResultSet.getString(2).trim();
             String roleString = tempResultSet.getString(3).trim();
-            Course course = courseDao.getCourse(courseID);
-            user.addCourse(course, Role.valueOf(roleString));
+            user.addCourse(courseID, Role.valueOf(roleString));
         }
         preparedStatement.close();
 
@@ -128,7 +122,7 @@ public class UserDaoImpl implements UserDao
 
         try
         {
-            connection = DriverManager.getConnection(dbUrl, dbUser , dbPassword);
+            connection = super.getConnection();
             preparedStatement = connection.prepareStatement("SELECT * FROM Users");
             ResultSet resultSet = preparedStatement.executeQuery();
 
