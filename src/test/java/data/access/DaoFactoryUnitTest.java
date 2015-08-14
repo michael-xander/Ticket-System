@@ -194,5 +194,10 @@ public class DaoFactoryUnitTest
         reply.setSender("KYYMIC001");
         reply.setText("Testing");
         reply.setDate(LocalDate.of(2017, 7 ,7));
+        replyDao.addReply(reply);
+
+        assertNotNull(replyDao.getReply(reply.getMessageID()));
+        replyDao.deleteReply(reply);
+        assertNull(replyDao.getReply(reply.getMessageID()));
     }
 }
