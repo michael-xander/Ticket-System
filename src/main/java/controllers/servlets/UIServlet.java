@@ -1,6 +1,6 @@
 package controllers.servlets;
 
-import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinServlet;
 
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +12,9 @@ import javax.servlet.annotation.WebServlet;
         (
                 name = "UIServlet",
                 urlPatterns = "/*")
-@Theme("valo")
+@VaadinServletConfiguration(
+        ui = MainNavigatorUI.class,
+        productionMode = false
+)
 public class UIServlet extends VaadinServlet {
 }
