@@ -15,7 +15,7 @@ public class MainNavigatorUI extends UI
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         Navigator navigator = new Navigator(this, this);
-        navigator.addView("login", new LoginView());
-        navigator.navigateTo("login");
+        navigator.addView("student", new StudentView());
+        navigator.navigateTo("student");
     }
 }

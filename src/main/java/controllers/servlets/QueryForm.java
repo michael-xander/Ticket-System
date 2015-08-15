@@ -7,10 +7,12 @@ import model.domain.message.Query;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by william on 15-08-2015.
  */
+
 public class QueryForm extends FormLayout {
 
     //components required
@@ -43,8 +45,10 @@ public class QueryForm extends FormLayout {
 
     private void fillForm(){
         /* initialize the boxes */
+
         privacyList.add("General"); privacyList.add("Public"); privacyList.add("Private");
         categoryList.add("Test"); categoryList.add("Exam"); categoryList.add("Mark Query");
+
         privacy = new ComboBox("Privacy", privacyList);
         category = new ComboBox("Category", categoryList);
 
@@ -57,13 +61,14 @@ public class QueryForm extends FormLayout {
         submitButton.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
                 //check if all fields are all
-                if (privacy.getValue() == null || category.getValue() == null || subject.getValue() == null || queryContent.getValue() == null) {
+                if (privacy.getValue() == null || category.getValue() == null || subject.getValue() == null || queryContent.getValue().isEmpty()) {
                     // can't create query.
                     Notification.show("Enter all information", Notification.Type.WARNING_MESSAGE);
 
-                } else {
+                }else {
                     //add query to database
                     submitQuery();
+                    Notification.show("Query submitted", Notification.Type.ASSISTIVE_NOTIFICATION);
                 }
 
 
@@ -103,19 +108,19 @@ public class QueryForm extends FormLayout {
 
         Query query = new Query();
 
-        //query.setCategoryID();
+        query.setCategoryID(1);                 // CHANGE THIS SOON
         setQueryPrivacy(query);
         query.setSubject(subject.getValue());
         query.setText(queryContent.getValue());
 
         query.setDate(currentDate.now());
 
-        //query.setCourseID();
-        //query.setSender();
-        
+        query.setCourseID("csc3003S");          // CHANGE THIS SOON
+        query.setSender("lmlwil001");           // CHANGE THIS SOON
+
+        query.setStatus(Query.Status.PENDING);
         // add query to database
         daoFactory.getQueryDao().addQuery(query);
-        query.setStatus(Query.Status.PENDING);
         Notification.show("Query submitted", Notification.Type.TRAY_NOTIFICATION);
 
     }
