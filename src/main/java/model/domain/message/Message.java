@@ -54,4 +54,17 @@ public class Message {
     public LocalDate getDate(){
         return date;
     }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if(object == null || !object.getClass().equals(this.getClass()))
+            return false;
+        else
+        {
+            Message message = (Message) object;
+
+            return (this.messageID == message.messageID);
+        }
+    }
 }

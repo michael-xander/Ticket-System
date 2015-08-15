@@ -1,11 +1,15 @@
 package data.access;
 
+import data.access.category.CategoryDao;
 import data.access.course.CourseDao;
+import data.access.message.QueryDao;
 import data.access.message.ReplyDao;
 import data.access.user.LoginDao;
 import data.access.user.UserDao;
+import model.domain.category.Category;
 import model.domain.course.Course;
 import model.domain.message.Message;
+import model.domain.message.Query;
 import model.domain.user.User;
 import org.junit.Test;
 
@@ -26,9 +30,9 @@ public class DaoFactoryUnitTest
     {
         Properties props = new Properties();
 
-        props.setProperty("db.url", "jdbc:mysql://localhost:3306/ticket_system");
-        props.setProperty("db.user", "ticSysDev");
-        props.setProperty("db.password", "ticSysDev458");
+        props.setProperty("db.url", "jdbc:mysql://ticketsysdbinstance.ctxnd3uhmwzd.us-west-2.rds.amazonaws.com:3306/TicketSys");
+        props.setProperty("db.user", "ticksysdev");
+        props.setProperty("db.password", "tickSys408J2");
 
         return props;
     }
@@ -181,18 +185,71 @@ public class DaoFactoryUnitTest
         assertNotNull(reply.getDate());
     }
 
+
     /**
-     * A method to test the addReply and deleteReply methods for the Reply DAO
+     * A method that tests the getCategory method for the Category DAO
      */
     @Test
-    public void replyDaoAddDeleteTest()
+    public void categoryDaoGetCategoryTest()
     {
         DaoFactory daoFactory = getDaoFactory();
-        ReplyDao replyDao = daoFactory.getReplyDao();
-        Message reply = new Message();
-        reply.setMessageID(-1);
-        reply.setSender("KYYMIC001");
-        reply.setText("Testing");
-        reply.setDate(LocalDate.of(2017, 7 ,7));
+        CategoryDao categoryDao = daoFactory.getCategoryDao();
+
+        assertNull(categoryDao.getCategory(-1));
+        Category category = categoryDao.getCategory(1);
+
+        assertNotNull(category);
+        assertNotNull(category.getCategoryDescription());
+        assertNotNull(category.getCategoryName());
+        assertNotNull(category.getCourseID());
+    }
+
+    /**
+     * A method that tests the updateCategory method for the Category DAO
+     */
+    @Test
+    public void categoryDaoUpdateCategoryTest()
+    {
+        DaoFactory daoFactory = getDaoFactory();
+        CategoryDao categoryDao = daoFactory.getCategoryDao();
+        Category category = categoryDao.getCategory(1);
+        String originalDescription = category.getCategoryDescription();
+        String newDescription = "blah, blah, blah";
+
+        category.setCategoryDescription(newDescription);
+        categoryDao.updateCategory(category);
+
+        category = categoryDao.getCategory(category.getCategoryID());
+        assertTrue(category.getCategoryDescription().equals(newDescription));
+
+        category.setCategoryDescription(originalDescription);
+        categoryDao.updateCategory(category);
+
+        category = categoryDao.getCategory(category.getCategoryID());
+        assertTrue(category.getCategoryDescription().equals(originalDescription));
+    }
+
+    /**
+     * A method that tests the getQuery method for the Query DAO
+     */
+    @Test
+    public void queryDaoGetQueryTest()
+    {
+        DaoFactory daoFactory = getDaoFactory();
+        QueryDao queryDao = daoFactory.getQueryDao();
+
+        assertNull(queryDao.getQuery(-1));
+
+        Query query = queryDao.getQuery(1);
+
+        assertNotNull(query);
+        assertNotNull(query.getSenderID());
+        assertNotNull(query.getSubject());
+        assertNotNull(query.getText());
+        assertNotNull(query.getDate());
+        assertNotNull(query.getCourseID());
+        assertNotNull(query.getCategoryID());
+        assertNotNull(query.getStatus());
+        assertNotNull(query.getPrivacy());
     }
 }

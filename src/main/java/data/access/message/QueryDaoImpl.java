@@ -77,7 +77,7 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         query.setText(resultSet.getString(4));
         query.setDate(LocalDate.parse(resultSet.getString(5)));
         query.setCourseID(resultSet.getString(6));
-        query.setCategoryID(resultSet.getString(7));
+        query.setCategoryID(resultSet.getInt(7));
         query.setStatus(Query.Status.valueOf(resultSet.getString(8)));
         query.setPrivacy(Query.Privacy.valueOf(resultSet.getString(9)));
         return query;
@@ -182,7 +182,7 @@ public class QueryDaoImpl extends Dao implements QueryDao {
             preparedStatement.setString(3, query.getText());
             preparedStatement.setString(4, query.getDate().toString());
             preparedStatement.setString(5, query.getCourseID());
-            preparedStatement.setString(6, query.getCategoryID());
+            preparedStatement.setInt(6, query.getCategoryID());
             preparedStatement.setString(7, query.getStatus().toString());
             preparedStatement.setString(8, query.getPrivacy().toString());
             preparedStatement.executeUpdate();
