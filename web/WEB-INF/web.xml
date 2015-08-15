@@ -17,17 +17,17 @@
 
     <context-param>
         <param-name>dbUrl</param-name>
-        <param-value>jdbc:mysql://ticketsysdbinstance.ctxnd3uhmwzd.us-west-2.rds.amazonaws.com:3306/TicketSys</param-value>
+        <param-value>jdbc:mysql://localhost:3306/ticket_system</param-value>
     </context-param>
 
     <context-param>
         <param-name>dbUserName</param-name>
-        <param-value>ticksysdev</param-value>
+        <param-value>ticSysDev</param-value>
     </context-param>
 
     <context-param>
         <param-name>dbPassword</param-name>
-        <param-value>tickSys408J2</param-value>
+        <param-value>ticSysDev458</param-value>
     </context-param>
 
     <session-config>
