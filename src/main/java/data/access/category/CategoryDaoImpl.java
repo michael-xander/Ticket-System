@@ -120,6 +120,47 @@ public class CategoryDaoImpl extends Dao implements CategoryDao
     }
 
     @Override
+    public List<Category> getAllCategoriesForCourse(String courseID)
+    {
+        ArrayList<Category> categories = new ArrayList<>();
+        Connection connection  = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            connection = super.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM Categories WHERE CourseID = ?");
+            preparedStatement.setString(1, courseID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                Category category = readCategory(connection, resultSet);
+                categories.add(category);
+            }
+        }
+        catch (SQLException ex)
+        {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+
+                if(connection != null)
+                    connection.close();
+            }
+            catch(SQLException ex)
+            {
+                logger.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return categories;
+    }
+    @Override
     public void addCategory(Category category)
     {
         Connection connection = null;
