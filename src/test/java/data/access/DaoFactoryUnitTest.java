@@ -30,9 +30,9 @@ public class DaoFactoryUnitTest
     {
         Properties props = new Properties();
 
-        props.setProperty("db.url", "jdbc:mysql://ticketsysdbinstance.ctxnd3uhmwzd.us-west-2.rds.amazonaws.com:3306/TicketSys");
-        props.setProperty("db.user", "ticksysdev");
-        props.setProperty("db.password", "tickSys408J2");
+        props.setProperty("db.url", "jdbc:mysql://localhost:3306/ticket_system");
+        props.setProperty("db.user", "ticSysDev");
+        props.setProperty("db.password", "ticSysDev458");
 
         return props;
     }
