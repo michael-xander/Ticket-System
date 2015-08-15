@@ -13,7 +13,7 @@ public class Query extends Message {
 
     private String courseID;
     private String subject;
-    private String categoryID;
+    private int categoryID;
     public Status status;
     public Privacy privacy;
 
@@ -32,11 +32,11 @@ public class Query extends Message {
         this.courseID = courseID;
     }
 
-    public String getCategoryID() {
+    public int getCategoryID() {
         return categoryID;
     }
 
-    public void setCategoryID(String categoryID){
+    public void setCategoryID(int categoryID){
         this.categoryID = categoryID;
     }
 
