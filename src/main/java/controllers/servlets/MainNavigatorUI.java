@@ -16,6 +16,7 @@ public class MainNavigatorUI extends UI
     protected void init(VaadinRequest vaadinRequest) {
         Navigator navigator = new Navigator(this, this);
         navigator.addView("login", new LoginView());
-        navigator.navigateTo("login");
+        navigator.addView("reply", new ReplyView());
+        navigator.navigateTo("reply");
     }
 }

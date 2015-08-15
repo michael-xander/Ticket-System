@@ -9,7 +9,7 @@ import model.domain.course.Course;
 
 
 
-public class Query extends Message {
+public class Query extends Message  {
 
     private String courseID;
     private String subject;
@@ -65,6 +65,7 @@ public class Query extends Message {
     public Privacy getPrivacy() {
         return privacy;
     }
+
 
     public enum Status {
         OPENED,
