@@ -21,16 +21,21 @@ import java.util.List;
  */
 public class StudentDashboardView extends VerticalLayout implements View {
 
+    //factory object to get access to data access objects
     private DaoFactory daoFactory;
 
     private Navigator navigator;
+
     //label for the User ID
     private Label userNameLabel;
 
+    //user instance that has logged in
     private User student;
 
+    //grid that will contain queries for the user
     private Grid queryGrid;
 
+    //the form for inputing queries
     private Component queryFormLayout;
 
     //components for the query form
@@ -53,6 +58,7 @@ public class StudentDashboardView extends VerticalLayout implements View {
         setSpacing(true);
         setMargin(true);
 
+        //initiate and add a log out button that takes user back to login page once pressed
         Button logoutButton = new Button("Log out");
         logoutButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
         logoutButton.addClickListener(new Button.ClickListener() {
@@ -65,16 +71,22 @@ public class StudentDashboardView extends VerticalLayout implements View {
         addComponent(logoutButton);
         setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
 
+        //add the content of this view to a horizontal layout then add that layout to the view
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.setSpacing(true);
         horizontalLayout.addComponent(buildSideBar());
         horizontalLayout.addComponent(buildQueryTable());
         queryFormLayout = buildQueryForm();
         horizontalLayout.addComponent(queryFormLayout);
+
+        //make the query form invisible till the user has selected a course to supply query to
         queryFormLayout.setVisible(false);
         addComponent(horizontalLayout);
     }
 
+    /*
+     * A method that creates the side menu from which the user picks the course
+     */
     private Component buildSideBar()
     {
         VerticalLayout sideBar = new VerticalLayout();
@@ -88,14 +100,19 @@ public class StudentDashboardView extends VerticalLayout implements View {
 
     }
 
+    /*
+     * A method thats called to fill in the courses in the side bar when called
+     */
     private void buildMenuItems()
     {
+        //for each course create a menu item
         for(String courseID : student.getCourseIDs())
         {
             menuItemTree.addItem(courseID);
             menuItemTree.setChildrenAllowed(courseID, false);
         }
 
+        //when a menu item is clicked show the query form and notify the user of the item picked
         menuItemTree.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(ItemClickEvent itemClickEvent) {
@@ -106,6 +123,9 @@ public class StudentDashboardView extends VerticalLayout implements View {
         });
     }
 
+    /*
+     * A method that sets up the columns of the query table and the order in which they appear
+     */
     public Component buildQueryTable()
     {
         queryGrid = new Grid();
@@ -119,7 +139,10 @@ public class StudentDashboardView extends VerticalLayout implements View {
         return queryGrid;
     }
 
-    public void buildGridForCourse(String courseID)
+    /*
+     * A method that given the course ID returns all the queries of the user for that course
+     */
+    private void buildGridForCourse(String courseID)
     {
         if(courseID.isEmpty())
         {
@@ -130,14 +153,19 @@ public class StudentDashboardView extends VerticalLayout implements View {
         }
         else
         {
-
+            //alternative to be implemented later
         }
     }
-    public Component buildQueryForm()
+
+    /*
+     * A method that sets up the query form for user
+     */
+    private Component buildQueryForm()
     {
         FormLayout queryForm = new FormLayout();
         queryForm.setSpacing(true);
 
+        //adding the different types of privacy settings to the Privacy comboBox
         ArrayList<String> tempArray = new ArrayList<>();
         tempArray.add("General");
         tempArray.add("Public");
@@ -156,6 +184,7 @@ public class StudentDashboardView extends VerticalLayout implements View {
         queryForm.addComponent(queryContentTextArea);
 
         Button submitButton = new Button("Submit");
+        //submit button once clicked checks that query is created then notifies user whether it was a success or not
         submitButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent)
@@ -173,6 +202,7 @@ public class StudentDashboardView extends VerticalLayout implements View {
         });
 
         Button clearButton = new Button("Clear");
+        //clear button removes any selections that were made by the user
         clearButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
@@ -188,8 +218,13 @@ public class StudentDashboardView extends VerticalLayout implements View {
         return queryForm;
     }
 
+    /*
+     * A method that creates a query from the input given in the query form
+     * returns false if the query isnt created or true otherwise
+     */
     private boolean queryCreated()
     {
+        //check that all combo boxes and textfields have been filled in order to create a query
         if(privacyComboBox.getValue() == null || categoryComboBox.getValue() == null || subjectTextField.getValue().isEmpty() ||
                 queryContentTextArea.getValue().isEmpty())
         {
@@ -219,12 +254,16 @@ public class StudentDashboardView extends VerticalLayout implements View {
                     break;
             }
 
+            //add query to grid and database
             queryGrid.addRow(query.getSubject(), query.getStatus().toString(), query.getCourseID(), query.getPrivacy().toString());
             daoFactory.getQueryDao().addQuery(query);
             return true;
         }
     }
 
+    /*
+     * A method that returns the available categories for queries
+     */
     private List<String> getQueryCategories()
     {
         ArrayList<String> categoryNames = new ArrayList<String>();
@@ -234,11 +273,15 @@ public class StudentDashboardView extends VerticalLayout implements View {
         return categoryNames;
     }
 
+    /*
+     * Method called when navigator navigates to this page.
+     */
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent)
     {
         navigator = viewChangeEvent.getNavigator();
 
+        //read in the user ID attribute to user it to create an instance of the user
         Object tempObject = VaadinSession.getCurrent().getAttribute("userID");
 
         if(tempObject != null)

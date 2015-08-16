@@ -1,6 +1,8 @@
 package view;
 
 /**
+ * MainNavigator.java
+ * A class that contains the navigator between the different views of the system
  * Created by Michael on 2015/08/15.
  */
 
@@ -17,6 +19,7 @@ public class MainNavigatorUI extends UI
 {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        //initiate navigator that handles requests to different views given the view identifier
         Navigator navigator = new Navigator(this, this);
         navigator.addView("login", new LoginView());
         navigator.addView("student", new StudentDashboardView());
