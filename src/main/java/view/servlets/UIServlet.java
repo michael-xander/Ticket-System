@@ -1,7 +1,8 @@
-package controllers.servlets;
+package view.servlets;
 
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinServlet;
+import view.MainNavigatorUI;
 
 import javax.servlet.annotation.WebServlet;
 
