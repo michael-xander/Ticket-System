@@ -10,6 +10,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.themes.ValoTheme;
 import data.access.DaoFactory;
+import model.domain.user.Role;
+import model.domain.user.User;
 
 
 /**
@@ -74,17 +76,15 @@ public class LoginView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
                 signInButton.setComponentError(null);
                 Notification notification;
-                if(isValidUser(userIdField.getValue(), passwordField.getValue()))
-                {
+                if (isValidUser(userIdField.getValue(), passwordField.getValue())) {
                     notification = new Notification("Successful login!");
                     notification.setDescription("The credentials you provided are correct! Welcome to the Query Ticket System");
                     notification.setPosition(Position.BOTTOM_CENTER);
                     notification.show(Page.getCurrent());
                     VaadinSession.getCurrent().setAttribute("userID", userIdField.getValue());
-                    navigator.navigateTo("student");
-                }
-                else
-                {
+
+                    navigator.navigateTo(getPageToNavigateTo(userIdField.getValue()));
+                } else {
                     notification = new Notification("Unsuccessful login attempt");
                     notification.setDescription("The credentials provided are incorrect.");
                     notification.setPosition(Position.BOTTOM_CENTER);
@@ -98,6 +98,31 @@ public class LoginView extends VerticalLayout implements View {
         fields.addComponents(userIdField, passwordField, signInButton);
         fields.setComponentAlignment(signInButton, Alignment.BOTTOM_LEFT);
         return fields;
+    }
+
+    private String getPageToNavigateTo(String userID)
+    {
+        User user = daoFactory.getUserDao().getUser(userID);
+
+        if(user.getCourseIDs().size() == 1)
+        {
+            for(String courseID : user.getCourseIDs())
+            {
+                if(user.getRoleForCourse(courseID) == Role.CONVENER)
+                {
+                    return "convener";
+                }
+                else
+                {
+                    return "student";
+                }
+            }
+            return "student";
+        }
+        else
+        {
+            return "student";
+        }
     }
 
     private Component buildLabels()

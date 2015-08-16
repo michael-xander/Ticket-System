@@ -7,6 +7,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import data.access.DaoFactory;
 import model.domain.message.Query;
 import model.domain.user.User;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by Michael on 2015/08/15.
  */
-public class StudentDashboardView extends HorizontalLayout implements View {
+public class StudentDashboardView extends VerticalLayout implements View {
 
     private DaoFactory daoFactory;
 
@@ -52,12 +53,26 @@ public class StudentDashboardView extends HorizontalLayout implements View {
         setSpacing(true);
         setMargin(true);
 
-        addComponent(buildSideBar());
-        addComponent(buildQueryTable());
-        queryFormLayout = buildQueryForm();
-        addComponent(queryFormLayout);
+        Button logoutButton = new Button("Log out");
+        logoutButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        logoutButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                navigator.navigateTo("login");
+            }
+        });
 
+        addComponent(logoutButton);
+        setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
+
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.setSpacing(true);
+        horizontalLayout.addComponent(buildSideBar());
+        horizontalLayout.addComponent(buildQueryTable());
+        queryFormLayout = buildQueryForm();
+        horizontalLayout.addComponent(queryFormLayout);
         queryFormLayout.setVisible(false);
+        addComponent(horizontalLayout);
     }
 
     private Component buildSideBar()
