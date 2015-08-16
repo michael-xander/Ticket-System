@@ -15,12 +15,16 @@ import model.domain.user.User;
 
 
 /**
+ * LoginView.java
+ * A Layout that contains creates the login form
  * Created by Michael on 2015/08/15.
  */
 public class LoginView extends VerticalLayout implements View {
 
     private TextField userIdField;
     private PasswordField passwordField;
+
+    //factory object to provide access to data access objects
     private DaoFactory daoFactory;
     private Navigator navigator;
 
@@ -38,6 +42,9 @@ public class LoginView extends VerticalLayout implements View {
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
     }
 
+    /*
+     * This method is called whenever the navigator navigates to this view
+     */
     @Override
     public void enter(ViewChangeEvent event)
     {
@@ -45,6 +52,9 @@ public class LoginView extends VerticalLayout implements View {
         Page.getCurrent().setTitle("Login");
     }
 
+    /*
+     * A method that generates the login form that is attached to this view
+     */
     private Component buildLoginForm()
     {
         final VerticalLayout loginPanel = new VerticalLayout();
@@ -57,6 +67,9 @@ public class LoginView extends VerticalLayout implements View {
         return loginPanel;
     }
 
+    /*
+     * A method that generates and returns the fields for the login form
+     */
     private Component buildFields()
     {
         HorizontalLayout fields = new HorizontalLayout();
@@ -76,15 +89,20 @@ public class LoginView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
                 signInButton.setComponentError(null);
                 Notification notification;
+
                 if (isValidUser(userIdField.getValue(), passwordField.getValue())) {
+                    //if user is verified than display a notification about the successful login
                     notification = new Notification("Successful login!");
                     notification.setDescription("The credentials you provided are correct! Welcome to the Query Ticket System");
                     notification.setPosition(Position.BOTTOM_CENTER);
                     notification.show(Page.getCurrent());
+
+                    //set the userID so that other views attached to the navigator use it to look up the user
                     VaadinSession.getCurrent().setAttribute("userID", userIdField.getValue());
 
                     navigator.navigateTo(getPageToNavigateTo(userIdField.getValue()));
                 } else {
+                    //use a notification to inform the user about an unsuccessful login attempt
                     notification = new Notification("Unsuccessful login attempt");
                     notification.setDescription("The credentials provided are incorrect.");
                     notification.setPosition(Position.BOTTOM_CENTER);
@@ -100,10 +118,16 @@ public class LoginView extends VerticalLayout implements View {
         return fields;
     }
 
+    /*
+     * A method to that checks the user ID to decide whether or not the ID provided is that of student user or
+     * that of a convener. Returns the name of the page to navigate to
+     */
     private String getPageToNavigateTo(String userID)
     {
         User user = daoFactory.getUserDao().getUser(userID);
 
+        //if the user is only signed up for one course and the role of that course is that of a convener then the page
+        //to navigate to is that of the convener
         if(user.getCourseIDs().size() == 1)
         {
             for(String courseID : user.getCourseIDs())
@@ -125,6 +149,9 @@ public class LoginView extends VerticalLayout implements View {
         }
     }
 
+    /*
+     * A method to build the labels that are to be added to the login form
+     */
     private Component buildLabels()
     {
         HorizontalLayout labels = new HorizontalLayout();
@@ -138,6 +165,10 @@ public class LoginView extends VerticalLayout implements View {
         return labels;
     }
 
+
+    /*
+     * A method to check whether the given user id exists in the database with the given password
+     */
     private boolean isValidUser(String userID, String password)
     {
         if(userID.isEmpty() || password.isEmpty())

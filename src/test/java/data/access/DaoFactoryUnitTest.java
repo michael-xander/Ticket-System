@@ -26,6 +26,9 @@ import static org.junit.Assert.*;
  */
 public class DaoFactoryUnitTest
 {
+    /*
+     * a method that sets up the properties for access to the database
+     */
     private Properties getDatabaseAccessProperties()
     {
         Properties props = new Properties();
@@ -37,6 +40,9 @@ public class DaoFactoryUnitTest
         return props;
     }
 
+    /*
+     * A method to get an instance of DaoFactory
+     */
     private DaoFactory getDaoFactory()
     {
         Properties props = getDatabaseAccessProperties();
