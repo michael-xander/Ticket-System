@@ -9,6 +9,7 @@ import java.sql.SQLException;
  * A Dao object that handles a connection to the Database
  * Created by Michael on 2015/08/10.
  */
+
 public abstract class Dao
 {
     private String dbUser;

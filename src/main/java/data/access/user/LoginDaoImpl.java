@@ -11,6 +11,7 @@ import java.util.logging.Logger;
  * A class that handles checking whether or not a user is
  * Created by Michael on 2015/08/07.
  */
+
 public class LoginDaoImpl extends Dao implements LoginDao
 {
     private Logger logger = Logger.getLogger(LoginDaoImpl.class.getName());
@@ -19,6 +20,12 @@ public class LoginDaoImpl extends Dao implements LoginDao
         super(dbUrl, dbUser, dbPassword);
     }
 
+    /**
+     * A method that returns a true if the credentials provided by the user are correct
+     * @param userID - ID of the user
+     * @param password - password of the user
+     * @return true if is user or false if not
+     */
     @Override
     public boolean isUser(String userID, String password) {
         Connection connection = null;

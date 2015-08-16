@@ -24,6 +24,7 @@ import java.util.logging.Logger;
  * A class that generates DAOs
  * Created by Michael on 2015/08/07.
  */
+
 public class DaoFactory
 {
     private String dbUrl;
@@ -84,6 +85,7 @@ public class DaoFactory
 
         return categoryDao;
     }
+
     /**
      * A method to get a Query DAO instance.
      * @return a Query DAO instance

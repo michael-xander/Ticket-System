@@ -18,7 +18,6 @@ import java.util.logging.Logger;
  * Created by Michael on 2015/08/10.
  */
 
-
 public class CategoryDaoImpl extends Dao implements CategoryDao
 {
 
@@ -29,6 +28,11 @@ public class CategoryDaoImpl extends Dao implements CategoryDao
         super(dbUrl, dbUser, dbPassword);
     }
 
+    /**
+     * A method that returns the Category object from the database with given Category ID
+     * @param categoryID - ID of the Category to check for
+     * @return Category object if exists in database of else null
+     */
     @Override
     public Category getCategory(int categoryID)
     {
@@ -70,6 +74,12 @@ public class CategoryDaoImpl extends Dao implements CategoryDao
         return category;
     }
 
+    /**
+     * A method that returns the Category object read from the result set provided
+     * @param connection - the connection between the solution and the data source
+     * @param resultSet - an array with all the attributes of the category
+     * @return Category object if exists in database of else null
+     */
     private Category readCategory(Connection connection, ResultSet resultSet) throws SQLException
     {
         Category category = new Category();
@@ -79,6 +89,11 @@ public class CategoryDaoImpl extends Dao implements CategoryDao
         category.setCourse(resultSet.getString(4));
         return category;
     }
+
+    /**
+     * A method that returns all Categories in the database.
+     * @return - List of all Categories
+     */
     @Override
     public List<Category> getAllCategories() {
         ArrayList<Category> categories = new ArrayList<>();
@@ -119,6 +134,11 @@ public class CategoryDaoImpl extends Dao implements CategoryDao
         return categories;
     }
 
+    /**
+     * A method that returns all Categories from a certain course in the database.
+     * @param courseID - ID of the Course to get the categories from
+     * @return - List of all Categories of that course
+     */
     @Override
     public List<Category> getAllCategoriesForCourse(String courseID)
     {
@@ -160,6 +180,11 @@ public class CategoryDaoImpl extends Dao implements CategoryDao
         }
         return categories;
     }
+
+    /**
+     * A method that adds provided Category to the database
+     * @param category - Category to be added
+     */
     @Override
     public void addCategory(Category category)
     {
@@ -195,6 +220,10 @@ public class CategoryDaoImpl extends Dao implements CategoryDao
         }
     }
 
+    /**
+     * A method that updates the values of the given Category in that database
+     * @param category - Category with values to be updated
+     */
     @Override
     public void updateCategory(Category category) {
         Connection connection  = null;
@@ -232,6 +261,10 @@ public class CategoryDaoImpl extends Dao implements CategoryDao
 
     }
 
+    /**
+     * A method to delete a Category from the database
+     * @param category - category to delete
+     */
     @Override
     public void deleteCategory(Category category)
     {
