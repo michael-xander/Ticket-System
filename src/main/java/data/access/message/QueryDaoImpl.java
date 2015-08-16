@@ -75,7 +75,8 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         query.setSender(resultSet.getString(2));
         query.setSubject(resultSet.getString(3));
         query.setText(resultSet.getString(4));
-        query.setDate(LocalDate.parse(resultSet.getString(5)));
+        //query.setDate(LocalDate.parse(resultSet.getString(5)));
+        query.setDate(LocalDate.now());
         query.setCourseID(resultSet.getString(6));
         query.setCategoryID(resultSet.getInt(7));
         query.setStatus(Query.Status.valueOf(resultSet.getString(8)));
@@ -214,6 +215,43 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
+        try
+        {
+            connection = getConnection();
+            preparedStatement = connection.prepareStatement("DELETE FROM Queries WHERE QueryID = ?");
+            preparedStatement.setInt(1, query.getMessageID());
+            preparedStatement.executeUpdate();
+
+            //removing the reply of the query from the query table
+            ReplyDao replyDao = new ReplyDaoImpl(super.getDbUrl(), super.getDbUser(), super.getDbPassword());
+            replyDao.deleteReply(query.getMessageID());
+
+        }
+        catch(SQLException ex)
+        {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+
+                if(connection != null)
+                    connection.close();
+            }
+            catch (SQLException ex)
+            {
+                logger.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
+
+    public void deleteQuery(int queryID) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        Query query = this.getQuery(queryID);
         try
         {
             connection = getConnection();

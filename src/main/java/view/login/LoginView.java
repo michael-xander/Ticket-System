@@ -104,7 +104,6 @@ public class LoginView extends VerticalLayout implements View {
     {
         HorizontalLayout labels = new HorizontalLayout();
         labels.setSpacing(true);
-
         Label welcomeLabel = new Label("Query Ticket System");
         welcomeLabel.setSizeUndefined();
         welcomeLabel.addStyleName(ValoTheme.LABEL_H4);
