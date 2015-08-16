@@ -20,4 +20,6 @@ public interface QueryDao {
     void deleteQuery(Query query);
 
     void deleteQuery(int queryID);
+
+    void updateQueryRole(Query query);
 }

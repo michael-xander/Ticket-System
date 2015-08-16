@@ -170,6 +170,41 @@ public class QueryDaoImpl extends Dao implements QueryDao {
     }
 
     @Override
+    public void updateQueryRole(Query query)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            connection = super.getConnection();
+            preparedStatement = connection.prepareStatement("UPDATE Queries SET QueryStatus = ? WHERE QueryID = ?");
+            preparedStatement.setString(1, query.getStatus().toString());
+            preparedStatement.setInt(2, query.getMessageID());
+            preparedStatement.executeUpdate();
+        }
+        catch(SQLException ex)
+        {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+
+                if(connection != null)
+                    connection.close();
+            }
+            catch(SQLException ex)
+            {
+                logger.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
+
+    @Override
     public void addQuery(Query query){
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -248,6 +283,7 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         }
     }
 
+    @Override
     public void deleteQuery(int queryID) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
