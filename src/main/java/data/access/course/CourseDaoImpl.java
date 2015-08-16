@@ -15,6 +15,7 @@ import java.util.logging.Logger;
  * A DAO class for the Course class
  * Created by Michael on 2015/08/08.
  */
+
 public class CourseDaoImpl extends Dao implements CourseDao
 {
     private Logger logger = Logger.getLogger(CourseDaoImpl.class.getName());
@@ -70,8 +71,11 @@ public class CourseDaoImpl extends Dao implements CourseDao
         return course;
     }
 
-    /*
-     * A method that reads in course from the database
+    /**
+     * A method that returns the Course object read from the result set provided
+     * @param connection - the connection between the solution and the data source
+     * @param resultSet - an array with all the attributes of the course
+     * @return Course object if exists in database of else null
      */
     private Course readCourse(Connection connection, ResultSet resultSet) throws SQLException
     {

@@ -5,8 +5,11 @@ import model.domain.message.Query;
 import java.util.List;
 
 /**
- * Created by marcelo on 08-08-2015.
+ * QueryDao.java
+ * An interface for the Query DAO
+ * Created by Marcelo on 2015/08/08.
  */
+
 public interface QueryDao {
 
     Query getQuery(int queryID);

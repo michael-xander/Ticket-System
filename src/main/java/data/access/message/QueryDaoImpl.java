@@ -2,10 +2,6 @@ package data.access.message;
 
 
 import data.access.Dao;
-import data.access.category.CategoryDao;
-import data.access.category.CategoryDaoImpl;
-import data.access.course.CourseDao;
-import data.access.course.CourseDaoImpl;
 import model.domain.message.Query;
 
 import java.sql.*;
@@ -16,8 +12,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by marcelo on 08-08-2015.
+ * QueryDaoImpl.java
+ * A DAO for the Query class.
+ * Created by Marcelo on 2015/08/08.
  */
+
 public class QueryDaoImpl extends Dao implements QueryDao {
 
     private Logger logger = Logger.getLogger(QueryDaoImpl.class.getName());
@@ -27,6 +26,11 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         super(dbUrl, dbUser, dbPassword);
     }
 
+    /**
+     * A method that returns the Query object from the database with given Query ID
+     * @param queryID - ID of the Query to check for
+     * @return Query object if exists in database of else null
+     */
     @Override
     public Query getQuery(int queryID)
     {
@@ -68,6 +72,12 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         return query;
     }
 
+    /**
+     * A method that returns the Query object read from the result set provided
+     * @param connection - the connection between the solution and the data source
+     * @param resultSet - an array with all the attributes of the query
+     * @return Query object if exists in database of else null
+     */
     private Query readQuery(Connection connection, ResultSet resultSet) throws SQLException
     {
         Query query = new Query();
@@ -75,7 +85,7 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         query.setSender(resultSet.getString(2));
         query.setSubject(resultSet.getString(3));
         query.setText(resultSet.getString(4));
-        //query.setDate(LocalDate.parse(resultSet.getString(5)));
+        //query.setDate(LocalDate.parse(resultSet.getString(5))); Commented out due to testing for prototype presentation
         query.setDate(LocalDate.now());
         query.setCourseID(resultSet.getString(6));
         query.setCategoryID(resultSet.getInt(7));
@@ -84,8 +94,12 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         return query;
     }
 
+    /**
+     * A method that returns all Queries in the database.
+     * @return - List of all Queries
+     */
     @Override
-         public List<Query> getAllQueries()
+    public List<Query> getAllQueries()
     {
         ArrayList<Query> queries = new ArrayList<>();
         Connection connection = null;
@@ -126,6 +140,11 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         return queries;
     }
 
+    /**
+     * A method that returns all Queries from a certain user in the database.
+     * @param userID - ID of the User to get the queries from
+     * @return - List of all Queries of that user
+     */
     @Override
     public List<Query> getAllQueriesFromUser(String userID)
     {
@@ -169,6 +188,10 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         return queries;
     }
 
+    /**
+     * A method that updates the status of the given Query in that database
+     * @param query - Query with new status
+     */
     @Override
     public void updateQueryRole(Query query)
     {
@@ -204,6 +227,10 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         }
     }
 
+    /**
+     * A method that adds provided Query to the database
+     * @param query- Query to be added
+     */
     @Override
     public void addQuery(Query query){
         Connection connection = null;
@@ -245,6 +272,10 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         }
     }
 
+    /**
+     * A method to delete a Query from the database
+     * @param query - query be to deleted
+     */
     @Override
     public void deleteQuery(Query query) {
         Connection connection = null;
@@ -283,6 +314,10 @@ public class QueryDaoImpl extends Dao implements QueryDao {
         }
     }
 
+    /**
+     * A method to delete a Query from the database
+     * @param queryID - ID of the query to delete
+     */
     @Override
     public void deleteQuery(int queryID) {
         Connection connection = null;

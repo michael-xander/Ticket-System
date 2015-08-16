@@ -9,6 +9,7 @@ import java.util.List;
  * An interface for the Category DAO
  * Created by Michael on 2015/08/10.
  */
+
 public interface CategoryDao
 {
     Category getCategory(int categoryID);

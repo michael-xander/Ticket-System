@@ -12,8 +12,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * ReplyDaoImpl.java
+ * A DAO for the Reply class.
  * Created by Michael on 2015/08/11.
  */
+
 public class ReplyDaoImpl extends Dao implements ReplyDao
 {
     private Logger logger = Logger.getLogger(ReplyDaoImpl.class.getName());
@@ -23,6 +26,11 @@ public class ReplyDaoImpl extends Dao implements ReplyDao
         super(dbUrl, dbUser, dbPassword);
     }
 
+    /**
+     * A method that returns the Message object from the database with given Reply ID
+     * @param replyID - ID of the Reply to check for
+     * @return Message object if exists in database of else null
+     */
     @Override
     public Message getReply(int replyID)
     {
@@ -67,6 +75,10 @@ public class ReplyDaoImpl extends Dao implements ReplyDao
         return reply;
     }
 
+    /**
+     * A method that adds provided Reply to the database
+     * @param reply - Reply to be added
+     */
     @Override
     public void addReply(Message reply)
     {
@@ -105,12 +117,20 @@ public class ReplyDaoImpl extends Dao implements ReplyDao
         }
     }
 
+    /**
+     * A method to delete a Reply from the database
+     * @param reply - reply be to deleted
+     */
     @Override
     public void deleteReply(Message reply)
     {
         deleteReply(reply.getMessageID());
     }
 
+    /**
+     * A method to delete a Reply from the database
+     * @param replyID - ID of the reply to delete
+     */
     @Override
     public void deleteReply(int replyID) {
         Connection connection = null;

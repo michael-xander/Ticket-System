@@ -3,8 +3,11 @@ package data.access.message;
 import model.domain.message.Message;
 
 /**
- * Created by Michael on 2015/08/11.
+ * QueryDao.java
+ * An interface for the Query DAO
+ * Created by Michael on 2015/08/08.
  */
+
 public interface ReplyDao
 {
     Message getReply(int replyID);

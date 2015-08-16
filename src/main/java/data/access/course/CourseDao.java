@@ -9,6 +9,7 @@ import java.util.List;
  * An interface for the Course DAO
  * Created by Michael on 2015/08/08.
  */
+
 public interface CourseDao {
 
     Course getCourse(String courseID);

@@ -18,6 +18,7 @@ import java.util.logging.Logger;
  * A DAO for the User class
  * Created by Michael on 2015/08/08.
  */
+
 public class UserDaoImpl extends Dao implements UserDao
 {
 
@@ -73,8 +74,11 @@ public class UserDaoImpl extends Dao implements UserDao
         return user;
     }
 
-    /*
-     * A method that reads in a user from the database
+    /**
+     * A method that returns the User object read from the result set provided
+     * @param connection - the connection between the solution and the data source
+     * @param resultSet - an array with all the attributes of the user
+     * @return User object if exists in database of else null
      */
     private User readUser(Connection connection, ResultSet resultSet)
             throws SQLException
@@ -153,16 +157,28 @@ public class UserDaoImpl extends Dao implements UserDao
         return users;
     }
 
+    /**
+     * A method that updates the values of the given User in that database
+     * @param user - User with values to be updated
+     */
     @Override
     public void updateUser(User user) {
 
     }
 
+    /**
+     * A method that adds provided user to the database
+     * @param user - User to be added
+     */
     @Override
     public void addUser(User user) {
 
     }
 
+    /**
+     * A method to delete a User from the database
+     * @param user - user to delete
+     */
     @Override
     public void deleteUser(User user) {
 
