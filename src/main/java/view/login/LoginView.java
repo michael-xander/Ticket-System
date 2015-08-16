@@ -1,6 +1,7 @@
-package controllers.servlets;
+package view.login;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.*;
@@ -19,6 +20,7 @@ public class LoginView extends VerticalLayout implements View {
     private TextField userIdField;
     private PasswordField passwordField;
     private DaoFactory daoFactory;
+    private Navigator navigator;
 
     public LoginView()
     {
@@ -37,6 +39,7 @@ public class LoginView extends VerticalLayout implements View {
     @Override
     public void enter(ViewChangeEvent event)
     {
+        navigator = event.getNavigator();
         Page.getCurrent().setTitle("Login");
     }
 
@@ -75,16 +78,20 @@ public class LoginView extends VerticalLayout implements View {
                 {
                     notification = new Notification("Successful login!");
                     notification.setDescription("The credentials you provided are correct! Welcome to the Query Ticket System");
+                    notification.setPosition(Position.BOTTOM_CENTER);
+                    notification.show(Page.getCurrent());
+                    VaadinSession.getCurrent().setAttribute("userID", userIdField.getValue());
+                    navigator.navigateTo("student");
                 }
                 else
                 {
                     notification = new Notification("Unsuccessful login attempt");
                     notification.setDescription("The credentials provided are incorrect.");
+                    notification.setPosition(Position.BOTTOM_CENTER);
+                    notification.show(Page.getCurrent());
                     signInButton.setComponentError(new UserError("The credentials provided are incorrect"));
-                    VaadinSession.getCurrent().setAttribute("userID", userIdField.getValue());
                 }
-                notification.setPosition(Position.BOTTOM_CENTER);
-                notification.show(Page.getCurrent());
+
             }
         });
 

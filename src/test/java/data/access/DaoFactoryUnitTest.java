@@ -230,6 +230,37 @@ public class DaoFactoryUnitTest
     }
 
     /**
+     * A method that tests the getAllCategories method for the Category DAO
+     */
+    @Test
+    public void categoryDaoGetAllCategoriesTest()
+    {
+        DaoFactory daoFactory = getDaoFactory();
+        CategoryDao categoryDao = daoFactory.getCategoryDao();
+
+        List<Category> categories = categoryDao.getAllCategories();
+
+        assertNotNull(categories);
+        assertTrue(!categories.isEmpty());
+
+    }
+
+    /**
+     * A method that tests the getAllCategoriesForCourse method for the Category DAO
+     */
+    @Test
+    public void categoryDaoGetAllCategoriesForCourse()
+    {
+        DaoFactory daoFactory = getDaoFactory();
+        CategoryDao categoryDao = daoFactory.getCategoryDao();
+
+        List<Category> categories = categoryDao.getAllCategoriesForCourse("CSC3002F 2015");
+
+        assertNotNull(categories);
+        assertTrue(!categories.isEmpty());
+    }
+
+    /**
      * A method that tests the getQuery method for the Query DAO
      */
     @Test
