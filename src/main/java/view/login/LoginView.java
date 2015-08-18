@@ -12,6 +12,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import data.access.DaoFactory;
 import model.domain.user.Role;
 import model.domain.user.User;
+import view.TicketSystemUI;
 
 
 /**
@@ -19,22 +20,13 @@ import model.domain.user.User;
  * A Layout that contains creates the login form
  * Created by Michael on 2015/08/15.
  */
-public class LoginView extends VerticalLayout implements View {
+public class LoginView extends VerticalLayout {
 
-    private TextField userIdField;
-    private PasswordField passwordField;
 
-    //factory object to provide access to data access objects
-    private DaoFactory daoFactory;
-    private Navigator navigator;
+
 
     public LoginView()
     {
-        String dbUrl = VaadinServlet.getCurrent().getServletContext().getInitParameter("dbUrl");
-        String dbUserName = VaadinServlet.getCurrent().getServletContext().getInitParameter("dbUserName");
-        String dbPassword = VaadinServlet.getCurrent().getServletContext().getInitParameter("dbPassword");
-        daoFactory = new DaoFactory(dbUrl, dbUserName, dbPassword);
-
         setSizeFull();
 
         Component loginForm = buildLoginForm();
@@ -42,15 +34,6 @@ public class LoginView extends VerticalLayout implements View {
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
     }
 
-    /*
-     * This method is called whenever the navigator navigates to this view
-     */
-    @Override
-    public void enter(ViewChangeEvent event)
-    {
-        navigator = event.getNavigator();
-        Page.getCurrent().setTitle("Login");
-    }
 
     /*
      * A method that generates the login form that is attached to this view
@@ -75,9 +58,13 @@ public class LoginView extends VerticalLayout implements View {
         HorizontalLayout fields = new HorizontalLayout();
         fields.setSpacing(true);
 
-         userIdField = new TextField("User ID");
+        final TextField userIdField = new TextField("User ID");
+        userIdField.setIcon(FontAwesome.USER);
+        userIdField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-        passwordField = new PasswordField("Password");
+        final PasswordField passwordField = new PasswordField("Password");
+        passwordField.setIcon(FontAwesome.LOCK);
+        passwordField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
         final Button signInButton = new Button("Sign In");
         signInButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -99,9 +86,10 @@ public class LoginView extends VerticalLayout implements View {
 
                     //set the userID so that other views attached to the navigator use it to look up the user
                     VaadinSession.getCurrent().setAttribute("userID", userIdField.getValue());
+                    ((TicketSystemUI) getUI()).updateContent();
 
-                    navigator.navigateTo(getPageToNavigateTo(userIdField.getValue()));
-                } else {
+                } else
+                {
                     //use a notification to inform the user about an unsuccessful login attempt
                     notification = new Notification("Unsuccessful login attempt");
                     notification.setDescription("The credentials provided are incorrect.");
@@ -118,36 +106,6 @@ public class LoginView extends VerticalLayout implements View {
         return fields;
     }
 
-    /*
-     * A method to that checks the user ID to decide whether or not the ID provided is that of student user or
-     * that of a convener. Returns the name of the page to navigate to
-     */
-    private String getPageToNavigateTo(String userID)
-    {
-        User user = daoFactory.getUserDao().getUser(userID);
-
-        //if the user is only signed up for one course and the role of that course is that of a convener then the page
-        //to navigate to is that of the convener
-        if(user.getCourseIDs().size() == 1)
-        {
-            for(String courseID : user.getCourseIDs())
-            {
-                if(user.getRoleForCourse(courseID) == Role.CONVENER)
-                {
-                    return "convener";
-                }
-                else
-                {
-                    return "student";
-                }
-            }
-            return "student";
-        }
-        else
-        {
-            return "student";
-        }
-    }
 
     /*
      * A method to build the labels that are to be added to the login form
@@ -175,7 +133,7 @@ public class LoginView extends VerticalLayout implements View {
             return false;
         else
         {
-            return daoFactory.getLoginDao().isUser(userID,password);
+            return TicketSystemUI.getDaoFactory().getLoginDao().isUser(userID,password);
         }
     }
 }
