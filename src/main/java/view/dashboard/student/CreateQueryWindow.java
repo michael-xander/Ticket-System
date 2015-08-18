@@ -1,6 +1,7 @@
 package view.dashboard.student;
 
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
@@ -104,6 +105,7 @@ public class CreateQueryWindow extends Window
                 TicketSystemUI.getDaoFactory().getQueryDao().addQuery(query);
                 Notification notification = new Notification("Query created", Notification.Type.HUMANIZED_MESSAGE);
                 notification.setDescription("Your query has successfully been submitted.");
+                notification.show(Page.getCurrent());
 
                 close();
             }

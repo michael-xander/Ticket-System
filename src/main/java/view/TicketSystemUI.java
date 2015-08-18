@@ -59,6 +59,15 @@ public class TicketSystemUI extends UI
     }
 
     /**
+     * Nullifies the id attribute and updates the content of the page
+     */
+    public void userSignOut()
+    {
+        VaadinSession.getCurrent().setAttribute("userID", null);
+        updateContent();
+    }
+
+    /**
      * return an instance for accessing the database
      */
     public static DaoFactory getDaoFactory()
