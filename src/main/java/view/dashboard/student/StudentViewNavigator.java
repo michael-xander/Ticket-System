@@ -41,12 +41,12 @@ public class StudentViewNavigator extends TicketSystemNavigator
 
     private ViewProvider initDashboardViewProvider()
     {
-        ViewProvider viewProvider = new ClassBasedViewProvider("dashboard", CourseQueryView.class)
+        ViewProvider viewProvider = new ClassBasedViewProvider("dashboard", QueryView.class)
         {
           @Override
         public View getView(final String viewName)
           {
-              return new CourseQueryView("");
+              return new QueryView();
           }
         };
 
