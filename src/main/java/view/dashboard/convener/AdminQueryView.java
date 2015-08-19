@@ -108,7 +108,7 @@ public class AdminQueryView extends VerticalLayout implements View
 
     private List<Query> getAllQueriesForCourse()
     {
-        return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueries();
+        return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForCourse(courseID, Query.Status.PENDING);
     }
 
     @Override
@@ -192,6 +192,7 @@ public class AdminQueryView extends VerticalLayout implements View
                     Notification notification = new Notification("Reply sent", Notification.Type.HUMANIZED_MESSAGE);
                     notification.setDescription("Your reply has successfully been submitted.");
                     notification.show(Page.getCurrent());
+                    table.removeItem(query.getMessageID());
                     close();
                 }
             });

@@ -14,6 +14,7 @@ import model.domain.message.Query;
 import view.TicketSystemUI;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -33,6 +34,8 @@ public class CourseQueryView extends VerticalLayout implements View
         addComponent(buildToolbar());
 
         table = buildTable();
+        addQueriesToTable();
+
         addComponent(table);
         setExpandRatio(table, 1);
     }
@@ -81,18 +84,6 @@ public class CourseQueryView extends VerticalLayout implements View
         table.addContainerProperty("Privacy", String.class, "(default)");
         table.addContainerProperty("Status", String.class, "(default)");
 
-        for(Query query : getCourseQueriesForUser())
-        {
-            table.addItem(new Object[] {
-                    query.getDate().toString(),
-                    query.getSubject(),
-                    query.getSenderID(),
-                    query.getCourseID(),
-                    query.getPrivacy().toString(),
-                    query.getStatus().toString()
-            }, query.getMessageID());
-        }
-
         table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(ItemClickEvent itemClickEvent) {
@@ -107,16 +98,39 @@ public class CourseQueryView extends VerticalLayout implements View
         return table;
     }
 
-    private List<Query> getCourseQueriesForUser()
+
+    private void addQueriesToTable()
+    {
+        for(Query query : getCourseQueriesForUser())
+        {
+            addQueryToTable(query);
+        }
+    }
+
+    public void addQueryToTable(Query query)
+    {
+        table.addItem(new Object[] {
+                query.getDate().toString(),
+                query.getSubject(),
+                query.getSenderID(),
+                query.getCourseID(),
+                query.getPrivacy().toString(),
+                query.getStatus().toString()
+        }, query.getMessageID());
+    }
+
+    private Set<Query> getCourseQueriesForUser()
     {
         if(courseID.isEmpty())
         {
-            return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueries();
+            return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForUser(
+                    (String) VaadinSession.getCurrent().getAttribute("userID"), null
+            );
         }
         else
         {
-            return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesFromUser(
-                    (String) VaadinSession.getCurrent().getAttribute("userID"));
+            return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForUser(
+                    (String) VaadinSession.getCurrent().getAttribute("userID"), courseID);
         }
     }
 
@@ -127,7 +141,7 @@ public class CourseQueryView extends VerticalLayout implements View
         createQuery.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                getUI().addWindow(new CreateQueryWindow(courseID));
+                getUI().addWindow(new CreateQueryWindow(CourseQueryView.this, courseID));
             }
         });
 

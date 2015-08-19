@@ -48,6 +48,8 @@ public class StudentDashboardMenu extends DashboardMenu
                     UI.getCurrent().getNavigator().navigateTo(courseButton.getCaption());
                 }
             });
+            courseButton.setWidth("100%");
+            //courseButton.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
             menuItemsLayout.addComponent(courseButton);
         }
         return menuItemsLayout;

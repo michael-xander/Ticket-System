@@ -3,6 +3,7 @@ package data.access.message;
 import model.domain.message.Query;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * QueryDao.java
@@ -16,7 +17,9 @@ public interface QueryDao {
 
     List<Query> getAllQueries();
 
-    List<Query> getAllQueriesFromUser(String userID);
+    Set<Query> getAllQueriesForUser(String userID, String courseID);
+
+    List<Query> getAllQueriesForCourse(String courseID, Query.Status status);
 
     void addQuery(Query query);
 

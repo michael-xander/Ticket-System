@@ -65,6 +65,7 @@ public abstract class DashboardMenu extends CustomComponent
     {
         Button button = new Button();
         button.setCaption("Dashboard");
+        button.setWidth("100%");
         button.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
