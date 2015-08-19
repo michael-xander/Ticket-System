@@ -3,7 +3,9 @@ package view.dashboard.student;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import model.domain.message.Message;
 import model.domain.message.Query;
+import view.TicketSystemUI;
 
 /**
  * A simple window to see the information of a query
@@ -38,8 +40,24 @@ public class QueryInfoWindow extends Window
         Label content = new Label(query.getText());
         view.addComponent(content);
 
+        Message reply = getQueryReply();
+
+        if(reply != null)
+        {
+            Label replyHeading = new Label("Reply:");
+            Label replyContent = new Label(reply.getText());
+            view.addComponent(replyHeading);
+            view.addComponent(replyContent);
+        }
+
         view.addComponent(buildFooter());
         return view;
+    }
+
+    private Message getQueryReply()
+    {
+        Message reply = TicketSystemUI.getDaoFactory().getReplyDao().getReply(query.getMessageID());
+        return reply;
     }
 
     private Component buildFooter()
