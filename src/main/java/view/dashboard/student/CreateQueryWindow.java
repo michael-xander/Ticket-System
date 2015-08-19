@@ -6,6 +6,7 @@ import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import model.domain.category.Category;
 import model.domain.message.Query;
 import view.TicketSystemUI;
 
@@ -89,7 +90,7 @@ public class CreateQueryWindow extends Window
                 query.setCourseID(courseID);
                 query.setSender((String) VaadinSession.getCurrent().getAttribute("userID"));
                 query.setStatus(Query.Status.PENDING);
-                query.setCategoryID(1);
+                query.setCategoryID(getCategoryCode((String) categoryComboBox.getValue()));
 
                 switch((String) privacyComboBox.getValue())
                 {
@@ -135,13 +136,33 @@ public class CreateQueryWindow extends Window
      */
     private List<String> getAvailableCategories()
     {
+        List<Category> categories = TicketSystemUI.getDaoFactory().getCategoryDao().getAllCategoriesForCourse(courseID);
+
         ArrayList<String> categoryNames = new ArrayList<>();
-        categoryNames.add("Test");
-        categoryNames.add("Exam");
-        categoryNames.add("Marks");
+
+        for(Category category : categories)
+        {
+            categoryNames.add(category.getCategoryName());
+        }
+
         return categoryNames;
     }
 
+    /*
+     * Returns the category ID for the given category name
+     */
+    private int getCategoryCode(String categoryName)
+    {
+        List<Category> categories = TicketSystemUI.getDaoFactory().getCategoryDao().getAllCategoriesForCourse(courseID);
+
+        for(Category category : categories)
+        {
+            if(category.getCategoryName().equals(categoryName))
+                return category.getCategoryID();
+        }
+
+        return 1;
+    }
     /*
      * Returns available privacy settings for a query
      */
