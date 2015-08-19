@@ -22,16 +22,14 @@ import java.util.List;
 public class CreateQueryWindow extends Window
 {
     private final String courseID;
-    private final CourseQueryView queryView;
 
     private ComboBox privacyComboBox;
     private ComboBox categoryComboBox;
     private TextField subject;
     private RichTextArea richTextArea;
 
-    public CreateQueryWindow(final CourseQueryView queryView, final String courseID)
+    public CreateQueryWindow(final String courseID)
     {
-        this.queryView = queryView;
         this.courseID = courseID;
         setCaption("Create Query for " + courseID);
         setModal(true);
@@ -111,6 +109,7 @@ public class CreateQueryWindow extends Window
                 notification.show(Page.getCurrent());
 
                 close();
+                UI.getCurrent().getNavigator().navigateTo(query.getCourseID());
             }
         });
 

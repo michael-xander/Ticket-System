@@ -141,7 +141,7 @@ public class CourseQueryView extends VerticalLayout implements View
         createQuery.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                getUI().addWindow(new CreateQueryWindow(CourseQueryView.this, courseID));
+                getUI().addWindow(new CreateQueryWindow(courseID));
             }
         });
 
