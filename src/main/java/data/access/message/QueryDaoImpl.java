@@ -7,7 +7,9 @@ import model.domain.message.Query;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -141,12 +143,12 @@ public class QueryDaoImpl extends Dao implements QueryDao {
     }
 
     /**
-     * A method that returns all Queries from a certain user in the database.
-     * @param userID - ID of the User to get the queries from
-     * @return - List of all Queries of that user
+     * Get all pending queries from the database for the given course ID
+     * @param courseID the course whose queries are to be attained
+     * @return list of pending queries
      */
     @Override
-    public List<Query> getAllQueriesFromUser(String userID)
+    public List<Query> getAllQueriesForCourse(String courseID, Query.Status status)
     {
         ArrayList<Query> queries = new ArrayList<>();
         Connection connection = null;
@@ -154,9 +156,69 @@ public class QueryDaoImpl extends Dao implements QueryDao {
 
         try
         {
+            connection = super.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE CourseID = ? AND QueryStatus = ?");
+            preparedStatement.setString(1, courseID);
+            preparedStatement.setString(2, status.toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next())
+            {
+                Query query = readQuery(connection, resultSet);
+                queries.add(query);
+            }
+        }
+        catch(SQLException ex)
+        {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        finally {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+
+                if(connection != null)
+                    connection.close();
+            }
+            catch(SQLException ex)
+            {
+                logger.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+
+        return queries;
+    }
+
+    /**
+     * A method that returns all Queries from a certain user in the database.
+     * @param userID - ID of the User to get the queries from
+     * @param courseID - course ID for which queries should fall
+     * @return - List of all Queries of that user
+     */
+    @Override
+    public Set<Query> getAllQueriesForUser(String userID, String courseID)
+    {
+        LinkedHashSet<Query> queries = new LinkedHashSet<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
             connection = getConnection();
-            preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE SenderID = ?");
-            preparedStatement.setString(1, userID);
+            if(courseID == null) {
+                preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE SenderID = ? OR PrivacySetting = ?");
+                preparedStatement.setString(1, userID);
+                preparedStatement.setString(2, Query.Privacy.GENERAL.toString());
+            }
+            else
+            {
+                preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE (SenderID = ? OR PrivacySetting = ?) AND CourseID = ?");
+                preparedStatement.setString(1, userID);
+                preparedStatement.setString(2, Query.Privacy.GENERAL.toString());
+                preparedStatement.setString(3, courseID);
+            }
+
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next())
