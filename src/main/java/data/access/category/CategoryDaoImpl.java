@@ -264,10 +264,10 @@ public class CategoryDaoImpl extends Dao implements CategoryDao, Serializable
 
     /**
      * A method to delete a Category from the database
-     * @param category - category to delete
+     * @param categoryID - the ID of the category to delete
      */
     @Override
-    public void deleteCategory(Category category)
+    public void deleteCategory(int categoryID)
     {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -276,7 +276,7 @@ public class CategoryDaoImpl extends Dao implements CategoryDao, Serializable
         {
             connection = super.getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM Categories WHERE CategoryID = ?");
-            preparedStatement.setInt(1, category.getCategoryID());
+            preparedStatement.setInt(1, categoryID);
             preparedStatement.executeUpdate();
         }
         catch(SQLException ex)
