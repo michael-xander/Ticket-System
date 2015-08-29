@@ -13,7 +13,6 @@ public class Query extends Message implements Serializable {
 
     private String courseID;
     private String subject;
-    private int categoryID;
     private String categoryName;
     public Status status;
     public Privacy privacy;
@@ -41,14 +40,6 @@ public class Query extends Message implements Serializable {
     public void setCourseID(String courseID) {
 
         this.courseID = courseID;
-    }
-
-    public int getCategoryID() {
-        return categoryID;
-    }
-
-    public void setCategoryID(int categoryID){
-        this.categoryID = categoryID;
     }
 
     // set and get the status for the query a

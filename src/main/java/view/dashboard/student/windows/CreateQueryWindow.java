@@ -88,7 +88,7 @@ public class CreateQueryWindow extends Window
                 query.setCourseID(courseID);
                 query.setSender((String) VaadinSession.getCurrent().getAttribute("userID"));
                 query.setStatus(Query.Status.PENDING);
-                query.setCategoryID(getCategoryCode((String) categoryComboBox.getValue()));
+                query.setCategoryName((String) categoryComboBox.getValue());
 
                 switch((String) privacyComboBox.getValue())
                 {
