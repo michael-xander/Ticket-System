@@ -1,4 +1,4 @@
-package view.dashboard.student;
+package view.dashboard.student.windows;
 
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;

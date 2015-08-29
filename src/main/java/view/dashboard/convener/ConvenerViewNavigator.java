@@ -7,7 +7,6 @@ import com.vaadin.ui.ComponentContainer;
 import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
-import view.dashboard.student.CourseQueryView;
 
 /**
  * Created by Michael on 2015/08/18.

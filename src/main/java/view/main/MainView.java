@@ -8,8 +8,8 @@ import model.domain.user.User;
 import view.TicketSystemUI;
 import view.dashboard.convener.ConvenerDashboardMenu;
 import view.dashboard.convener.ConvenerViewNavigator;
-import view.dashboard.student.StudentDashboardMenu;
-import view.dashboard.student.StudentViewNavigator;
+import view.dashboard.student.menu.StudentDashboardMenu;
+import view.dashboard.student.navigator.StudentViewNavigator;
 
 /**
  * Main View is a simple HorizontalLayout that wraps the menu on the left

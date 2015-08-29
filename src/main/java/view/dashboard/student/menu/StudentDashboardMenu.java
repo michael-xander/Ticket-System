@@ -1,4 +1,4 @@
-package view.dashboard.student;
+package view.dashboard.student.menu;
 
 
 import com.vaadin.ui.*;
