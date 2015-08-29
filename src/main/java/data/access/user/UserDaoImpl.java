@@ -178,10 +178,10 @@ public class UserDaoImpl extends Dao implements UserDao, Serializable
 
     /**
      * A method to delete a User from the database
-     * @param user - user to delete
+     * @param userID - ID of the user to delete
      */
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser(String userID) {
 
     }
 }
