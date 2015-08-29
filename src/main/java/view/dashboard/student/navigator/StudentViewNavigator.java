@@ -7,8 +7,8 @@ import com.vaadin.ui.ComponentContainer;
 import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
-import view.dashboard.student.views.CourseQueryView;
-import view.dashboard.student.views.QueryView;
+import view.dashboard.student.views.StudentCourseQueryView;
+import view.dashboard.student.views.StudentQueryView;
 
 /**
  * A class that handles navigation through the different views available to a student user
@@ -30,12 +30,12 @@ public class StudentViewNavigator extends TicketSystemNavigator
         addProvider(initDashboardViewProvider());
         for(String courseID : user.getCourseIDs())
         {
-            ViewProvider viewProvider = new ClassBasedViewProvider(courseID, CourseQueryView.class)
+            ViewProvider viewProvider = new ClassBasedViewProvider(courseID, StudentCourseQueryView.class)
             {
                 @Override
                 public View getView(final String viewName)
                 {
-                    return new CourseQueryView(viewName);
+                    return new StudentCourseQueryView(viewName);
                 }
             };
             addProvider(viewProvider);
@@ -44,12 +44,12 @@ public class StudentViewNavigator extends TicketSystemNavigator
 
     private ViewProvider initDashboardViewProvider()
     {
-        ViewProvider viewProvider = new ClassBasedViewProvider("dashboard", QueryView.class)
+        ViewProvider viewProvider = new ClassBasedViewProvider("dashboard", StudentQueryView.class)
         {
           @Override
         public View getView(final String viewName)
           {
-              return new QueryView();
+              return new StudentQueryView();
           }
         };
 
