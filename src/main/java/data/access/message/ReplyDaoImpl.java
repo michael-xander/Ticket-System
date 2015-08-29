@@ -118,15 +118,6 @@ public class ReplyDaoImpl extends Dao implements ReplyDao, Serializable
         }
     }
 
-    /**
-     * A method to delete a Reply from the database
-     * @param reply - reply be to deleted
-     */
-    @Override
-    public void deleteReply(Message reply)
-    {
-        deleteReply(reply.getMessageID());
-    }
 
     /**
      * A method to delete a Reply from the database

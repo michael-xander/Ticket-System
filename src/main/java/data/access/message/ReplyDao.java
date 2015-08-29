@@ -14,7 +14,5 @@ public interface ReplyDao
 
     void addReply(Message reply);
 
-    void deleteReply(Message reply);
-
     void deleteReply(int replyID);
 }
