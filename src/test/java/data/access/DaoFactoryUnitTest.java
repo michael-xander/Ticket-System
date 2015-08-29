@@ -277,7 +277,7 @@ public class DaoFactoryUnitTest
 
         assertNull(queryDao.getQuery(-1));
 
-        Query query = queryDao.getQuery(1);
+        Query query = queryDao.getQuery(10);
 
         assertNotNull(query);
         assertNotNull(query.getSenderID());
@@ -285,7 +285,7 @@ public class DaoFactoryUnitTest
         assertNotNull(query.getText());
         assertNotNull(query.getDate());
         assertNotNull(query.getCourseID());
-        assertNotNull(query.getCategoryID());
+        assertNotNull(query.getCategoryName());
         assertNotNull(query.getStatus());
         assertNotNull(query.getPrivacy());
     }
