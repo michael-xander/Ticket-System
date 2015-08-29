@@ -1,142 +1,68 @@
 package view.dashboard.student.views;
 
-import com.vaadin.event.ItemClickEvent;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.FontAwesome;
+
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Query;
 import view.TicketSystemUI;
 import view.dashboard.student.windows.CreateQueryWindow;
-import view.dashboard.student.windows.QueryInfoWindow;
 
-import java.util.Set;
+import java.util.Collection;
 
 
 /**
  * A view that shows the queries for a particular course for a student
  * Created by Michael on 2015/08/17.
  */
-public class StudentCourseQueryView extends VerticalLayout implements View
+public class StudentCourseQueryView extends StudentQueryTableView
 {
-    private final Table table;
     private String courseID;
 
     public StudentCourseQueryView(String courseID)
     {
+        super();
         this.courseID = courseID;
-        setSizeFull();
-        setSpacing(true);
 
-        addComponent(buildToolbar());
+        addComponent(buildToolbar(this.courseID + " Queries"));
 
-        table = buildTable();
-        addQueriesToTable();
+        super.addQueriesToTable(getQueries());
 
-        addComponent(table);
-        setExpandRatio(table, 1);
+        addComponent(super.getTable());
+        setExpandRatio(super.getTable(), 1);
     }
 
-    private Component buildToolbar()
-    {
+    @Override
+    public Component buildToolbar(String toolbarHeader) {
         HorizontalLayout header = new HorizontalLayout();
         header.setSpacing(true);
         Responsive.makeResponsive(header);
 
-        Label title = new Label(courseID + " Queries");
+        Label title = new Label(toolbarHeader);
         title.setSizeUndefined();
         title.addStyleName(ValoTheme.LABEL_H1);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         header.addComponent(title);
 
-        Button createQuery = buildCreateQuery();
         Component filter = buildFilter();
         header.addComponent(filter);
-        header.addComponent(createQuery);
+        header.addComponent(buildCreateQuery());
 
         return header;
     }
 
-    private Component buildFilter()
-    {
-        final TextField filter = new TextField();
-        filter.setInputPrompt("Filter");
-        filter.setIcon(FontAwesome.SEARCH);
-        filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-        return filter;
+    @Override
+    public Collection<Query> getQueries() {
+        return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForUser(
+                (String) VaadinSession.getCurrent().getAttribute("userID"), courseID
+        );
     }
 
-    private Table buildTable()
-    {
-        final Table table = new Table();
-        table.setSizeFull();
-
-        table.addStyleName(ValoTheme.TABLE_COMPACT);
-        table.setSelectable(true);
-
-        table.addContainerProperty("Date", String.class, "(default)");
-        table.addContainerProperty("Subject", String.class, "(default)");
-        table.addContainerProperty("Sender", String.class, "(default)");
-        table.addContainerProperty("Course", String.class, "(default)");
-        table.addContainerProperty("Privacy", String.class, "(default)");
-        table.addContainerProperty("Status", String.class, "(default)");
-
-        table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
-            @Override
-            public void itemClick(ItemClickEvent itemClickEvent) {
-
-                int queryId = (Integer) itemClickEvent.getItemId();
-                Query query = TicketSystemUI.getDaoFactory().getQueryDao().getQuery(queryId);
-                getUI().addWindow(new QueryInfoWindow(query));
-            }
-        });
-
-        table.setImmediate(true);
-        return table;
-    }
-
-
-    private void addQueriesToTable()
-    {
-        for(Query query : getCourseQueriesForUser())
-        {
-            addQueryToTable(query);
-        }
-    }
-
-    public void addQueryToTable(Query query)
-    {
-        table.addItem(new Object[] {
-                query.getDate().toString(),
-                query.getSubject(),
-                query.getSenderID(),
-                query.getCourseID(),
-                query.getPrivacy().toString(),
-                query.getStatus().toString()
-        }, query.getMessageID());
-    }
-
-    private Set<Query> getCourseQueriesForUser()
-    {
-        if(courseID.isEmpty())
-        {
-            return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForUser(
-                    (String) VaadinSession.getCurrent().getAttribute("userID"), null
-            );
-        }
-        else
-        {
-            return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForUser(
-                    (String) VaadinSession.getCurrent().getAttribute("userID"), courseID);
-        }
-    }
-
-    private Button buildCreateQuery()
+    public Button buildCreateQuery()
     {
         final Button createQuery = new Button("Create Query");
 
@@ -148,9 +74,5 @@ public class StudentCourseQueryView extends VerticalLayout implements View
         });
 
         return createQuery;
-    }
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-
     }
 }
