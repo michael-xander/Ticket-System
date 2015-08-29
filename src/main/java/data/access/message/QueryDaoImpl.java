@@ -4,6 +4,7 @@ package data.access.message;
 import data.access.Dao;
 import model.domain.message.Query;
 
+import java.io.Serializable;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,9 +20,9 @@ import java.util.logging.Logger;
  * Created by Marcelo on 2015/08/08.
  */
 
-public class QueryDaoImpl extends Dao implements QueryDao {
+public class QueryDaoImpl extends Dao implements QueryDao, Serializable {
 
-    private Logger logger = Logger.getLogger(QueryDaoImpl.class.getName());
+    private transient Logger logger = Logger.getLogger(QueryDaoImpl.class.getName());
 
     public QueryDaoImpl(String dbUrl, String dbUser, String dbPassword)
     {

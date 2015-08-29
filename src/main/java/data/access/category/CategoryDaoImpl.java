@@ -3,6 +3,7 @@ package data.access.category;
 import data.access.Dao;
 import model.domain.category.Category;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,10 +19,10 @@ import java.util.logging.Logger;
  * Created by Michael on 2015/08/10.
  */
 
-public class CategoryDaoImpl extends Dao implements CategoryDao
+public class CategoryDaoImpl extends Dao implements CategoryDao, Serializable
 {
 
-    private Logger logger = Logger.getLogger(CategoryDao.class.getName());
+    private transient Logger logger = Logger.getLogger(CategoryDao.class.getName());
 
     public CategoryDaoImpl(String dbUrl, String dbUser, String dbPassword)
     {

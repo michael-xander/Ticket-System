@@ -1,5 +1,6 @@
 package data.access;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
  * Created by Michael on 2015/08/10.
  */
 
-public abstract class Dao
+public abstract class Dao implements Serializable
 {
     private String dbUser;
     private String dbPassword;

@@ -3,6 +3,7 @@ package data.access.course;
 import data.access.Dao;
 import model.domain.course.Course;
 
+import java.io.Serializable;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ import java.util.logging.Logger;
  * Created by Michael on 2015/08/08.
  */
 
-public class CourseDaoImpl extends Dao implements CourseDao
+public class CourseDaoImpl extends Dao implements CourseDao, Serializable
 {
-    private Logger logger = Logger.getLogger(CourseDaoImpl.class.getName());
+    private transient Logger logger = Logger.getLogger(CourseDaoImpl.class.getName());
 
     public CourseDaoImpl(String dbUrl, String dbUser, String dbPassword)
     {
