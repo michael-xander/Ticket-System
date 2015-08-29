@@ -7,6 +7,7 @@ import model.domain.course.Course;
 import model.domain.user.Role;
 import model.domain.user.User;
 
+import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.logging.Logger;
  * Created by Michael on 2015/08/08.
  */
 
-public class UserDaoImpl extends Dao implements UserDao
+public class UserDaoImpl extends Dao implements UserDao, Serializable
 {
 
-    private Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
+    private transient Logger logger = Logger.getLogger(UserDaoImpl.class.getName());
 
     public UserDaoImpl(String dbUrl, String dbUser, String dbPassword)
     {

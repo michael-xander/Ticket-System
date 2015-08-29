@@ -3,6 +3,7 @@ package data.access.message;
 import data.access.Dao;
 import model.domain.message.Message;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,9 +18,9 @@ import java.util.logging.Logger;
  * Created by Michael on 2015/08/11.
  */
 
-public class ReplyDaoImpl extends Dao implements ReplyDao
+public class ReplyDaoImpl extends Dao implements ReplyDao, Serializable
 {
-    private Logger logger = Logger.getLogger(ReplyDaoImpl.class.getName());
+    private transient Logger logger = Logger.getLogger(ReplyDaoImpl.class.getName());
 
     public ReplyDaoImpl(String dbUrl, String dbUser, String dbPassword)
     {

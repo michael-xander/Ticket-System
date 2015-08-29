@@ -13,6 +13,7 @@ import data.access.user.LoginDaoImpl;
 import data.access.user.UserDao;
 import data.access.user.UserDaoImpl;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,13 +26,13 @@ import java.util.logging.Logger;
  * Created by Michael on 2015/08/07.
  */
 
-public class DaoFactory
+public class DaoFactory implements Serializable
 {
     private String dbUrl;
     private String password;
     private String userName;
     private Connection connection;
-    private Logger logger = Logger.getLogger(DaoFactory.class.getName());
+    private transient Logger logger = Logger.getLogger(DaoFactory.class.getName());
 
     private LoginDao loginDao;
     private CourseDao courseDao;

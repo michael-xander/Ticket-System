@@ -1,7 +1,7 @@
 package model.domain.message;
 
-import model.domain.category.Category;
-import model.domain.course.Course;
+
+import java.io.Serializable;
 
 /**
  * Created by william on 08-08-2015.
@@ -9,7 +9,7 @@ import model.domain.course.Course;
 
 
 
-public class Query extends Message  {
+public class Query extends Message implements Serializable {
 
     private String courseID;
     private String subject;

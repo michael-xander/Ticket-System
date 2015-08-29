@@ -2,6 +2,7 @@ package data.access.user;
 
 import data.access.Dao;
 
+import java.io.Serializable;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,9 +13,9 @@ import java.util.logging.Logger;
  * Created by Michael on 2015/08/07.
  */
 
-public class LoginDaoImpl extends Dao implements LoginDao
+public class LoginDaoImpl extends Dao implements LoginDao, Serializable
 {
-    private Logger logger = Logger.getLogger(LoginDaoImpl.class.getName());
+    private transient Logger logger = Logger.getLogger(LoginDaoImpl.class.getName());
 
     public LoginDaoImpl(String dbUrl, String dbUser, String dbPassword) {
         super(dbUrl, dbUser, dbPassword);
