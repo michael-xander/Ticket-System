@@ -20,7 +20,7 @@ public interface CategoryDao
 
     void updateCategory(Category category);
 
-    void deleteCategory(Category category);
+    void deleteCategory(int categoryID);
 
     List<Category> getAllCategoriesForCourse(String courseID);
 

@@ -265,10 +265,10 @@ public class CourseDaoImpl extends Dao implements CourseDao, Serializable
 
     /**
      * A method to delete a Course from the database
-     * @param course - course to delete
+     * @param courseID - the ID of the course to delete
      */
     @Override
-    public void deleteCourse(Course course) {
+    public void deleteCourse(String courseID) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -276,21 +276,21 @@ public class CourseDaoImpl extends Dao implements CourseDao, Serializable
         {
             connection = super.getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM Courses WHERE CourseID = ?");
-            preparedStatement.setString(1, course.getCourseID());
+            preparedStatement.setString(1, courseID);
             preparedStatement.executeUpdate();
 
             preparedStatement.clearParameters();
             preparedStatement.close();
 
             preparedStatement = connection.prepareStatement("DELETE FROM Course_Test_Dates WHERE CourseID = ?");
-            preparedStatement.setString(1, course.getCourseID());
+            preparedStatement.setString(1, courseID);
             preparedStatement.executeUpdate();
 
             preparedStatement.clearParameters();
             preparedStatement.close();
 
             preparedStatement = connection.prepareStatement("DELETE FROM Course_Assignment_Dates WHERE CourseID = ?");
-            preparedStatement.setString(1, course.getCourseID());
+            preparedStatement.setString(1, courseID);
             preparedStatement.executeUpdate();
         }
         catch(SQLException ex)
