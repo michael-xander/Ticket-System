@@ -1,4 +1,4 @@
-package view.dashboard.convener;
+package view.dashboard.convener.views;
 
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ShortcutAction;
@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
+ * A view for the course convener to observe queries
  * Created by Michael on 2015/08/18.
  */
 public class AdminQueryView extends VerticalLayout implements View

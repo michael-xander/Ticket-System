@@ -1,4 +1,4 @@
-package view.dashboard.student;
+package view.dashboard.student.views;
 
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
@@ -7,27 +7,23 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Query;
 import view.TicketSystemUI;
+import view.dashboard.student.windows.QueryInfoWindow;
 
-import java.util.List;
 import java.util.Set;
 
-
 /**
- * Created by Michael on 2015/08/17.
+ * A view that lists all the queries for a student from all their courses
+ * Created by Michael on 2015/08/19.
  */
-public class CourseQueryView extends VerticalLayout implements View
-{
-    private final Table table;
-    private String courseID;
+public class QueryView extends VerticalLayout implements View {
 
-    public CourseQueryView(String courseID)
+    private final Table table;
+
+    public QueryView()
     {
-        this.courseID = courseID;
         setSizeFull();
         setSpacing(true);
 
@@ -46,16 +42,14 @@ public class CourseQueryView extends VerticalLayout implements View
         header.setSpacing(true);
         Responsive.makeResponsive(header);
 
-        Label title = new Label(courseID + " Queries");
+        Label title = new Label("Queries");
         title.setSizeUndefined();
         title.addStyleName(ValoTheme.LABEL_H1);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         header.addComponent(title);
 
-        Button createQuery = buildCreateQuery();
         Component filter = buildFilter();
         header.addComponent(filter);
-        header.addComponent(createQuery);
 
         return header;
     }
@@ -98,7 +92,6 @@ public class CourseQueryView extends VerticalLayout implements View
         return table;
     }
 
-
     private void addQueriesToTable()
     {
         for(Query query : getCourseQueriesForUser())
@@ -107,7 +100,7 @@ public class CourseQueryView extends VerticalLayout implements View
         }
     }
 
-    public void addQueryToTable(Query query)
+    private void addQueryToTable(Query query)
     {
         table.addItem(new Object[] {
                 query.getDate().toString(),
@@ -121,31 +114,9 @@ public class CourseQueryView extends VerticalLayout implements View
 
     private Set<Query> getCourseQueriesForUser()
     {
-        if(courseID.isEmpty())
-        {
-            return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForUser(
-                    (String) VaadinSession.getCurrent().getAttribute("userID"), null
-            );
-        }
-        else
-        {
-            return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForUser(
-                    (String) VaadinSession.getCurrent().getAttribute("userID"), courseID);
-        }
-    }
-
-    private Button buildCreateQuery()
-    {
-        final Button createQuery = new Button("Create Query");
-
-        createQuery.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                getUI().addWindow(new CreateQueryWindow(courseID));
-            }
-        });
-
-        return createQuery;
+        return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForUser(
+                (String) VaadinSession.getCurrent().getAttribute("userID"), null
+        );
     }
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {

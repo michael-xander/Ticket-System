@@ -1,4 +1,4 @@
-package view.dashboard.convener;
+package view.dashboard.convener.navigator;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
@@ -7,9 +7,10 @@ import com.vaadin.ui.ComponentContainer;
 import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
-import view.dashboard.student.CourseQueryView;
+import view.dashboard.convener.views.AdminQueryView;
 
 /**
+ * A navigator for the different views available to the course convener
  * Created by Michael on 2015/08/18.
  */
 public class ConvenerViewNavigator extends TicketSystemNavigator {

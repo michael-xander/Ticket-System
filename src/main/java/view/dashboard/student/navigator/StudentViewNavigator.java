@@ -1,4 +1,4 @@
-package view.dashboard.student;
+package view.dashboard.student.navigator;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
@@ -7,8 +7,11 @@ import com.vaadin.ui.ComponentContainer;
 import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
+import view.dashboard.student.views.CourseQueryView;
+import view.dashboard.student.views.QueryView;
 
 /**
+ * A class that handles navigation through the different views available to a student user
  * Created by Michael on 2015/08/18.
  */
 public class StudentViewNavigator extends TicketSystemNavigator
