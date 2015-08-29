@@ -1,5 +1,6 @@
 package model.domain.course;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.TreeSet;
 
@@ -8,7 +9,7 @@ import java.util.TreeSet;
  * A class that represents a course in the Ticket System class
  * Created by Michael on 2015/08/07.
  */
-public class Course
+public class Course implements Serializable
 {
 
     private String courseCode;

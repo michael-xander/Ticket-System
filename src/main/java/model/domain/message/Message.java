@@ -1,12 +1,13 @@
 package model.domain.message;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * Created by william on 08-08-2015.
  */
 
-public class Message {
+public class Message implements Serializable {
 
     //variables
     private int messageID;

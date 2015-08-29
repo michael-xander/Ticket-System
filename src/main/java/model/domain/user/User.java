@@ -1,7 +1,7 @@
 package model.domain.user;
 
-import model.domain.course.Course;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -10,7 +10,7 @@ import java.util.Set;
  * A class that represents a User of the Ticket System
  * Created by Michael on 2015/08/07.
  */
-public class User
+public class User implements Serializable
 {
     private String userID;
     private String password;

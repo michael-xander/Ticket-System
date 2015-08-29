@@ -1,12 +1,14 @@
 package model.domain.category;
 
 
+import java.io.Serializable;
+
 /**
  * Category.java
  * A class that represents a category in the Ticket System class
  * Created by marcelo on 08-08-2015.
  */
-public class Category {
+public class Category implements Serializable {
 
     private int categoryID;
     private String name;
