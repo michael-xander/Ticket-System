@@ -14,6 +14,7 @@ public class Query extends Message implements Serializable {
     private String courseID;
     private String subject;
     private int categoryID;
+    private String categoryName;
     public Status status;
     public Privacy privacy;
 
@@ -21,6 +22,16 @@ public class Query extends Message implements Serializable {
 
     public Query() {
 
+    }
+
+    public String getCategoryName()
+    {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName)
+    {
+        this.categoryName = categoryName;
     }
 
     public String getCourseID() {

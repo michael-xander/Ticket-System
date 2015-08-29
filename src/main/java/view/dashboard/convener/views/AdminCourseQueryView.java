@@ -21,13 +21,13 @@ import java.util.List;
  * A view for the course convener to observe queries
  * Created by Michael on 2015/08/18.
  */
-public class AdminQueryView extends VerticalLayout implements View
+public class AdminCourseQueryView extends VerticalLayout implements View
 {
 
     private String courseID;
     private final Table table;
 
-    public AdminQueryView(String courseID)
+    public AdminCourseQueryView(String courseID)
     {
         this.courseID = courseID;
         setSizeFull();

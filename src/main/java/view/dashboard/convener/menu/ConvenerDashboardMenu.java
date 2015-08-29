@@ -4,6 +4,7 @@ package view.dashboard.convener.menu;
 import com.vaadin.ui.Component;
 
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import view.dashboard.DashboardMenu;
@@ -33,7 +34,7 @@ public class ConvenerDashboardMenu extends DashboardMenu
             course.addItem("Queries", new MenuBar.Command() {
                 @Override
                 public void menuSelected(MenuBar.MenuItem menuItem) {
-
+                    UI.getCurrent().getNavigator().navigateTo(courseID);
                 }
             });
 
