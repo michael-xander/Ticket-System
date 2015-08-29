@@ -337,48 +337,6 @@ public class QueryDaoImpl extends Dao implements QueryDao, Serializable {
 
     /**
      * A method to delete a Query from the database
-     * @param query - query be to deleted
-     */
-    @Override
-    public void deleteQuery(Query query) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-
-        try
-        {
-            connection = getConnection();
-            preparedStatement = connection.prepareStatement("DELETE FROM Queries WHERE QueryID = ?");
-            preparedStatement.setInt(1, query.getMessageID());
-            preparedStatement.executeUpdate();
-
-            //removing the reply of the query from the query table
-            ReplyDao replyDao = new ReplyDaoImpl(super.getDbUrl(), super.getDbUser(), super.getDbPassword());
-            replyDao.deleteReply(query.getMessageID());
-
-        }
-        catch(SQLException ex)
-        {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        finally
-        {
-            try
-            {
-                if(preparedStatement != null)
-                    preparedStatement.close();
-
-                if(connection != null)
-                    connection.close();
-            }
-            catch (SQLException ex)
-            {
-                logger.log(Level.WARNING, ex.getMessage(), ex);
-            }
-        }
-    }
-
-    /**
-     * A method to delete a Query from the database
      * @param queryID - ID of the query to delete
      */
     @Override
