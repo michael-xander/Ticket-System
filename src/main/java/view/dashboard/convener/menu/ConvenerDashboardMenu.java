@@ -1,4 +1,4 @@
-package view.dashboard.convener;
+package view.dashboard.convener.menu;
 
 
 import com.vaadin.ui.Component;
