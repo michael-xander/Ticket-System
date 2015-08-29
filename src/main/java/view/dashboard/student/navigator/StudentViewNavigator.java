@@ -8,7 +8,7 @@ import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
 import view.dashboard.student.views.StudentCourseQueryView;
-import view.dashboard.student.views.StudentQueryView;
+import view.dashboard.student.views.StudentDefaultQueryView;
 
 /**
  * A class that handles navigation through the different views available to a student user
@@ -44,12 +44,12 @@ public class StudentViewNavigator extends TicketSystemNavigator
 
     private ViewProvider initDashboardViewProvider()
     {
-        ViewProvider viewProvider = new ClassBasedViewProvider("dashboard", StudentQueryView.class)
+        ViewProvider viewProvider = new ClassBasedViewProvider("dashboard", StudentDefaultQueryView.class)
         {
           @Override
         public View getView(final String viewName)
           {
-              return new StudentQueryView();
+              return new StudentDefaultQueryView();
           }
         };
 

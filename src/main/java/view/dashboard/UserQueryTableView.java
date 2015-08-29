@@ -49,6 +49,8 @@ public abstract class UserQueryTableView extends UserTableView {
     @Override
     public abstract Component buildToolbar(String toolbarHeader);
 
+    public abstract Collection<Query> getQueries();
+
     public void addQueryToTable(Query query)
     {
         super.getTable().addItem(new Object[] {
