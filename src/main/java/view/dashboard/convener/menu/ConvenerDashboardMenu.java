@@ -38,6 +38,20 @@ public class ConvenerDashboardMenu extends DashboardMenu
                 }
             });
 
+            course.addItem("Categories", new MenuBar.Command() {
+                @Override
+                public void menuSelected(MenuBar.MenuItem menuItem) {
+                    UI.getCurrent().getNavigator().navigateTo(courseID + " Categories");
+                }
+            });
+
+            course.addItem("FAQs", new MenuBar.Command() {
+                @Override
+                public void menuSelected(MenuBar.MenuItem menuItem) {
+                    UI.getCurrent().getNavigator().navigateTo(courseID + " FAQs");
+                }
+            });
+
             course.addItem("Statistics", new MenuBar.Command() {
                 @Override
                 public void menuSelected(MenuBar.MenuItem menuItem) {

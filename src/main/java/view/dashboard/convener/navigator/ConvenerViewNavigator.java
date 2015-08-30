@@ -41,6 +41,23 @@ public class ConvenerViewNavigator extends TicketSystemNavigator {
             };
 
             addProvider(viewProvider);
+
+            /*
+            viewProvider = new ClassBasedViewProvider(courseID + " Categories", null)
+            {
+                @Override
+                public View getView(final String viewName) { return null;}
+            };
+
+            addProvider(viewProvider);
+
+            viewProvider = new ClassBasedViewProvider(courseID + " FAQs", null)
+            {
+                @Override
+                public View getView(final String viewName) {return null;}
+            };
+
+            addProvider(viewProvider);*/
         }
     }
 

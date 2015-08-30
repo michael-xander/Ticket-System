@@ -39,6 +39,13 @@ public class StudentViewNavigator extends TicketSystemNavigator
                 }
             };
             addProvider(viewProvider);
+
+            /*
+            viewProvider = new ClassBasedViewProvider(courseID + " FAQs", null)
+            {
+                public View getView(final String viewName){return null;}
+            };
+            addProvider(viewProvider);*/
         }
     }
 
