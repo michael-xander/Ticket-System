@@ -50,6 +50,13 @@ public class StudentDashboardMenu extends DashboardMenu
                 }
             });
 
+            course.addItem("FAQs", new MenuBar.Command() {
+                @Override
+                public void menuSelected(MenuBar.MenuItem menuItem) {
+                    UI.getCurrent().getNavigator().navigateTo(courseID + " FAQs");
+                }
+            });
+
             courseMenu.setWidth("100%");
             menuItemsLayout.addComponent(courseMenu);
         }
