@@ -8,6 +8,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.category.Category;
 import view.TicketSystemUI;
+import view.dashboard.convener.windows.CreateCategoryWindow;
 
 import java.util.Collection;
 
@@ -64,7 +65,7 @@ public class AdminCourseCategoriesView extends AdminCategoryTableView
         createCategory.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-
+                getUI().addWindow(new CreateCategoryWindow(courseID));
             }
         });
 
