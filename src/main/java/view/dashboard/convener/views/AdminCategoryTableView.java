@@ -7,7 +7,9 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.category.Category;
+import view.TicketSystemUI;
 import view.dashboard.UserTableView;
+import view.dashboard.convener.windows.CategoryInfoWindow;
 
 import java.util.Collection;
 
@@ -26,7 +28,9 @@ public abstract class AdminCategoryTableView extends UserTableView
         super.getTable().addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(ItemClickEvent itemClickEvent) {
-
+                int categoryID = (Integer) itemClickEvent.getItemId();
+                Category category = TicketSystemUI.getDaoFactory().getCategoryDao().getCategory(categoryID);
+                getUI().addWindow(new CategoryInfoWindow(category));
             }
         });
     }
@@ -46,7 +50,6 @@ public abstract class AdminCategoryTableView extends UserTableView
 
         table.addContainerProperty("Name", String.class, "(default)");
         table.addContainerProperty("Description", String.class, "(default)");
-        table.addContainerProperty("Template Answer", String.class, "(default)");
 
         table.setImmediate(true);
 
@@ -76,8 +79,7 @@ public abstract class AdminCategoryTableView extends UserTableView
     {
         super.getTable().addItem(new Object[] {
                 category.getCategoryName(),
-                category.getCategoryDescription(),
-                category.getTemplateAnswer()
+                category.getCategoryDescription()
         }, category.getCategoryID());
     }
 
