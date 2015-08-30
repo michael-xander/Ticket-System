@@ -7,6 +7,7 @@ import com.vaadin.ui.ComponentContainer;
 import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
+import view.dashboard.convener.views.AdminCourseCategoriesView;
 import view.dashboard.convener.views.AdminCourseQueryView;
 import view.dashboard.convener.views.AdminDefaultQueryView;
 
@@ -42,15 +43,16 @@ public class ConvenerViewNavigator extends TicketSystemNavigator {
 
             addProvider(viewProvider);
 
-            /*
-            viewProvider = new ClassBasedViewProvider(courseID + " Categories", null)
+
+            viewProvider = new ClassBasedViewProvider(courseID + " Categories", AdminCourseCategoriesView.class)
             {
                 @Override
-                public View getView(final String viewName) { return null;}
+                public View getView(final String viewName) { return new AdminCourseCategoriesView(courseID);}
             };
 
             addProvider(viewProvider);
 
+            /*
             viewProvider = new ClassBasedViewProvider(courseID + " FAQs", null)
             {
                 @Override
