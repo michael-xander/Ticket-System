@@ -62,11 +62,12 @@ public class CreateCategoryWindow extends CreateWindow
 
     }
 
-    /*
+    /**
      * Checks whether input in the name and description field is valid
      * @return - returns whether input in textfields is valid or not
      */
-    private boolean inputIsValid()
+    @Override
+    public boolean inputIsValid()
     {
         boolean isValid = true;
         name.setComponentError(null);

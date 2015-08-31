@@ -50,4 +50,6 @@ public abstract class CreateWindow extends PopupWindow
     }
 
     public abstract void setSaveButtonFunction();
+
+    public abstract boolean inputIsValid();
 }
