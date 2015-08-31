@@ -4,6 +4,8 @@ import data.access.category.CategoryDao;
 import data.access.category.CategoryDaoImpl;
 import data.access.course.CourseDao;
 import data.access.course.CourseDaoImpl;
+import data.access.faq.FaqDao;
+import data.access.faq.FaqDaoImpl;
 import data.access.message.QueryDao;
 import data.access.message.QueryDaoImpl;
 import data.access.message.ReplyDao;
@@ -40,6 +42,7 @@ public class DaoFactory implements Serializable
     private QueryDao queryDao;
     private ReplyDao replyDao;
     private CategoryDao categoryDao;
+    private FaqDao faqDao;
 
     public DaoFactory(String DbUrl, String userName, String password)
     {
@@ -144,5 +147,17 @@ public class DaoFactory implements Serializable
             userDao = new UserDaoImpl(dbUrl, userName, password);
 
         return userDao;
+    }
+
+    /**
+     * A method to get a Faq DAO instance
+     * @return a Faq DAO instance
+     */
+    public FaqDao getFaqDao()
+    {
+        if(faqDao == null)
+            faqDao = new FaqDaoImpl(dbUrl, userName, password);
+
+        return faqDao;
     }
 }

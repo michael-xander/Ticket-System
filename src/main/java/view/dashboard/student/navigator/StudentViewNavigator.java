@@ -7,6 +7,7 @@ import com.vaadin.ui.ComponentContainer;
 import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
+import view.dashboard.student.views.StudentCourseFaqView;
 import view.dashboard.student.views.StudentCourseQueryView;
 import view.dashboard.student.views.StudentDefaultQueryView;
 
@@ -40,12 +41,13 @@ public class StudentViewNavigator extends TicketSystemNavigator
             };
             addProvider(viewProvider);
 
-            /*
-            viewProvider = new ClassBasedViewProvider(courseID + " FAQs", null)
+            viewProvider = new ClassBasedViewProvider(courseID + " FAQs", StudentCourseFaqView.class)
             {
-                public View getView(final String viewName){return null;}
+                @Override
+                public View getView(final String viewName) {return new StudentCourseFaqView(courseID);}
             };
-            addProvider(viewProvider);*/
+
+            addProvider(viewProvider);
         }
     }
 
