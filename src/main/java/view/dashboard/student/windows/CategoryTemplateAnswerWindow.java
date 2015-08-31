@@ -1,6 +1,7 @@
 package view.dashboard.student.windows;
 
 import com.vaadin.server.Page;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.category.Category;
@@ -35,7 +36,7 @@ public class CategoryTemplateAnswerWindow extends PopupWindow {
         view.setMargin(true);
         view.setSpacing(true);
 
-        Label templateAnswer = new Label(category.getTemplateAnswer());
+        Label templateAnswer = new Label(category.getTemplateAnswer(), ContentMode.HTML);
         view.addComponent(templateAnswer);
 
         view.addComponent(buildFooter());
@@ -73,7 +74,7 @@ public class CategoryTemplateAnswerWindow extends PopupWindow {
                 Notification notification = new Notification("Query created", Notification.Type.HUMANIZED_MESSAGE);
                 notification.setDescription("Your query has successfully been submitted.");
                 notification.show(Page.getCurrent());
-                
+
                 close();
                 UI.getCurrent().getNavigator().navigateTo(query.getCourseID());
             }

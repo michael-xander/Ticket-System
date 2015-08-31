@@ -1,5 +1,6 @@
 package view.dashboard.convener.windows;
 
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.category.Category;
@@ -42,7 +43,7 @@ public class CategoryInfoWindow extends InfoWindow
         if(category.getTemplateAnswer() != null && !category.getTemplateAnswer().isEmpty())
         {
             Label answerHeading = new Label("Template Answer:");
-            Label templateAnswer = new Label(category.getTemplateAnswer());
+            Label templateAnswer = new Label(category.getTemplateAnswer(), ContentMode.HTML);
             view.addComponent(answerHeading);
             view.addComponent(templateAnswer);
         }

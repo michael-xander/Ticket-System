@@ -41,7 +41,6 @@ public abstract class CreateWindow extends PopupWindow
         cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
 
         saveButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
 
         footer.addComponents(cancel, saveButton);
         footer.setExpandRatio(cancel, 1);
