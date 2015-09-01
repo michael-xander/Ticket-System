@@ -1,6 +1,7 @@
 package view.dashboard.student.windows;
 
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Message;
@@ -37,7 +38,7 @@ public class QueryInfoWindow extends Window
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         view.addComponent(title);
 
-        Label content = new Label(query.getText());
+        Label content = new Label(query.getText(), ContentMode.HTML);
         view.addComponent(content);
 
         Message reply = getQueryReply();
@@ -45,7 +46,7 @@ public class QueryInfoWindow extends Window
         if(reply != null)
         {
             Label replyHeading = new Label("Reply:");
-            Label replyContent = new Label(reply.getText());
+            Label replyContent = new Label(reply.getText(), ContentMode.HTML);
             view.addComponent(replyHeading);
             view.addComponent(replyContent);
         }

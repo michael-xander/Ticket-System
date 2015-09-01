@@ -1,14 +1,14 @@
 package view.dashboard.student.windows;
 
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
+import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 import model.domain.category.Category;
 import model.domain.message.Query;
 import view.TicketSystemUI;
+import view.dashboard.CreateWindow;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Michael on 2015/08/18.
  */
 
-public class CreateQueryWindow extends Window
+public class CreateQueryWindow extends CreateWindow
 {
     private final String courseID;
 
@@ -27,19 +27,23 @@ public class CreateQueryWindow extends Window
     private ComboBox categoryComboBox;
     private TextField subject;
     private RichTextArea richTextArea;
+    private List<Category> existingCategories;
 
     public CreateQueryWindow(final String courseID)
     {
         this.courseID = courseID;
-        setCaption("Create Query for " + courseID);
+        existingCategories = TicketSystemUI.getDaoFactory().getCategoryDao().getAllCategoriesForCourse(this.courseID);
+
+        setCaption("Creating Query for " + courseID);
         setModal(true);
         setClosable(false);
         setResizable(false);
         setWidth("40%");
         setContent(buildContent());
+        setSaveButtonFunction();
     }
 
-    private Component buildContent()
+    public Component buildContent()
     {
         VerticalLayout view = new VerticalLayout();
         view.setMargin(true);
@@ -60,65 +64,103 @@ public class CreateQueryWindow extends Window
         return view;
     }
 
-    private Component buildFooter()
-    {
-        HorizontalLayout footer = new HorizontalLayout();
-        footer.setSpacing(true);
-        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-        footer.setWidth(100.0f, Unit.PERCENTAGE);
 
-        Button cancel = new Button("Cancel");
-        cancel.addClickListener(new Button.ClickListener() {
+
+    @Override
+    public void setSaveButtonFunction() {
+        getSaveButton().addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                close();
-            }
-        });
-        cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
-
-        Button save = new Button("Save");
-        save.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        save.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                Query query = new Query();
-                query.setSubject(subject.getValue());
-                query.setText(richTextArea.getValue());
-                query.setDate(LocalDate.now());
-                query.setCourseID(courseID);
-                query.setSender((String) VaadinSession.getCurrent().getAttribute("userID"));
-                query.setStatus(Query.Status.PENDING);
-                query.setCategoryName((String) categoryComboBox.getValue());
-
-                switch((String) privacyComboBox.getValue())
+                getSaveButton().setComponentError(null);
+                if(inputIsValid())
                 {
-                    case "General" :
-                        query.setPrivacy(Query.Privacy.GENERAL);
-                        break;
-                    case "Public" :
-                        query.setPrivacy(Query.Privacy.PUBLIC);
-                        break;
-                    case "Private" :
-                        query.setPrivacy(Query.Privacy.PRIVATE);
-                        break;
+
+                    Query query = new Query();
+                    query.setSubject(subject.getValue());
+                    query.setText(richTextArea.getValue());
+                    query.setDate(LocalDate.now());
+                    query.setCourseID(courseID);
+                    query.setSender((String) VaadinSession.getCurrent().getAttribute("userID"));
+                    query.setStatus(Query.Status.PENDING);
+                    query.setCategoryName((String) categoryComboBox.getValue());
+
+                    switch((String) privacyComboBox.getValue())
+                    {
+                        case "General" :
+                            query.setPrivacy(Query.Privacy.GENERAL);
+                            break;
+                        case "Public" :
+                            query.setPrivacy(Query.Privacy.PUBLIC);
+                            break;
+                        case "Private" :
+                            query.setPrivacy(Query.Privacy.PRIVATE);
+                            break;
+                    }
+
+                    Category chosenCategory = getChosenCategory(query.getCategoryName());
+
+                    if(chosenCategory.getTemplateAnswer()!= null && !chosenCategory.getTemplateAnswer().isEmpty())
+                    {
+
+                        close();
+                        UI.getCurrent().addWindow(new CategoryTemplateAnswerWindow(chosenCategory, query));
+                    }
+                    else
+                    {
+                        TicketSystemUI.getDaoFactory().getQueryDao().addQuery(query);
+                        Notification notification = new Notification("Query created", Notification.Type.HUMANIZED_MESSAGE);
+                        notification.setDescription("Your query has successfully been submitted.");
+                        notification.show(Page.getCurrent());
+
+                        close();
+                        UI.getCurrent().getNavigator().navigateTo(query.getCourseID());
+                    }
+
                 }
-
-                TicketSystemUI.getDaoFactory().getQueryDao().addQuery(query);
-                Notification notification = new Notification("Query created", Notification.Type.HUMANIZED_MESSAGE);
-                notification.setDescription("Your query has successfully been submitted.");
-                notification.show(Page.getCurrent());
-
-                close();
-                UI.getCurrent().getNavigator().navigateTo(query.getCourseID());
+                else
+                {
+                    getSaveButton().setComponentError(new UserError("Input provided is invalid"));
+                }
             }
         });
-
-        save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
-        footer.addComponents(cancel, save);
-        footer.setExpandRatio(cancel, 1);
-        footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
-        return footer;
     }
+
+    @Override
+    public boolean inputIsValid() {
+        boolean isValid = true;
+
+        privacyComboBox.setComponentError(null);
+        categoryComboBox.setComponentError(null);
+        subject.setComponentError(null);
+        richTextArea.setComponentError(null);
+
+        if(privacyComboBox.getValue() == null || (privacyComboBox.getValue()).equals(""))
+        {
+            isValid = false;
+            privacyComboBox.setComponentError(new UserError("A newly created query should have a privacy setting"));
+        }
+
+        if(categoryComboBox.getValue() == null || categoryComboBox.getValue().equals(""))
+        {
+            isValid = false;
+            categoryComboBox.setComponentError(new UserError("A newly created query should fall under a category"));
+        }
+
+        if(subject.getValue().isEmpty())
+        {
+            isValid = false;
+            subject.setComponentError(new UserError("A newly created query should have a subject"));
+        }
+
+        if(richTextArea.getValue().isEmpty())
+        {
+            isValid = false;
+            richTextArea.setComponentError(new UserError("A newly created query should have content"));
+        }
+
+        return isValid;
+    }
+
     private Component buildComboBoxes()
     {
         HorizontalLayout comboBoxes = new HorizontalLayout();
@@ -131,15 +173,28 @@ public class CreateQueryWindow extends Window
     }
 
     /*
+     * Obtains the category from the existing categories with the given name
+     */
+    private Category getChosenCategory(String categoryName)
+    {
+        for(Category category : existingCategories)
+        {
+            if(category.getCategoryName().equals(categoryName))
+                return category;
+        }
+
+        return null;
+    }
+
+    /*
      * Returns the available names of query categories for the course this window is for
      */
     private List<String> getAvailableCategories()
     {
-        List<Category> categories = TicketSystemUI.getDaoFactory().getCategoryDao().getAllCategoriesForCourse(courseID);
 
         ArrayList<String> categoryNames = new ArrayList<>();
 
-        for(Category category : categories)
+        for(Category category : existingCategories)
         {
             categoryNames.add(category.getCategoryName());
         }
@@ -147,21 +202,6 @@ public class CreateQueryWindow extends Window
         return categoryNames;
     }
 
-    /*
-     * Returns the category ID for the given category name
-     */
-    private int getCategoryCode(String categoryName)
-    {
-        List<Category> categories = TicketSystemUI.getDaoFactory().getCategoryDao().getAllCategoriesForCourse(courseID);
-
-        for(Category category : categories)
-        {
-            if(category.getCategoryName().equals(categoryName))
-                return category.getCategoryID();
-        }
-
-        return 1;
-    }
     /*
      * Returns available privacy settings for a query
      */

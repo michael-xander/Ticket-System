@@ -88,6 +88,7 @@ public class CategoryDaoImpl extends Dao implements CategoryDao, Serializable
         category.setCategoryName(resultSet.getString(2));
         category.setCategoryDescription(resultSet.getString(3));
         category.setCourse(resultSet.getString(4));
+        category.setTemplateAnswer(resultSet.getString(5));
         return category;
     }
 
@@ -195,10 +196,11 @@ public class CategoryDaoImpl extends Dao implements CategoryDao, Serializable
         try
         {
             connection  = super.getConnection();
-            preparedStatement = connection.prepareStatement("INSERT INTO Categories (CategoryName, Description, CourseID) VALUES (?,?,?)");
+            preparedStatement = connection.prepareStatement("INSERT INTO Categories (CategoryName, Description, CourseID, TemplateAnswer) VALUES (?,?,?,?)");
             preparedStatement.setString(1, category.getCategoryName());
             preparedStatement.setString(2, category.getCategoryDescription());
             preparedStatement.setString(3, category.getCourseID());
+            preparedStatement.setString(4, category.getTemplateAnswer());
             preparedStatement.executeUpdate();
         }
         catch(SQLException ex)
@@ -233,11 +235,12 @@ public class CategoryDaoImpl extends Dao implements CategoryDao, Serializable
         try
         {
             connection = super.getConnection();
-            preparedStatement = connection.prepareStatement("UPDATE Categories SET CategoryName = ?, Description = ?, CourseID = ? WHERE CategoryID = ?");
+            preparedStatement = connection.prepareStatement("UPDATE Categories SET CategoryName = ?, Description = ?, CourseID = ?, TemplateAnswer = ? WHERE CategoryID = ?");
             preparedStatement.setString(1, category.getCategoryName());
             preparedStatement.setString(2, category.getCategoryDescription());
             preparedStatement.setString(3, category.getCourseID());
-            preparedStatement.setInt(4, category.getCategoryID());
+            preparedStatement.setString(4, category.getTemplateAnswer());
+            preparedStatement.setInt(5, category.getCategoryID());
             preparedStatement.executeUpdate();
         }
         catch(SQLException ex)
