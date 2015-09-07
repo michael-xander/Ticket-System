@@ -1,5 +1,9 @@
 package view.dashboard;
 
+import com.vaadin.data.Container.Filter;
+import com.vaadin.data.Container.Filterable;
+import com.vaadin.data.Item;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Table;
@@ -40,10 +44,61 @@ public abstract class UserQueryTableView extends UserTableView {
     @Override
     public Component buildFilter() {
         final TextField filter = new TextField();
+        // adding the table filter
+        filter.addTextChangeListener(new FieldEvents.TextChangeListener() {
+            @Override
+            public void textChange(FieldEvents.TextChangeEvent textChangeEvent) {
+                Filterable data = (Filterable) getTable().getContainerDataSource();
+                data.removeAllContainerFilters();
+                data.addContainerFilter(new Filter() {
+                    @Override
+                    public boolean passesFilter(Object o, Item item) throws UnsupportedOperationException {
+                        if (textChangeEvent.getText() == null || textChangeEvent.getText().equals(""))
+                            return true;
+
+                        return filterByProperty("Subject", item, textChangeEvent.getText())
+                                || filterByProperty("Course", item, textChangeEvent.getText())
+                                || filterByProperty("Category", item, textChangeEvent.getText())
+                                || filterByProperty("Privacy", item, textChangeEvent.getText())
+                                || filterByProperty("Status", item, textChangeEvent.getText());
+
+                    }
+
+                    @Override
+                    public boolean appliesToProperty(Object propertyId) {
+
+                        if(propertyId.equals("Subject")
+                                || propertyId.equals("Course")
+                                || propertyId.equals("Category")
+                                || propertyId.equals("Privacy")
+                                || propertyId.equals("Status")) {
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+        });
+
         filter.setInputPrompt("Filter");
         filter.setIcon(FontAwesome.SEARCH);
         filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         return filter;
+    }
+
+    private boolean filterByProperty(final String prop, final Item item, final String text)
+    {
+        if(item == null || item.getItemProperty(prop) == null
+                || item.getItemProperty(prop).getValue() == null) {
+            return false;
+        }
+
+        String val = item.getItemProperty(prop).getValue().toString().trim().toLowerCase();
+
+        if(val.contains(text.toLowerCase().trim())) {
+            return true;
+        }
+        return false;
     }
 
     @Override
