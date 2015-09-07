@@ -1,5 +1,6 @@
 package model.domain.faq;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -8,7 +9,7 @@ import java.time.LocalDate;
  *
  * @author Marcelo Dauane
  */
-public class Faq {
+public class Faq implements Serializable{
 
     private int faqID;
     private String courseID;
