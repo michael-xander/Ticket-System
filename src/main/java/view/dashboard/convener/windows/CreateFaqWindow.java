@@ -10,6 +10,7 @@ import model.domain.category.Category;
 import model.domain.faq.Faq;
 import model.domain.message.Query;
 import view.TicketSystemUI;
+import view.dashboard.PopupWindow;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by Marcelo on 2015/08/31.
  */
 
-public class CreateFaqWindow extends Window
+public class CreateFaqWindow extends PopupWindow
 {
     private final String courseID;
 
@@ -38,7 +39,8 @@ public class CreateFaqWindow extends Window
         setContent(buildContent());
     }
 
-    private Component buildContent()
+    @Override
+    public Component buildContent()
     {
         VerticalLayout view = new VerticalLayout();
         view.setMargin(true);
@@ -58,7 +60,8 @@ public class CreateFaqWindow extends Window
         return view;
     }
 
-    private Component buildFooter()
+    @Override
+    public Component buildFooter()
     {
         HorizontalLayout footer = new HorizontalLayout();
         footer.setSpacing(true);

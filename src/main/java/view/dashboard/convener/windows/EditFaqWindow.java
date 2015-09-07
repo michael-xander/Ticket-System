@@ -7,13 +7,14 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.faq.Faq;
 import view.TicketSystemUI;
+import view.dashboard.PopupWindow;
 
 import java.time.LocalDate;
 
 /**
  * Created by marcelo on 01-09-2015.
  */
-public class EditFaqWindow extends Window {
+public class EditFaqWindow extends PopupWindow {
     private final Faq faq;
 
     private TextField question;
@@ -31,7 +32,8 @@ public class EditFaqWindow extends Window {
 
     }
 
-    private Component buildContent()
+    @Override
+    public Component buildContent()
     {
         VerticalLayout view = new VerticalLayout();
         view.setMargin(true);
@@ -57,7 +59,8 @@ public class EditFaqWindow extends Window {
         return view;
     }
 
-    private Component buildFooter()
+    @Override
+    public Component buildFooter()
     {
         HorizontalLayout footer = new HorizontalLayout();
         footer.setSpacing(true);
