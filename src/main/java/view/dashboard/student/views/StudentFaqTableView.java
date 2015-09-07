@@ -4,16 +4,16 @@ package view.dashboard.student.views;
 import com.vaadin.event.ItemClickEvent;
 import model.domain.faq.Faq;
 import view.TicketSystemUI;
-import view.dashboard.UserFaqView;
+import view.dashboard.UserFaqTableView;
 import view.dashboard.student.windows.FaqInfoWindow;
 
 /**
  * A view for the course convener to observe faqs for a single course
  * Created by Marcelo on 2015/08/18.
  */
-public abstract class StudentFaqView extends UserFaqView
+public abstract class StudentFaqTableView extends UserFaqTableView
 {
-    public StudentFaqView()
+    public StudentFaqTableView()
     {
         setSizeFull();
         setSpacing(true);

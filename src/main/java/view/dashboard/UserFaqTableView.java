@@ -12,7 +12,7 @@ import java.util.Collection;
  * A view that displays faqs to a User
  * Created by Marcelo on 30/08/2015.
  */
-public abstract class UserFaqView extends UserTableView {
+public abstract class UserFaqTableView extends UserTableView {
 
     @Override
     public Table buildTable() {

@@ -17,11 +17,11 @@ import java.util.Collection;
  * Created by Michael on 2015/08/30.
  */
 
-public class AdminCourseCategoriesView extends AdminCategoryTableView
+public class AdminCourseCategoryView extends AdminCategoryTableView
 {
     private final String courseID;
 
-    public AdminCourseCategoriesView(final String courseID)
+    public AdminCourseCategoryView(final String courseID)
     {
         super();
         this.courseID = courseID;

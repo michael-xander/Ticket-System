@@ -14,7 +14,7 @@ import java.util.Collection;
  * A view that shows the queries for a particular course for a student
  * Created by Michael on 2015/08/17.
  */
-public class StudentCourseFaqView extends StudentFaqView
+public class StudentCourseFaqView extends StudentFaqTableView
 {
     private String courseID;
 
