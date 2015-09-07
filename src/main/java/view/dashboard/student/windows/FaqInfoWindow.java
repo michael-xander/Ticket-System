@@ -1,15 +1,15 @@
 package view.dashboard.student.windows;
 
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.faq.Faq;
+import view.dashboard.InfoWindow;
 
 /**
  * A simple window to see the information of a faq
  * Created by Marcelo on 31/08/2015.
  */
-public class FaqInfoWindow extends Window
+public class FaqInfoWindow extends InfoWindow
 {
     private final Faq faq;
 
@@ -24,7 +24,8 @@ public class FaqInfoWindow extends Window
         setContent(buildContent());
     }
 
-    private Component buildContent()
+    @Override
+    public Component buildContent()
     {
         VerticalLayout view = new VerticalLayout();
         view.setMargin(true);
@@ -46,27 +47,5 @@ public class FaqInfoWindow extends Window
         return view;
     }
 
-    private Component buildFooter()
-    {
-        HorizontalLayout footer = new HorizontalLayout();
-        footer.setSpacing(true);
-        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-        footer.setWidth(100.0f, Unit.PERCENTAGE);
-
-        Button ok = new Button("Okay");
-        ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        ok.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                close();
-            }
-        });
-        ok.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
-
-        footer.addComponent(ok);
-        footer.setExpandRatio(ok, 1);
-        footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
-        return footer;
-    }
 }
 
