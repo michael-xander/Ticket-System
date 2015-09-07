@@ -1,5 +1,6 @@
 package view.dashboard;
 
+import com.vaadin.data.Item;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinSession;
@@ -34,6 +35,21 @@ public abstract class UserTableView extends VerticalLayout implements View{
     public void setTable(Table table)
     {
         this.table = table;
+    }
+
+    public boolean filterByProperty(final String prop, final Item item, final String text)
+    {
+        if(item == null || item.getItemProperty(prop) == null
+                || item.getItemProperty(prop).getValue() == null) {
+            return false;
+        }
+
+        String val = item.getItemProperty(prop).getValue().toString().trim().toLowerCase();
+
+        if(val.contains(text.toLowerCase().trim())) {
+            return true;
+        }
+        return false;
     }
 
     public abstract Table buildTable();
