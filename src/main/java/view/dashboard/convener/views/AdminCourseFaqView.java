@@ -9,7 +9,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import model.domain.faq.Faq;
 import view.TicketSystemUI;
 import view.dashboard.convener.windows.CreateFaqWindow;
-import view.dashboard.student.windows.CreateQueryWindow;
 
 import java.util.Collection;
 
@@ -17,7 +16,7 @@ import java.util.Collection;
  * A view that shows the queries for a particular course for a student
  * Created by Michael on 2015/08/17.
  */
-public class AdminCourseFaqView extends AdminFaqView
+public class AdminCourseFaqView extends AdminFaqTableView
 {
     private String courseID;
 
