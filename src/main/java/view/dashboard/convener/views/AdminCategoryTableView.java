@@ -1,5 +1,9 @@
 package view.dashboard.convener.views;
 
+import com.vaadin.data.Container.Filter;
+import com.vaadin.data.Container.Filterable;
+import com.vaadin.data.Item;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Component;
@@ -64,6 +68,33 @@ public abstract class AdminCategoryTableView extends UserTableView
     public Component buildFilter()
     {
         final TextField filter = new TextField();
+        //add the table filter functionality
+        filter.addTextChangeListener(new FieldEvents.TextChangeListener() {
+            @Override
+            public void textChange(FieldEvents.TextChangeEvent textChangeEvent) {
+                Filterable data = (Filterable) getTable().getContainerDataSource();
+                data.removeAllContainerFilters();
+                data.addContainerFilter(new Filter() {
+                    @Override
+                    public boolean passesFilter(Object o, Item item) throws UnsupportedOperationException {
+
+                        if(textChangeEvent.getText() == null || textChangeEvent.getText().equals(""))
+                            return true;
+
+                        return filterByProperty("Name", item, textChangeEvent.getText());
+                    }
+
+                    @Override
+                    public boolean appliesToProperty(Object propertyId) {
+                        if(propertyId.equals("Name"))
+                            return true;
+
+                        return false;
+                    }
+                });
+            }
+        });
+
         filter.setIcon(FontAwesome.SEARCH);
         filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         return filter;
