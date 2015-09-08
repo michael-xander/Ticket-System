@@ -52,31 +52,10 @@ public class ConvenerDashboardMenu extends DashboardMenu
                 }
             });
 
-            course.addItem("Statistics", new MenuBar.Command() {
-                @Override
-                public void menuSelected(MenuBar.MenuItem menuItem) {
-
-                }
-            });
-
             courseMenu.setWidth("100%");
             menuItemsLayout.addComponent(courseMenu);
         }
         return menuItemsLayout;
     }
 
-    /*
-    @Override
-    public Component buildContent()
-    {
-        final VerticalLayout menuContent = new VerticalLayout();
-        menuContent.addStyleName(ValoTheme.MENU_PART);
-        menuContent.setWidth(null);
-        menuContent.setHeight("100%");
-
-        menuContent.addComponent(buildTitle());
-        menuContent.addComponent(buildUserMenu());
-        menuContent.addComponent(buildMenuItems());
-        return menuContent;
-    }*/
 }
