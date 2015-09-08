@@ -18,21 +18,6 @@ public class StudentDashboardMenu extends DashboardMenu
     }
 
     @Override
-    public Component buildContent()
-    {
-        final VerticalLayout menuContent = new VerticalLayout();
-        menuContent.addStyleName(ValoTheme.MENU_PART);
-        menuContent.setWidth(null);
-        menuContent.setHeight("100%");
-
-        menuContent.addComponent(buildTitle());
-        menuContent.addComponent(buildUserMenu());
-        menuContent.addComponent(buildMenuItems());
-
-        return menuContent;
-    }
-
-    @Override
     public Component buildMenuItems()
     {
         VerticalLayout menuItemsLayout = new VerticalLayout();

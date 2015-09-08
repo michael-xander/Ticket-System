@@ -4,9 +4,11 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.ComponentContainer;
+import model.domain.user.Role;
 import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
+import view.dashboard.convener.views.AdminCourseQueryView;
 import view.dashboard.student.views.StudentCourseFaqView;
 import view.dashboard.student.views.StudentCourseQueryView;
 import view.dashboard.student.views.StudentDefaultQueryView;
@@ -31,15 +33,31 @@ public class StudentViewNavigator extends TicketSystemNavigator
         addProvider(initDashboardViewProvider());
         for(String courseID : user.getCourseIDs())
         {
-            ViewProvider viewProvider = new ClassBasedViewProvider(courseID, StudentCourseQueryView.class)
+            ViewProvider viewProvider;
+            if(user.getRoleForCourse(courseID).equals(Role.TA))
             {
-                @Override
-                public View getView(final String viewName)
+                viewProvider = new ClassBasedViewProvider(courseID, AdminCourseQueryView.class)
                 {
-                    return new StudentCourseQueryView(viewName);
-                }
-            };
-            addProvider(viewProvider);
+                    @Override
+                    public View getView(final String viewName)
+                    {
+                        return new AdminCourseQueryView(courseID);
+                    }
+                };
+                addProvider(viewProvider);
+            }
+            else
+            {
+                viewProvider = new ClassBasedViewProvider(courseID, StudentCourseQueryView.class)
+                {
+                    @Override
+                    public View getView(final String viewName)
+                    {
+                        return new StudentCourseQueryView(viewName);
+                    }
+                };
+                addProvider(viewProvider);
+            }
 
             viewProvider = new ClassBasedViewProvider(courseID + " FAQs", StudentCourseFaqView.class)
             {
