@@ -34,17 +34,18 @@ public class StudentCourseFaqView extends StudentFaqTableView
     @Override
     public Component buildToolbar(String toolbarHeader) {
         HorizontalLayout header = new HorizontalLayout();
+        header.setWidth("100%");
         header.setSpacing(true);
         Responsive.makeResponsive(header);
 
         Label title = new Label(toolbarHeader);
-        title.setSizeUndefined();
         title.addStyleName(ValoTheme.LABEL_H1);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         header.addComponent(title);
 
         Component filter = buildFilter();
         header.addComponent(filter);
+        header.setExpandRatio(title, 1);
 
         return header;
     }
