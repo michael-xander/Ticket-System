@@ -17,6 +17,7 @@ public class StudentDashboardMenu extends DashboardMenu
         setCompositionRoot(buildContent());
     }
 
+    /*
     @Override
     public Component buildContent()
     {
@@ -30,7 +31,7 @@ public class StudentDashboardMenu extends DashboardMenu
         menuContent.addComponent(buildMenuItems());
 
         return menuContent;
-    }
+    }*/
 
     @Override
     public Component buildMenuItems()

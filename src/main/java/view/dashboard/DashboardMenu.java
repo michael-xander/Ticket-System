@@ -3,6 +3,7 @@ package view.dashboard;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import model.domain.user.User;
 import view.TicketSystemUI;
 
@@ -60,7 +61,19 @@ public abstract class DashboardMenu extends CustomComponent
 
     public abstract Component buildMenuItems();
 
-    public abstract Component buildContent();
+    public Component buildContent()
+    {
+        final VerticalLayout menuContent = new VerticalLayout();
+        menuContent.addStyleName(ValoTheme.MENU_PART);
+        menuContent.setWidth(null);
+        menuContent.setHeight("100%");
+
+        menuContent.addComponent(buildTitle());
+        menuContent.addComponent(buildUserMenu());
+        menuContent.addComponent(buildMenuItems());
+
+        return menuContent;
+    }
 
     public Component buildDashboardMenuItem()
     {

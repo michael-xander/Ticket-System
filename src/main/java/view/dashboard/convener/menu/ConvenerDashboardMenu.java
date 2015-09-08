@@ -65,6 +65,7 @@ public class ConvenerDashboardMenu extends DashboardMenu
         return menuItemsLayout;
     }
 
+    /*
     @Override
     public Component buildContent()
     {
@@ -77,5 +78,5 @@ public class ConvenerDashboardMenu extends DashboardMenu
         menuContent.addComponent(buildUserMenu());
         menuContent.addComponent(buildMenuItems());
         return menuContent;
-    }
+    }*/
 }
