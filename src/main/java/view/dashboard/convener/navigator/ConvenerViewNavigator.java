@@ -7,7 +7,11 @@ import com.vaadin.ui.ComponentContainer;
 import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
-import view.dashboard.convener.views.AdminQueryView;
+import view.dashboard.convener.views.AdminCourseCategoryView;
+import view.dashboard.convener.views.AdminCourseFaqView;
+import view.dashboard.convener.views.AdminCourseQueryView;
+import view.dashboard.convener.views.AdminDefaultQueryView;
+import view.dashboard.convener.views.AdminFaqTableView;
 
 /**
  * A navigator for the different views available to the course convener
@@ -26,18 +30,51 @@ public class ConvenerViewNavigator extends TicketSystemNavigator {
 
     private void initViews()
     {
+        addProvider(initDashboardViewProvider());
+
         for(String courseID : user.getCourseIDs())
         {
-            ViewProvider viewProvider = new ClassBasedViewProvider("dashboard", AdminQueryView.class)
+            ViewProvider viewProvider = new ClassBasedViewProvider(courseID, AdminCourseQueryView.class)
             {
                 @Override
                 public View getView(final String viewName)
                 {
-                    return new AdminQueryView(courseID);
+                    return new AdminCourseQueryView(courseID);
                 }
             };
 
             addProvider(viewProvider);
+
+            
+            viewProvider = new ClassBasedViewProvider(courseID + " Categories", AdminCourseCategoryView.class)
+            {
+                @Override
+                public View getView(final String viewName) { return new AdminCourseCategoryView(courseID);}
+            };
+
+            addProvider(viewProvider);
+
+            viewProvider = new ClassBasedViewProvider(courseID + " FAQs", AdminFaqTableView.class)
+            {
+                @Override
+                public View getView(final String viewName) {return new AdminCourseFaqView(courseID);}
+            };
+
+            addProvider(viewProvider);
         }
+    }
+
+    private ViewProvider initDashboardViewProvider()
+    {
+        ViewProvider viewProvider = new ClassBasedViewProvider("dashboard", AdminDefaultQueryView.class)
+        {
+            @Override
+            public View getView(final String viewName)
+            {
+                return new AdminDefaultQueryView();
+            }
+        };
+
+        return viewProvider;
     }
 }

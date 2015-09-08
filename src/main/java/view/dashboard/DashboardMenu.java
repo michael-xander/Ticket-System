@@ -3,6 +3,7 @@ package view.dashboard;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import model.domain.user.User;
 import view.TicketSystemUI;
 
@@ -38,6 +39,7 @@ public abstract class DashboardMenu extends CustomComponent
     public Component buildUserMenu()
     {
         final MenuBar settings = new MenuBar();
+        settings.setWidth("100%");
         MenuBar.MenuItem settingsItem = settings.addItem("", null);
         settingsItem.setText(user.getFirstName() + " " + user.getLastName());
 
@@ -59,19 +61,33 @@ public abstract class DashboardMenu extends CustomComponent
 
     public abstract Component buildMenuItems();
 
-    public abstract Component buildContent();
-
-    public Button buildDashboardButton()
+    public Component buildContent()
     {
-        Button button = new Button();
-        button.setCaption("Dashboard");
-        button.setWidth("100%");
-        button.addClickListener(new Button.ClickListener() {
+        final VerticalLayout menuContent = new VerticalLayout();
+        menuContent.addStyleName(ValoTheme.MENU_PART);
+        menuContent.setWidth(null);
+        menuContent.setHeight("100%");
+
+        menuContent.addComponent(buildTitle());
+        menuContent.addComponent(buildUserMenu());
+        menuContent.addComponent(buildMenuItems());
+
+        return menuContent;
+    }
+
+    public Component buildDashboardMenuItem()
+    {
+        final MenuBar dashboardMenu = new MenuBar();
+        MenuBar.MenuItem dashboardMenuItem = dashboardMenu.addItem("Dashboard", null);
+
+        dashboardMenuItem.addItem("All Queries", new MenuBar.Command() {
             @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
+            public void menuSelected(MenuBar.MenuItem menuItem) {
                 UI.getCurrent().getNavigator().navigateTo("dashboard");
             }
         });
-        return button;
+
+        dashboardMenu.setWidth("100%");
+        return dashboardMenu;
     }
 }

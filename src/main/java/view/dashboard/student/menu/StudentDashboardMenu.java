@@ -18,39 +18,32 @@ public class StudentDashboardMenu extends DashboardMenu
     }
 
     @Override
-    public Component buildContent()
-    {
-        final VerticalLayout menuContent = new VerticalLayout();
-        menuContent.addStyleName(ValoTheme.MENU_PART);
-        menuContent.setWidth(null);
-        menuContent.setHeight("100%");
-
-        menuContent.addComponent(buildTitle());
-        menuContent.addComponent(buildUserMenu());
-        menuContent.addComponent(buildMenuItems());
-
-        return menuContent;
-    }
-
-    @Override
     public Component buildMenuItems()
     {
         VerticalLayout menuItemsLayout = new VerticalLayout();
-        menuItemsLayout.addComponent(buildDashboardButton());
+        menuItemsLayout.addComponent(buildDashboardMenuItem());
+
 
         for(String courseID : getUser().getCourseIDs())
         {
-            Button courseButton = new Button();
-            courseButton.setCaption(courseID);
-            courseButton.addClickListener(new Button.ClickListener() {
+            MenuBar courseMenu = new MenuBar();
+            MenuBar.MenuItem course = courseMenu.addItem(courseID, null);
+            course.addItem("Queries", new MenuBar.Command() {
                 @Override
-                public void buttonClick(Button.ClickEvent clickEvent) {
-                    UI.getCurrent().getNavigator().navigateTo(courseButton.getCaption());
+                public void menuSelected(MenuBar.MenuItem menuItem) {
+                    UI.getCurrent().getNavigator().navigateTo(courseID);
                 }
             });
-            courseButton.setWidth("100%");
-            //courseButton.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-            menuItemsLayout.addComponent(courseButton);
+
+            course.addItem("FAQs", new MenuBar.Command() {
+                @Override
+                public void menuSelected(MenuBar.MenuItem menuItem) {
+                    UI.getCurrent().getNavigator().navigateTo(courseID + " FAQs");
+                }
+            });
+
+            courseMenu.setWidth("100%");
+            menuItemsLayout.addComponent(courseMenu);
         }
         return menuItemsLayout;
     }

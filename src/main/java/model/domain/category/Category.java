@@ -14,6 +14,11 @@ public class Category implements Serializable {
     private String name;
     private String description;
     private String courseID;
+    private String templateAnswer;
+
+    public String getTemplateAnswer() {return templateAnswer;}
+
+    public void setTemplateAnswer(String templateAnswer) {this.templateAnswer = templateAnswer;}
 
     public int getCategoryID(){
         return categoryID;

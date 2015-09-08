@@ -1,17 +1,18 @@
 package view.dashboard.student.windows;
 
-import com.vaadin.event.ShortcutAction;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Message;
 import model.domain.message.Query;
 import view.TicketSystemUI;
+import view.dashboard.InfoWindow;
 
 /**
  * A simple window to see the information of a query
  * Created by Michael on 2015/08/18.
  */
-public class QueryInfoWindow extends Window
+public class QueryInfoWindow extends InfoWindow
 {
     private final Query query;
 
@@ -26,7 +27,8 @@ public class QueryInfoWindow extends Window
         setContent(buildContent());
     }
 
-    private Component buildContent()
+    @Override
+    public Component buildContent()
     {
         VerticalLayout view = new VerticalLayout();
         view.setMargin(true);
@@ -37,7 +39,7 @@ public class QueryInfoWindow extends Window
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         view.addComponent(title);
 
-        Label content = new Label(query.getText());
+        Label content = new Label(query.getText(), ContentMode.HTML);
         view.addComponent(content);
 
         Message reply = getQueryReply();
@@ -45,7 +47,7 @@ public class QueryInfoWindow extends Window
         if(reply != null)
         {
             Label replyHeading = new Label("Reply:");
-            Label replyContent = new Label(reply.getText());
+            Label replyContent = new Label(reply.getText(), ContentMode.HTML);
             view.addComponent(replyHeading);
             view.addComponent(replyContent);
         }
@@ -60,26 +62,4 @@ public class QueryInfoWindow extends Window
         return reply;
     }
 
-    private Component buildFooter()
-    {
-        HorizontalLayout footer = new HorizontalLayout();
-        footer.setSpacing(true);
-        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-        footer.setWidth(100.0f, Unit.PERCENTAGE);
-
-        Button ok = new Button("Okay");
-        ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        ok.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                close();
-            }
-        });
-        ok.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
-
-        footer.addComponent(ok);
-        footer.setExpandRatio(ok, 1);
-        footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
-        return footer;
-    }
 }

@@ -2,9 +2,6 @@ package view.dashboard.convener.views;
 
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
@@ -13,108 +10,51 @@ import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Message;
 import model.domain.message.Query;
 import view.TicketSystemUI;
+import view.dashboard.UserQueryTableView;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Collection;
 
 /**
- * A view for the course convener to observe queries
- * Created by Michael on 2015/08/18.
+ * Created by Michael on 2015/08/29.
  */
-public class AdminQueryView extends VerticalLayout implements View
-{
+public abstract class AdminQueryTableView extends UserQueryTableView {
 
-    private String courseID;
-    private final Table table;
-
-    public AdminQueryView(String courseID)
+    public AdminQueryTableView()
     {
-        this.courseID = courseID;
         setSizeFull();
         setSpacing(true);
+        super.setTable(buildTable());
 
-        addComponent(buildToolbar());
-
-        table = buildTable();
-        addComponent(table);
-        setExpandRatio(table, 1);
+        super.getTable().addItemClickListener(new ItemClickEvent.ItemClickListener() {
+            @Override
+            public void itemClick(ItemClickEvent itemClickEvent) {
+                int queryID = (Integer) itemClickEvent.getItemId();
+                Query query = TicketSystemUI.getDaoFactory().getQueryDao().getQuery(queryID);
+                getUI().addWindow(new ReplyQueryWindow(query));
+            }
+        });
     }
 
-    private Component buildToolbar()
-    {
+    public abstract Collection<Query> getQueries();
+
+    @Override
+    public Component buildToolbar(String toolbarHeader) {
         HorizontalLayout header = new HorizontalLayout();
+        header.setWidth("100%");
         header.setSpacing(true);
         Responsive.makeResponsive(header);
 
-        Label title = new Label(courseID + " Queries");
-        title.setSizeUndefined();
+        Label title = new Label(toolbarHeader);
         title.addStyleName(ValoTheme.LABEL_H1);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         header.addComponent(title);
 
         Component filter = buildFilter();
         header.addComponent(filter);
+        header.setExpandRatio(title, 1);
 
         return header;
-    }
-
-    private Component buildFilter()
-    {
-        final TextField filter = new TextField();
-        filter.setInputPrompt("Filter");
-        filter.setIcon(FontAwesome.SEARCH);
-        filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-        return filter;
-    }
-
-    private Table buildTable()
-    {
-        final Table table = new Table();
-        table.setSizeFull();
-
-        table.addStyleName(ValoTheme.TABLE_COMPACT);
-        table.setSelectable(true);
-        table.addContainerProperty("Date", String.class, "(default)");
-        table.addContainerProperty("Subject", String.class, "(default)");
-        table.addContainerProperty("Sender", String.class, "(default)");
-        table.addContainerProperty("Course", String.class, "(default)");
-        table.addContainerProperty("Privacy", String.class, "(default)");
-        table.addContainerProperty("Status", String.class, "(default)");
-
-        for(Query query : getAllQueriesForCourse())
-        {
-            table.addItem(new Object[] {
-                    query.getDate().toString(),
-                    query.getSubject(),
-                    query.getSenderID(),
-                    query.getCourseID(),
-                    query.getPrivacy().toString(),
-                    query.getStatus().toString()
-            }, query.getMessageID());
-
-        }
-
-        table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
-            @Override
-            public void itemClick(ItemClickEvent itemClickEvent) {
-                int queryId = (Integer) itemClickEvent.getItemId();
-                Query query = TicketSystemUI.getDaoFactory().getQueryDao().getQuery(queryId);
-                getUI().addWindow(new ReplyQueryWindow(query));
-            }
-        });
-
-        table.setImmediate(true);
-        return table;
-    }
-
-    private List<Query> getAllQueriesForCourse()
-    {
-        return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForCourse(courseID, Query.Status.PENDING);
-    }
-
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-
     }
 
     /*
@@ -193,7 +133,7 @@ public class AdminQueryView extends VerticalLayout implements View
                     Notification notification = new Notification("Reply sent", Notification.Type.HUMANIZED_MESSAGE);
                     notification.setDescription("Your reply has successfully been submitted.");
                     notification.show(Page.getCurrent());
-                    table.removeItem(query.getMessageID());
+                    getTable().removeItem(query.getMessageID());
                     close();
                 }
             });
