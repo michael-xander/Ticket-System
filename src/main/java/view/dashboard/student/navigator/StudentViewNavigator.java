@@ -58,15 +58,6 @@ public class StudentViewNavigator extends TicketSystemNavigator
                 };
                 addProvider(viewProvider);
             }
-            /*
-            viewProvider = new ClassBasedViewProvider(courseID, StudentCourseQueryView.class)
-            {
-                @Override
-                public View getView(final String viewName)
-                {
-                    return new StudentCourseQueryView(viewName);
-                }
-            };*/
 
             viewProvider = new ClassBasedViewProvider(courseID + " FAQs", StudentCourseFaqView.class)
             {
