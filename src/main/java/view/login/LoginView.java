@@ -44,9 +44,11 @@ public class LoginView extends VerticalLayout {
         loginPanel.setSizeUndefined();
         loginPanel.setSpacing(true);
         Responsive.makeResponsive(loginPanel);
+        loginPanel.addStyleName("login-panel");
 
         loginPanel.addComponent(buildLabels());
         loginPanel.addComponent(buildFields());
+        loginPanel.addComponent(new CheckBox("Remember me", true));
         return loginPanel;
     }
 
@@ -57,6 +59,7 @@ public class LoginView extends VerticalLayout {
     {
         HorizontalLayout fields = new HorizontalLayout();
         fields.setSpacing(true);
+        fields.addStyleName("fields");
 
         final TextField userIdField = new TextField("User ID");
         userIdField.setIcon(FontAwesome.USER);
@@ -112,14 +115,21 @@ public class LoginView extends VerticalLayout {
      */
     private Component buildLabels()
     {
-        HorizontalLayout labels = new HorizontalLayout();
-        labels.setSpacing(true);
-        Label welcomeLabel = new Label("Query Ticket System");
-        welcomeLabel.setSizeUndefined();
-        welcomeLabel.addStyleName(ValoTheme.LABEL_H4);
-        welcomeLabel.addStyleName(ValoTheme.LABEL_COLORED);
-        labels.addComponent(welcomeLabel);
 
+        CssLayout labels = new CssLayout();
+        labels.addStyleName("labels");
+
+        Label welcome = new Label("Welcome");
+        welcome.setSizeUndefined();
+        welcome.addStyleName(ValoTheme.LABEL_H4);
+        welcome.addStyleName(ValoTheme.LABEL_COLORED);
+        labels.addComponent(welcome);
+
+        Label title = new Label("Query Ticket System");
+        title.setSizeUndefined();
+        title.addStyleName(ValoTheme.LABEL_H3);
+        title.addStyleName(ValoTheme.LABEL_LIGHT);
+        labels.addComponent(title);
         return labels;
     }
 
