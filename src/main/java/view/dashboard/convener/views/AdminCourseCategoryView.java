@@ -42,19 +42,22 @@ public class AdminCourseCategoryView extends AdminCategoryTableView
     @Override
     public Component buildToolbar(String toolbarHeader) {
         HorizontalLayout header = new HorizontalLayout();
-        header.setWidth("100%");
+        header.addStyleName("viewheader");
         header.setSpacing(true);
         Responsive.makeResponsive(header);
 
         Label title = new Label(toolbarHeader);
+        title.setSizeUndefined();
         title.addStyleName(ValoTheme.LABEL_H1);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         header.addComponent(title);
 
         Component filter = buildFilter();
-        header.addComponent(filter);
-        header.addComponent(buildCreateCategory());
-        header.setExpandRatio(title, 1);
+        Component createCategory = buildCreateCategory();
+        HorizontalLayout tools = new HorizontalLayout(filter, createCategory);
+        tools.setSpacing(true);
+        tools.addStyleName("toolbar");
+        header.addComponent(tools);
         return header;
     }
 
