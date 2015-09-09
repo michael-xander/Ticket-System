@@ -24,8 +24,10 @@ public abstract class UserQueryTableView extends UserTableView {
     public Table buildTable() {
         final Table table = new Table();
         table.setSizeFull();
-
+        table.addStyleName(ValoTheme.TABLE_BORDERLESS);
+        table.addStyleName(ValoTheme.TABLE_NO_HORIZONTAL_LINES);
         table.addStyleName(ValoTheme.TABLE_COMPACT);
+
         table.setSelectable(true);
 
         table.addContainerProperty("Date", String.class, "(default)");

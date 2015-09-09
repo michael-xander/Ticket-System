@@ -1,6 +1,8 @@
 package view.main;
 
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import model.domain.user.Role;
@@ -27,7 +29,9 @@ public class MainView extends HorizontalLayout {
         {
             addComponent(new StudentDashboardMenu());
 
-            VerticalLayout content = new VerticalLayout();
+            //VerticalLayout content = new VerticalLayout();
+            ComponentContainer content = new CssLayout();
+            content.addStyleName("view-content");
             content.setSizeFull();
             addComponent(content);
             setExpandRatio(content, 1.0f);
@@ -38,7 +42,9 @@ public class MainView extends HorizontalLayout {
         {
             addComponent(new ConvenerDashboardMenu());
 
-            VerticalLayout content = new VerticalLayout();
+            //VerticalLayout content = new VerticalLayout();
+            ComponentContainer content = new CssLayout();
+            content.addStyleName("view-content");
             content.setSizeFull();
             addComponent(content);
             setExpandRatio(content, 1.0f);
