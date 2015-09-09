@@ -50,11 +50,13 @@ public class TicketSystemUI extends UI
         if(id != null)
         {
             setContent(new MainView());
+            removeStyleName("loginview");
             getNavigator().navigateTo("dashboard");
         }
         else
         {
             setContent(new LoginView());
+            addStyleName("loginview");
         }
     }
 

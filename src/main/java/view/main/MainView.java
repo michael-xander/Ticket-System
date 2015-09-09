@@ -29,7 +29,6 @@ public class MainView extends HorizontalLayout {
         {
             addComponent(new StudentDashboardMenu());
 
-            //VerticalLayout content = new VerticalLayout();
             ComponentContainer content = new CssLayout();
             content.addStyleName("view-content");
             content.setSizeFull();
@@ -42,7 +41,6 @@ public class MainView extends HorizontalLayout {
         {
             addComponent(new ConvenerDashboardMenu());
 
-            //VerticalLayout content = new VerticalLayout();
             ComponentContainer content = new CssLayout();
             content.addStyleName("view-content");
             content.setSizeFull();

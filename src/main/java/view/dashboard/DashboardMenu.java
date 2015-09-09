@@ -72,7 +72,6 @@ public abstract class DashboardMenu extends CustomComponent
 
     public Component buildContent()
     {
-        //final VerticalLayout menuContent = new VerticalLayout();
         final CssLayout menuContent = new CssLayout();
         menuContent.addStyleName("sidebar");
         menuContent.addStyleName(ValoTheme.MENU_PART);
