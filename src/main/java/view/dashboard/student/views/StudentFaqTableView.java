@@ -15,8 +15,6 @@ public abstract class StudentFaqTableView extends UserFaqTableView
 {
     public StudentFaqTableView()
     {
-        setSizeFull();
-        setSpacing(true);
         super.setTable(buildTable());
 
         super.getTable().addItemClickListener(new ItemClickEvent.ItemClickListener() {
