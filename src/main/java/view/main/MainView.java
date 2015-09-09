@@ -21,6 +21,7 @@ public class MainView extends HorizontalLayout {
     public MainView()
     {
         setSizeFull();
+        addStyleName("mainview");
 
         if(isStudent())
         {

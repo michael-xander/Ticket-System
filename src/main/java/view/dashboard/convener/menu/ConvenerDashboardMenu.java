@@ -1,11 +1,8 @@
 package view.dashboard.convener.menu;
 
 
-import com.vaadin.ui.Component;
+import com.vaadin.ui.*;
 
-import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import view.dashboard.DashboardMenu;
 
@@ -17,18 +14,21 @@ public class ConvenerDashboardMenu extends DashboardMenu
 {
     public ConvenerDashboardMenu()
     {
-        setSizeUndefined();
-        setCompositionRoot(buildContent());
+        super();
     }
 
     @Override
     public Component buildMenuItems() {
-        VerticalLayout menuItemsLayout = new VerticalLayout();
+        CssLayout menuItemsLayout = new CssLayout();
+        menuItemsLayout.addStyleName("valo-menuitems");
         menuItemsLayout.addComponent(buildDashboardMenuItem());
 
         for(String courseID : getUser().getCourseIDs())
         {
             MenuBar courseMenu = new MenuBar();
+            courseMenu.addStyleName("user-menu");
+            courseMenu.setWidth("100%");
+
             MenuBar.MenuItem course = courseMenu.addItem(courseID, null);
 
             course.addItem("Queries", new MenuBar.Command() {
@@ -52,7 +52,6 @@ public class ConvenerDashboardMenu extends DashboardMenu
                 }
             });
 
-            courseMenu.setWidth("100%");
             menuItemsLayout.addComponent(courseMenu);
         }
         return menuItemsLayout;

@@ -13,20 +13,22 @@ public class StudentDashboardMenu extends DashboardMenu
 {
     public StudentDashboardMenu()
     {
-        setSizeUndefined();
-        setCompositionRoot(buildContent());
+        super();
     }
 
     @Override
     public Component buildMenuItems()
     {
-        VerticalLayout menuItemsLayout = new VerticalLayout();
+        CssLayout menuItemsLayout = new CssLayout();
+        menuItemsLayout.addStyleName("valo-menuitems");
         menuItemsLayout.addComponent(buildDashboardMenuItem());
 
 
         for(String courseID : getUser().getCourseIDs())
         {
             MenuBar courseMenu = new MenuBar();
+            courseMenu.addStyleName("user-menu");
+            courseMenu.setWidth("100%");
             MenuBar.MenuItem course = courseMenu.addItem(courseID, null);
             course.addItem("Queries", new MenuBar.Command() {
                 @Override
@@ -42,7 +44,6 @@ public class StudentDashboardMenu extends DashboardMenu
                 }
             });
 
-            courseMenu.setWidth("100%");
             menuItemsLayout.addComponent(courseMenu);
         }
         return menuItemsLayout;

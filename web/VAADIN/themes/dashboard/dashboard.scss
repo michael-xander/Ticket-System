@@ -1,6 +1,7 @@
 @import "../valo/valo";
 @import "common";
 @import "views/login";
+@import "views/dashboardview";
 
 // Optimize the CSS output
 $v-included-components: remove($v-included-components, accordion);
@@ -23,5 +24,6 @@ $valo-menu-background-color: #414B56;
 @mixin dashboard {
   @include valo;
   @include dashboard-common;
-  @include dashboard-login-view
+  @include dashboard-login-view;
+  @include  dashboard-dashboard-view;
 }
