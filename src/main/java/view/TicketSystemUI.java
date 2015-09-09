@@ -18,7 +18,7 @@ import data.access.DaoFactory;
 import view.login.LoginView;
 import view.main.MainView;
 
-@Theme("valo")
+@Theme("dashboard")
 @Title("Query Ticket System")
 public class TicketSystemUI extends UI
 {
