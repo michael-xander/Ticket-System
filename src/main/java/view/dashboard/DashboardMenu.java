@@ -17,6 +17,13 @@ public abstract class DashboardMenu extends CustomComponent
             (String) VaadinSession.getCurrent().getAttribute("userID")
     );
 
+    public DashboardMenu()
+    {
+        setPrimaryStyleName("valo-menu");
+        setId("dashboard-menu");
+        setSizeUndefined();
+        setCompositionRoot(buildContent());
+    }
     public void setUser(User user)
     {
         this.user = user;
@@ -33,12 +40,14 @@ public abstract class DashboardMenu extends CustomComponent
         logo.setSizeUndefined();
         HorizontalLayout logoWrapper = new HorizontalLayout(logo);
         logoWrapper.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
+        logoWrapper.addStyleName("valo-menu-title");
         return logoWrapper;
     }
 
     public Component buildUserMenu()
     {
         final MenuBar settings = new MenuBar();
+        settings.addStyleName("user-menu");
         settings.setWidth("100%");
         MenuBar.MenuItem settingsItem = settings.addItem("", null);
         settingsItem.setText(user.getFirstName() + " " + user.getLastName());
@@ -63,8 +72,11 @@ public abstract class DashboardMenu extends CustomComponent
 
     public Component buildContent()
     {
-        final VerticalLayout menuContent = new VerticalLayout();
+        final CssLayout menuContent = new CssLayout();
+        menuContent.addStyleName("sidebar");
         menuContent.addStyleName(ValoTheme.MENU_PART);
+        menuContent.addStyleName("no-vertical-drag-hints");
+        menuContent.addStyleName("no-horizontal-drag-hints");
         menuContent.setWidth(null);
         menuContent.setHeight("100%");
 
@@ -78,6 +90,9 @@ public abstract class DashboardMenu extends CustomComponent
     public Component buildDashboardMenuItem()
     {
         final MenuBar dashboardMenu = new MenuBar();
+        dashboardMenu.addStyleName("user-menu");
+        dashboardMenu.setWidth("100%");
+
         MenuBar.MenuItem dashboardMenuItem = dashboardMenu.addItem("Dashboard", null);
 
         dashboardMenuItem.addItem("All Queries", new MenuBar.Command() {
@@ -87,7 +102,6 @@ public abstract class DashboardMenu extends CustomComponent
             }
         });
 
-        dashboardMenu.setWidth("100%");
         return dashboardMenu;
     }
 }

@@ -18,7 +18,7 @@ import data.access.DaoFactory;
 import view.login.LoginView;
 import view.main.MainView;
 
-@Theme("valo")
+@Theme("dashboard")
 @Title("Query Ticket System")
 public class TicketSystemUI extends UI
 {
@@ -50,11 +50,13 @@ public class TicketSystemUI extends UI
         if(id != null)
         {
             setContent(new MainView());
+            removeStyleName("loginview");
             getNavigator().navigateTo("dashboard");
         }
         else
         {
             setContent(new LoginView());
+            addStyleName("loginview");
         }
     }
 
