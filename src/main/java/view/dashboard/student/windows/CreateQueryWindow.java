@@ -110,6 +110,7 @@ public class CreateQueryWindow extends CreateWindow
                         TicketSystemUI.getDaoFactory().getQueryDao().addQuery(query);
                         Notification notification = new Notification("Query created", Notification.Type.HUMANIZED_MESSAGE);
                         notification.setDescription("Your query has successfully been submitted.");
+                        notification.setDelayMsec(2500);
                         notification.show(Page.getCurrent());
 
                         close();
