@@ -113,7 +113,7 @@ public class CreateCategoryWindow extends CreateWindow
         description.setWidth("100%");
         view.addComponent(description);
 
-        templateAnswer = new RichTextArea("Template Answer (Optional)");
+        templateAnswer = new RichTextArea("Template Answer : Provided to queries of this category (Optional)");
         templateAnswer.setWidth("100%");
         view.addComponent(templateAnswer);
 

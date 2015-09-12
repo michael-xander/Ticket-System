@@ -82,8 +82,10 @@ public class LoginView extends VerticalLayout {
 
                 if (isValidUser(userIdField.getValue(), passwordField.getValue())) {
                     //if user is verified than display a notification about the successful login
-                    notification = new Notification("Successful login!");
-                    notification.setDescription("The credentials you provided are correct! Welcome to the Query Ticket System");
+                    notification = new Notification("Successful login!",
+                            "The credentials you provided are correct! Welcome to the Query Ticket System",
+                            Notification.Type.HUMANIZED_MESSAGE);
+                    notification.setDelayMsec(2500);
                     notification.setPosition(Position.BOTTOM_CENTER);
                     notification.show(Page.getCurrent());
 
@@ -94,8 +96,10 @@ public class LoginView extends VerticalLayout {
                 } else
                 {
                     //use a notification to inform the user about an unsuccessful login attempt
-                    notification = new Notification("Unsuccessful login attempt");
-                    notification.setDescription("The credentials provided are incorrect.");
+                    notification = new Notification("Unsuccessful login attempt",
+                            "The credentials you provided are incorrect!",
+                            Notification.Type.HUMANIZED_MESSAGE);
+                    notification.setDelayMsec(2500);
                     notification.setPosition(Position.BOTTOM_CENTER);
                     notification.show(Page.getCurrent());
                     signInButton.setComponentError(new UserError("The credentials provided are incorrect"));
