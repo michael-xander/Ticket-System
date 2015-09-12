@@ -7,10 +7,13 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Message;
 import model.domain.message.Query;
+import model.domain.message.Reply;
 import view.TicketSystemUI;
 import view.dashboard.CreateWindow;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A window through which a lecturer can reply to a query
@@ -45,11 +48,14 @@ public class CreateQueryReplyWindow extends CreateWindow {
                     query.setStatus(Query.Status.REPLIED);
                     TicketSystemUI.getDaoFactory().getQueryDao().updateQueryRole(query);
 
-                    Message reply = new Message();
-                    reply.setMessageID(query.getMessageID());
+                    Reply reply = new Reply();
                     reply.setText(richTextArea.getValue());
                     reply.setSender((String) VaadinSession.getCurrent().getAttribute("userID"));
                     reply.setDate(LocalDate.now());
+
+                    Set<Integer> queryIds = new HashSet<>();
+                    queryIds.add(query.getMessageID());
+                    reply.setQueryIds(queryIds);
                     TicketSystemUI.getDaoFactory().getReplyDao().addReply(reply);
 
                     Notification notification = new Notification("Reply sent", Notification.Type.HUMANIZED_MESSAGE);

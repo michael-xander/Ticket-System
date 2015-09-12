@@ -5,9 +5,14 @@ import com.vaadin.server.UserError;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Query;
+import model.domain.message.Reply;
+import view.TicketSystemUI;
 import view.dashboard.CreateWindow;
 
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A window that enables a user to reply to multiple queries
@@ -39,10 +44,29 @@ public class CreateMultiQueryReplyWindow extends CreateWindow {
                 getSaveButton().setComponentError(null);
                 if(inputIsValid())
                 {
+                    Reply reply = new Reply();
+                    reply.setText(richTextArea.getValue());
+                    reply.setSender(getUser().getUserID());
+                    reply.setDate(LocalDate.now());
+
+                    Set<Integer> queryIds = new HashSet<>();
+                    Query tempQuery = null;
+                    for(Query query : queries)
+                    {
+                        queryIds.add(query.getMessageID());
+                        query.setStatus(Query.Status.REPLIED);
+                        TicketSystemUI.getDaoFactory().getQueryDao().updateQueryRole(query);
+                        tempQuery = query;
+                    }
+
+                    reply.setQueryIds(queryIds);
+                    TicketSystemUI.getDaoFactory().getReplyDao().addReply(reply);
+
                     Notification notification = new Notification("Reply sent", Notification.Type.HUMANIZED_MESSAGE);
                     notification.setDescription("Your reply has successfully been submitted.");
                     notification.setDelayMsec(2500);
                     notification.show(Page.getCurrent());
+                    UI.getCurrent().getNavigator().navigateTo(tempQuery.getCourseID());
                     close();
                 }
                 else
