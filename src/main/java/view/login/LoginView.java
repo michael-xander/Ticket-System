@@ -85,7 +85,7 @@ public class LoginView extends VerticalLayout {
                     notification = new Notification("Successful login!",
                             "The credentials you provided are correct! Welcome to the Query Ticket System",
                             Notification.Type.HUMANIZED_MESSAGE);
-                    notification.setDelayMsec(2000);
+                    notification.setDelayMsec(2500);
                     notification.setPosition(Position.BOTTOM_CENTER);
                     notification.show(Page.getCurrent());
 
@@ -99,7 +99,7 @@ public class LoginView extends VerticalLayout {
                     notification = new Notification("Unsuccessful login attempt",
                             "The credentials you provided are incorrect!",
                             Notification.Type.HUMANIZED_MESSAGE);
-                    notification.setDelayMsec(2000);
+                    notification.setDelayMsec(2500);
                     notification.setPosition(Position.BOTTOM_CENTER);
                     notification.show(Page.getCurrent());
                     signInButton.setComponentError(new UserError("The credentials provided are incorrect"));
