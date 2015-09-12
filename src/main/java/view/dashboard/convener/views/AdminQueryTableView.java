@@ -24,39 +24,9 @@ public abstract class AdminQueryTableView extends UserQueryTableView {
     public AdminQueryTableView()
     {
         super.setTable(buildTable());
-
-        super.getTable().addItemClickListener(new ItemClickEvent.ItemClickListener() {
-            @Override
-            public void itemClick(ItemClickEvent itemClickEvent) {
-                int queryID = (Integer) itemClickEvent.getItemId();
-                Query query = TicketSystemUI.getDaoFactory().getQueryDao().getQuery(queryID);
-                getUI().addWindow(new CreateQueryReplyWindow(query));
-            }
-        });
     }
 
     public abstract Collection<Query> getQueries();
 
-    @Override
-    public Component buildToolbar(String toolbarHeader) {
-        HorizontalLayout header = new HorizontalLayout();
-        header.addStyleName("viewheader");
-        header.setSpacing(true);
-        Responsive.makeResponsive(header);
-
-        Label title = new Label(toolbarHeader);
-        title.setSizeUndefined();
-        title.addStyleName(ValoTheme.LABEL_H1);
-        title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
-        header.addComponent(title);
-
-        Component filter = buildFilter();
-        HorizontalLayout tools = new HorizontalLayout(filter);
-        tools.setSpacing(true);
-        tools.addStyleName("toolbar");
-        header.addComponent(tools);
-
-        return header;
-    }
 
 }

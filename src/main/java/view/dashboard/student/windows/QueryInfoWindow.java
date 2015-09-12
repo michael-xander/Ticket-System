@@ -5,8 +5,11 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Message;
 import model.domain.message.Query;
+import model.domain.message.Reply;
 import view.TicketSystemUI;
 import view.dashboard.InfoWindow;
+
+import java.util.Collection;
 
 /**
  * A simple window to see the information of a query
@@ -42,24 +45,28 @@ public class QueryInfoWindow extends InfoWindow
         Label content = new Label(query.getText(), ContentMode.HTML);
         view.addComponent(content);
 
-        Message reply = getQueryReply();
+        Collection<Reply> replies = getQueryReplies();
 
-        if(reply != null)
+        for(Reply reply : replies)
         {
+            VerticalLayout tempView = new VerticalLayout();
+            tempView.setSpacing(true);
             Label replyHeading = new Label("Reply:");
             Label replyContent = new Label(reply.getText(), ContentMode.HTML);
-            view.addComponent(replyHeading);
-            view.addComponent(replyContent);
+            tempView.addComponent(replyHeading);
+            tempView.addComponent(replyContent);
+
+            view.addComponent(tempView);
         }
+
 
         view.addComponent(buildFooter());
         return view;
     }
 
-    private Message getQueryReply()
+    private Collection<Reply> getQueryReplies()
     {
-        Message reply = TicketSystemUI.getDaoFactory().getReplyDao().getReply(query.getMessageID());
-        return reply;
+        return TicketSystemUI.getDaoFactory().getReplyDao().getAllRepliesForQueryID(query.getMessageID());
     }
 
 }
