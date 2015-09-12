@@ -1,6 +1,7 @@
 package view.dashboard.convener.views;
 
 
+import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -9,6 +10,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Query;
 import view.TicketSystemUI;
+import view.dashboard.student.windows.QueryInfoWindow;
 
 import java.util.Collection;
 
@@ -33,6 +35,14 @@ public class AdminCourseQueryView extends AdminQueryTableView
         setExpandRatio(super.getTable(), 1);
 
         super.getTable().setMultiSelect(true);
+        super.getTable().addItemClickListener(new ItemClickEvent.ItemClickListener() {
+            @Override
+            public void itemClick(ItemClickEvent itemClickEvent) {
+                int queryID = (Integer) itemClickEvent.getItemId();
+                Query query = TicketSystemUI.getDaoFactory().getQueryDao().getQuery(queryID);
+                getUI().addWindow(new QueryInfoWindow(query));
+            }
+        });
     }
 
     @Override
