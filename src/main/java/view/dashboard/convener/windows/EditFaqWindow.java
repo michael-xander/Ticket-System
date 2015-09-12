@@ -1,15 +1,12 @@
 package view.dashboard.convener.windows;
 
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
-import com.vaadin.server.Sizeable;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.faq.Faq;
 import view.TicketSystemUI;
 import view.dashboard.CreateWindow;
-import view.dashboard.PopupWindow;
 
 import java.time.LocalDate;
 
@@ -67,6 +64,7 @@ public class EditFaqWindow extends CreateWindow {
         getSaveButton().addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+                getSaveButton().setComponentError(null);
                 if(inputIsValid())
                 {
                     faq.setQuestion(question.getValue());
@@ -103,7 +101,7 @@ public class EditFaqWindow extends CreateWindow {
             question.setComponentError(new UserError("A question has to be specified for an FAQ"));
         }
 
-        if(richTextArea.getValue().isEmpty())
+        if(richTextArea.getValue().trim().isEmpty())
         {
             isValid = false;
             richTextArea.setComponentError(new UserError("An answer has to be specified for an FAQ"));
