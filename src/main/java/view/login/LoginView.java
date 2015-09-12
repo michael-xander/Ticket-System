@@ -44,9 +44,11 @@ public class LoginView extends VerticalLayout {
         loginPanel.setSizeUndefined();
         loginPanel.setSpacing(true);
         Responsive.makeResponsive(loginPanel);
+        loginPanel.addStyleName("login-panel");
 
         loginPanel.addComponent(buildLabels());
         loginPanel.addComponent(buildFields());
+        loginPanel.addComponent(new CheckBox("Remember me", true));
         return loginPanel;
     }
 
@@ -57,6 +59,7 @@ public class LoginView extends VerticalLayout {
     {
         HorizontalLayout fields = new HorizontalLayout();
         fields.setSpacing(true);
+        fields.addStyleName("fields");
 
         final TextField userIdField = new TextField("User ID");
         userIdField.setIcon(FontAwesome.USER);
@@ -79,8 +82,10 @@ public class LoginView extends VerticalLayout {
 
                 if (isValidUser(userIdField.getValue(), passwordField.getValue())) {
                     //if user is verified than display a notification about the successful login
-                    notification = new Notification("Successful login!");
-                    notification.setDescription("The credentials you provided are correct! Welcome to the Query Ticket System");
+                    notification = new Notification("Successful login!",
+                            "The credentials you provided are correct! Welcome to the Query Ticket System",
+                            Notification.Type.HUMANIZED_MESSAGE);
+                    notification.setDelayMsec(2500);
                     notification.setPosition(Position.BOTTOM_CENTER);
                     notification.show(Page.getCurrent());
 
@@ -91,8 +96,10 @@ public class LoginView extends VerticalLayout {
                 } else
                 {
                     //use a notification to inform the user about an unsuccessful login attempt
-                    notification = new Notification("Unsuccessful login attempt");
-                    notification.setDescription("The credentials provided are incorrect.");
+                    notification = new Notification("Unsuccessful login attempt",
+                            "The credentials you provided are incorrect!",
+                            Notification.Type.HUMANIZED_MESSAGE);
+                    notification.setDelayMsec(2500);
                     notification.setPosition(Position.BOTTOM_CENTER);
                     notification.show(Page.getCurrent());
                     signInButton.setComponentError(new UserError("The credentials provided are incorrect"));
@@ -112,14 +119,21 @@ public class LoginView extends VerticalLayout {
      */
     private Component buildLabels()
     {
-        HorizontalLayout labels = new HorizontalLayout();
-        labels.setSpacing(true);
-        Label welcomeLabel = new Label("Query Ticket System");
-        welcomeLabel.setSizeUndefined();
-        welcomeLabel.addStyleName(ValoTheme.LABEL_H4);
-        welcomeLabel.addStyleName(ValoTheme.LABEL_COLORED);
-        labels.addComponent(welcomeLabel);
 
+        CssLayout labels = new CssLayout();
+        labels.addStyleName("labels");
+
+        Label welcome = new Label("Welcome");
+        welcome.setSizeUndefined();
+        welcome.addStyleName(ValoTheme.LABEL_H4);
+        welcome.addStyleName(ValoTheme.LABEL_COLORED);
+        labels.addComponent(welcome);
+
+        Label title = new Label("Query Ticket System");
+        title.setSizeUndefined();
+        title.addStyleName(ValoTheme.LABEL_H3);
+        title.addStyleName(ValoTheme.LABEL_LIGHT);
+        labels.addComponent(title);
         return labels;
     }
 

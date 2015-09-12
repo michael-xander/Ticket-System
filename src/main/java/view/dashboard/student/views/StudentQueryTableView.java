@@ -13,8 +13,6 @@ public abstract class StudentQueryTableView extends UserQueryTableView
 {
     public StudentQueryTableView()
     {
-        setSizeFull();
-        setSpacing(true);
         super.setTable(buildTable());
 
         super.getTable().addItemClickListener(new ItemClickEvent.ItemClickListener() {

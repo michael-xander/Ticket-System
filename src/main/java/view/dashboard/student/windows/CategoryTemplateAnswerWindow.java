@@ -58,7 +58,8 @@ public class CategoryTemplateAnswerWindow extends PopupWindow {
                 query.setStatus(Query.Status.REPLIED);
                 TicketSystemUI.getDaoFactory().getQueryDao().addQuery(query);
                 Notification notification = new Notification("Query created and answered", Notification.Type.HUMANIZED_MESSAGE);
-                notification.setDescription("Your query has successfully been created and replied to.");
+                notification.setDescription("Your query has successfully been created and marked as replied to.");
+                notification.setDelayMsec(2500);
                 notification.show(Page.getCurrent());
 
                 close();
@@ -73,6 +74,7 @@ public class CategoryTemplateAnswerWindow extends PopupWindow {
                 TicketSystemUI.getDaoFactory().getQueryDao().addQuery(query);
                 Notification notification = new Notification("Query created", Notification.Type.HUMANIZED_MESSAGE);
                 notification.setDescription("Your query has successfully been submitted.");
+                notification.setDelayMsec(2500);
                 notification.show(Page.getCurrent());
 
                 close();

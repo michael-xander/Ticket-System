@@ -25,8 +25,6 @@ public abstract class AdminCategoryTableView extends UserTableView
 {
     public AdminCategoryTableView()
     {
-        setSizeFull();
-        setSpacing(true);
         super.setTable(buildTable());
 
         super.getTable().addItemClickListener(new ItemClickEvent.ItemClickListener() {
@@ -48,8 +46,10 @@ public abstract class AdminCategoryTableView extends UserTableView
     {
         final Table table = new Table();
         table.setSizeFull();
-
+        table.addStyleName(ValoTheme.TABLE_BORDERLESS);
+        table.addStyleName(ValoTheme.TABLE_NO_HORIZONTAL_LINES);
         table.addStyleName(ValoTheme.TABLE_COMPACT);
+
         table.setSelectable(true);
 
         table.addContainerProperty("Name", String.class, "(default)");

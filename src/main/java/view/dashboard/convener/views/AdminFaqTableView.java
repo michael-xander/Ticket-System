@@ -15,8 +15,6 @@ public abstract class AdminFaqTableView extends UserFaqTableView
 {
     public AdminFaqTableView()
     {
-        setSizeFull();
-        setSpacing(true);
         super.setTable(buildTable());
 
         super.getTable().addItemClickListener(new ItemClickEvent.ItemClickListener() {

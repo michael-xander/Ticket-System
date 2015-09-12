@@ -1,27 +1,20 @@
 package view.dashboard.convener.windows;
 
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.server.UserError;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
-import model.domain.category.Category;
 import model.domain.faq.Faq;
-import model.domain.message.Query;
 import view.TicketSystemUI;
-import view.dashboard.PopupWindow;
-
+import view.dashboard.CreateWindow;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple window displayed to create a faq
  * Created by Marcelo on 2015/08/31.
  */
 
-public class CreateFaqWindow extends PopupWindow
+public class CreateFaqWindow extends CreateWindow
 {
     private final String courseID;
 
@@ -37,6 +30,7 @@ public class CreateFaqWindow extends PopupWindow
         setResizable(false);
         setWidth("40%");
         setContent(buildContent());
+        setSaveButtonFunction();
     }
 
     @Override
@@ -61,48 +55,54 @@ public class CreateFaqWindow extends PopupWindow
     }
 
     @Override
-    public Component buildFooter()
-    {
-        HorizontalLayout footer = new HorizontalLayout();
-        footer.setSpacing(true);
-        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-        footer.setWidth(100.0f, Unit.PERCENTAGE);
+    public void setSaveButtonFunction() {
+            getSaveButton().addClickListener(new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent clickEvent) {
+                    getSaveButton().setComponentError(null);
+                    if(inputIsValid())
+                    {
+                        Faq faq = new Faq();
+                        faq.setQuestion(question.getValue());
+                        faq.setAnswer(richTextArea.getValue());
+                        faq.setDate(LocalDate.now());
+                        faq.setCourseID(courseID);
 
-        Button cancel = new Button("Cancel");
-        cancel.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                close();
-            }
-        });
-        cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
+                        TicketSystemUI.getDaoFactory().getFaqDao().addFaq(faq);
+                        Notification notification = new Notification("Faq created", Notification.Type.HUMANIZED_MESSAGE);
+                        notification.setDelayMsec(2500);
+                        notification.setDescription("Your faq has successfully been submitted.");
+                        notification.show(Page.getCurrent());
 
-        Button save = new Button("Save");
-        save.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        save.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                Faq faq = new Faq();
-                faq.setQuestion(question.getValue());
-                faq.setAnswer(richTextArea.getValue());
-                faq.setDate(LocalDate.now());
-                faq.setCourseID(courseID);
+                        close();
+                        UI.getCurrent().getNavigator().navigateTo(faq.getCourseID() + " FAQs");
+                    }
+                    else
+                    {
+                        getSaveButton().setComponentError(new UserError("Input provided is invalid"));
+                    }
+                }
+            });
+    }
 
-                TicketSystemUI.getDaoFactory().getFaqDao().addFaq(faq);
-                Notification notification = new Notification("Faq created", Notification.Type.HUMANIZED_MESSAGE);
-                notification.setDescription("Your faq has successfully been submitted.");
-                notification.show(Page.getCurrent());
+    @Override
+    public boolean inputIsValid() {
+        boolean isValid = true;
+        question.setComponentError(null);
+        richTextArea.setComponentError(null);
 
-                close();
-                UI.getCurrent().getNavigator().navigateTo(faq.getCourseID() + " FAQs");
-            }
-        });
+        if(question.getValue().isEmpty())
+        {
+            isValid = false;
+            question.setComponentError(new UserError("A question has to be specified for an FAQ"));
+        }
 
-        save.setClickShortcut(ShortcutAction.KeyCode.ENTER, null);
-        footer.addComponents(cancel, save);
-        footer.setExpandRatio(cancel, 1);
-        footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
-        return footer;
+        if(richTextArea.getValue().isEmpty())
+        {
+            isValid = false;
+            richTextArea.setComponentError(new UserError("An answer has to be specified for an FAQ"));
+        }
+        return isValid;
     }
 
 }

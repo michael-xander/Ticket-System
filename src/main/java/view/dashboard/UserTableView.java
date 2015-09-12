@@ -18,6 +18,12 @@ public abstract class UserTableView extends VerticalLayout implements View{
 
     private Table table;
 
+    public UserTableView()
+    {
+        setSizeFull();
+        addStyleName("transactions");
+    }
+
     private User user = TicketSystemUI.getDaoFactory().getUserDao().getUser(
             (String) VaadinSession.getCurrent().getAttribute("userID")
     );
