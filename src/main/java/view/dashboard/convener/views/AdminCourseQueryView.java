@@ -1,6 +1,8 @@
 package view.dashboard.convener.views;
 
 
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.Button;
@@ -10,9 +12,12 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Query;
 import view.TicketSystemUI;
+import view.dashboard.convener.windows.CreateMultiQueryReplyWindow;
 import view.dashboard.student.windows.QueryInfoWindow;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A view for the course convener to observe queries for a single course
@@ -20,9 +25,10 @@ import java.util.Collection;
  */
 public class AdminCourseQueryView extends AdminQueryTableView
 {
-    private String courseID;
+    private final String courseID;
+    private Button createReply;
 
-    public AdminCourseQueryView(String courseID)
+    public AdminCourseQueryView(final String courseID)
     {
         super();
         this.courseID = courseID;
@@ -43,6 +49,16 @@ public class AdminCourseQueryView extends AdminQueryTableView
                 getUI().addWindow(new QueryInfoWindow(query));
             }
         });
+
+        super.getTable().addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+                if (getTable().getValue() instanceof Set) {
+                    Set<Object> val = (Set<Object>) getTable().getValue();
+                    createReply.setEnabled(val.size() > 0);
+                }
+            }
+        });
     }
 
     @Override
@@ -59,7 +75,7 @@ public class AdminCourseQueryView extends AdminQueryTableView
         header.addComponent(title);
 
         Component filter = buildFilter();
-        Component createReply = buildCreateReply();
+        createReply = buildCreateReply();
         HorizontalLayout tools = new HorizontalLayout(filter, createReply);
         tools.setSpacing(true);
         tools.addStyleName("toolbar");
@@ -70,6 +86,22 @@ public class AdminCourseQueryView extends AdminQueryTableView
     public Button buildCreateReply()
     {
         final Button createReply = new Button("Create Reply");
+        createReply.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                Set<Integer> itemIds = (Set<Integer>) getTable().getValue();
+
+                Set<Query> queries = new HashSet<Query>();
+                for(Integer itemId: itemIds)
+                {
+                    Query query = TicketSystemUI.getDaoFactory().getQueryDao().getQuery(itemId);
+                    queries.add(query);
+                }
+
+                getUI().addWindow(new CreateMultiQueryReplyWindow(queries));
+            }
+        });
+        createReply.setEnabled(false);
         return createReply;
     }
 
