@@ -10,9 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -200,7 +198,7 @@ public class ReplyDaoImpl extends Dao implements ReplyDao, Serializable
 
     @Override
     public Collection<Reply> getAllRepliesForQueryID(int queryID) {
-        Set<Reply> replies = new HashSet<>();
+        List<Reply> replies = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
@@ -254,6 +252,7 @@ public class ReplyDaoImpl extends Dao implements ReplyDao, Serializable
                 logger.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
+        Collections.sort(replies);
         return replies;
     }
 }
