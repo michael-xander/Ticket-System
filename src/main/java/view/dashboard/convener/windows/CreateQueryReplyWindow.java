@@ -3,15 +3,19 @@ package view.dashboard.convener.windows;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Message;
 import model.domain.message.Query;
 import model.domain.message.Reply;
+import model.domain.user.Role;
+import model.domain.user.User;
 import view.TicketSystemUI;
 import view.dashboard.CreateWindow;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,9 +47,17 @@ public class CreateQueryReplyWindow extends CreateWindow {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 getSaveButton().setComponentError(null);
-                if(inputIsValid())
-                {
-                    query.setStatus(Query.Status.REPLIED);
+                if (inputIsValid()) {
+
+                    if(getUser().getRoleForCourse(query.getCourseID()).equals(Role.STUDENT))
+                    {
+                        query.setStatus(Query.Status.PENDING);
+                    }
+                    else
+                    {
+                        query.setStatus(Query.Status.REPLIED);
+                    }
+
                     TicketSystemUI.getDaoFactory().getQueryDao().updateQueryRole(query);
 
                     Reply reply = new Reply();
@@ -64,10 +76,8 @@ public class CreateQueryReplyWindow extends CreateWindow {
                     notification.show(Page.getCurrent());
                     UI.getCurrent().getNavigator().navigateTo(query.getCourseID());
                     close();
-                }
-                else
-                {
-                    getSaveButton().setComponentError( new UserError("Input provided is invalid"));
+                } else {
+                    getSaveButton().setComponentError(new UserError("Input provided is invalid"));
                 }
             }
         });
@@ -99,8 +109,32 @@ public class CreateQueryReplyWindow extends CreateWindow {
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         view.addComponent(title);
 
-        Label content = new Label(query.getText());
+        Label content = new Label(query.getText(), ContentMode.HTML);
         view.addComponent(content);
+
+        Collection<Reply> replies = getQueryReplies();
+
+        for(Reply reply : replies)
+        {
+            Label replyHeading = new Label();
+
+            User user;
+
+            if(reply.getSenderID().equals(getUser().getUserID()))
+            {
+                user = getUser();
+            }
+            else
+            {
+                user = TicketSystemUI.getDaoFactory().getUserDao().getUser(reply.getSenderID());
+            }
+
+            replyHeading.setCaption(user.getFirstName() + " " + user.getLastName() + ":");
+            Label replyContent = new Label(reply.getText(), ContentMode.HTML);
+            view.addComponent(replyHeading);
+            view.addComponent(replyContent);
+
+        }
 
         richTextArea = new RichTextArea("Reply");
         richTextArea.setWidth("100%");
@@ -108,5 +142,10 @@ public class CreateQueryReplyWindow extends CreateWindow {
 
         view.addComponent(buildFooter());
         return view;
+    }
+
+    private Collection<Reply> getQueryReplies()
+    {
+        return TicketSystemUI.getDaoFactory().getReplyDao().getAllRepliesForQueryID(query.getMessageID());
     }
 }

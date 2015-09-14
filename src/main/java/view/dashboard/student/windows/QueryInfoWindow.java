@@ -10,6 +10,7 @@ import model.domain.message.Reply;
 import model.domain.user.User;
 import view.TicketSystemUI;
 import view.dashboard.InfoWindow;
+import view.dashboard.convener.windows.CreateQueryReplyWindow;
 
 import java.util.Collection;
 
@@ -51,8 +52,6 @@ public class QueryInfoWindow extends InfoWindow
 
         for(Reply reply : replies)
         {
-            VerticalLayout tempView = new VerticalLayout();
-            tempView.setSpacing(true);
             Label replyHeading = new Label();
 
             User user;
@@ -67,10 +66,9 @@ public class QueryInfoWindow extends InfoWindow
 
             replyHeading.setCaption(user.getFirstName() + " " + user.getLastName() + ":");
             Label replyContent = new Label(reply.getText(), ContentMode.HTML);
-            tempView.addComponent(replyHeading);
-            tempView.addComponent(replyContent);
+            view.addComponent(replyHeading);
+            view.addComponent(replyContent);
 
-            view.addComponent(tempView);
         }
 
 
@@ -104,7 +102,8 @@ public class QueryInfoWindow extends InfoWindow
         addMessage.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-
+                close();
+                UI.getCurrent().addWindow(new CreateQueryReplyWindow(query));
             }
         });
         footer.addComponents(okay, addMessage);

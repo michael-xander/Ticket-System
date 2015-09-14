@@ -7,7 +7,7 @@ import java.time.LocalDate;
  * Created by william on 08-08-2015.
  */
 
-public class Message implements Serializable {
+public class Message implements Serializable,Comparable {
 
     //variables
     private int messageID;
@@ -75,6 +75,23 @@ public class Message implements Serializable {
             Message message = (Message) object;
 
             return (this.messageID == message.messageID);
+        }
+    }
+
+    @Override
+    public int compareTo(Object object) {
+        if(object == null || !(object instanceof Message))
+            return 0;
+        else
+        {
+            Message message = (Message) object;
+
+            if(this.messageID < message.messageID)
+                return -1;
+            else if(this.messageID > message.messageID)
+                return 1;
+            else
+                return 0;
         }
     }
 }
