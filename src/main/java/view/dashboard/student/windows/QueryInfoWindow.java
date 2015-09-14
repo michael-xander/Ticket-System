@@ -41,6 +41,8 @@ public class QueryInfoWindow extends InfoWindow
         view.setSpacing(true);
 
         Label title = new Label(query.getSubject());
+        title.setCaptionAsHtml(true);
+        title.setCaption("<u>Query</u>");
         title.addStyleName(ValoTheme.LABEL_H3);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         view.addComponent(title);
@@ -50,10 +52,14 @@ public class QueryInfoWindow extends InfoWindow
 
         Collection<Reply> replies = getQueryReplies();
 
+        if(!replies.isEmpty())
+        {
+            Label conversationLabel = new Label("<u>Conversation</u>", ContentMode.HTML);
+            view.addComponent(conversationLabel);
+        }
+
         for(Reply reply : replies)
         {
-            Label replyHeading = new Label();
-
             User user;
             if(reply.getSenderID().equals(getUser().getUserID()))
             {
@@ -64,11 +70,9 @@ public class QueryInfoWindow extends InfoWindow
                 user = TicketSystemUI.getDaoFactory().getUserDao().getUser(reply.getSenderID());
             }
 
-            replyHeading.setCaption(user.getFirstName() + " " + user.getLastName() + ":");
-            Label replyContent = new Label(reply.getText(), ContentMode.HTML);
-            view.addComponent(replyHeading);
-            view.addComponent(replyContent);
-
+            Label replyLabel = new Label(reply.getText(), ContentMode.HTML);
+            replyLabel.setCaption(user.getFirstName() + " " + user.getLastName() + ":");
+            view.addComponent(replyLabel);
         }
 
 
