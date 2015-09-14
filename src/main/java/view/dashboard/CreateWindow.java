@@ -20,7 +20,7 @@ public abstract class CreateWindow extends PopupWindow
     public void setSaveButton(Button saveButton){this.saveButton = saveButton;}
 
     /**
-     * Builds the cancel and save buttons at the button of any create window
+     * Builds the cancel and save buttons at the buttom of any create window
      * @return the footer
      */
     @Override
