@@ -6,8 +6,10 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Query;
+import model.domain.user.Role;
 import view.TicketSystemUI;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -51,8 +53,19 @@ public class StudentDefaultQueryView extends StudentQueryTableView {
 
     @Override
     public Collection<Query> getQueries() {
-        return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForUser(
-                (String) VaadinSession.getCurrent().getAttribute("userID"), null
-        );
+        ArrayList<Query> queries = new ArrayList<>();
+
+        for(String courseID : getUser().getCourseIDs())
+        {
+            if(getUser().getRoleForCourse(courseID).equals(Role.STUDENT))
+            {
+                Collection<Query> temp = TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForUser(
+                        getUser().getUserID(),
+                        courseID
+                );
+                queries.addAll(temp);
+            }
+        }
+        return queries;
     }
 }
