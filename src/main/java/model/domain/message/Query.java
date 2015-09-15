@@ -14,13 +14,18 @@ public class Query extends Message implements Serializable {
     private String courseID;
     private String subject;
     private String categoryName;
-    public Status status;
-    public Privacy privacy;
+    private Status status;
+    private Privacy privacy;
+    private boolean forwarded;
 
+    public boolean isForwarded()
+    {
+        return forwarded;
+    }
 
-
-    public Query() {
-
+    public void setForwarded(boolean forwarded)
+    {
+        this.forwarded = forwarded;
     }
 
     public String getCategoryName()
