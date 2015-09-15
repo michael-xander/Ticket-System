@@ -11,10 +11,12 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Query;
+import model.domain.user.Role;
 import view.TicketSystemUI;
 import view.dashboard.convener.windows.CreateMultiQueryReplyWindow;
 import view.dashboard.student.windows.QueryInfoWindow;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -107,6 +109,24 @@ public class AdminCourseQueryView extends AdminQueryTableView
 
     @Override
     public Collection<Query> getQueries() {
-        return TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForCourse(courseID, Query.Status.PENDING);
+
+        Collection<Query> allQueries = TicketSystemUI.getDaoFactory().getQueryDao().getAllQueriesForCourse(courseID, Query.Status.PENDING);
+        if(getUser().getRoleForCourse(courseID).equals(Role.TA))
+        {
+            ArrayList<Query> taQueries = new ArrayList<>();
+
+            for(Query query : allQueries)
+            {
+                if(query.isForwarded() || query.getPrivacy().equals(Query.Privacy.PUBLIC) || query.getPrivacy().equals(Query.Privacy.ADMINISTRATOR))
+                {
+                    taQueries.add(query);
+                }
+            }
+            return taQueries;
+        }
+        else
+        {
+            return allQueries;
+        }
     }
 }
