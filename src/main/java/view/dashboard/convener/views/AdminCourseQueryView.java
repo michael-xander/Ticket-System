@@ -13,6 +13,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Query;
 import model.domain.user.Role;
 import view.TicketSystemUI;
+import view.dashboard.convener.windows.ConvenerQueryInfoWindow;
 import view.dashboard.convener.windows.CreateMultiQueryReplyWindow;
 import view.dashboard.student.windows.QueryInfoWindow;
 
@@ -48,7 +49,15 @@ public class AdminCourseQueryView extends AdminQueryTableView
             public void itemClick(ItemClickEvent itemClickEvent) {
                 int queryID = (Integer) itemClickEvent.getItemId();
                 Query query = TicketSystemUI.getDaoFactory().getQueryDao().getQuery(queryID);
-                getUI().addWindow(new QueryInfoWindow(query));
+
+                if(getUser().getRoleForCourse(courseID).equals(Role.TA))
+                {
+                    getUI().addWindow(new QueryInfoWindow(query));
+                }
+                else
+                {
+                    getUI().addWindow(new ConvenerQueryInfoWindow(query));
+                }
             }
         });
 

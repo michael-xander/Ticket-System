@@ -8,6 +8,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Query;
 import view.TicketSystemUI;
+import view.dashboard.convener.windows.ConvenerQueryInfoWindow;
 import view.dashboard.convener.windows.CreateQueryReplyWindow;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class AdminDefaultQueryView extends AdminQueryTableView
             public void itemClick(ItemClickEvent itemClickEvent) {
                 int queryID = (Integer) itemClickEvent.getItemId();
                 Query query = TicketSystemUI.getDaoFactory().getQueryDao().getQuery(queryID);
-                getUI().addWindow(new CreateQueryReplyWindow(query));
+                getUI().addWindow(new ConvenerQueryInfoWindow(query));
             }
         });
 
