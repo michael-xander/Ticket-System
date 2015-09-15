@@ -210,13 +210,13 @@ public class QueryDaoImpl extends Dao implements QueryDao, Serializable {
             if(courseID == null) {
                 preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE SenderID = ? OR PrivacySetting = ?");
                 preparedStatement.setString(1, userID);
-                preparedStatement.setString(2, Query.Privacy.GENERAL.toString());
+                preparedStatement.setString(2, Query.Privacy.PUBLIC.toString());
             }
             else
             {
                 preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE (SenderID = ? OR PrivacySetting = ?) AND CourseID = ?");
                 preparedStatement.setString(1, userID);
-                preparedStatement.setString(2, Query.Privacy.GENERAL.toString());
+                preparedStatement.setString(2, Query.Privacy.PUBLIC.toString());
                 preparedStatement.setString(3, courseID);
             }
 

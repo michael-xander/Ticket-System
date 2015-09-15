@@ -75,16 +75,13 @@ public class Query extends Message implements Serializable {
 
 
     public enum Status {
-        OPENED,
         PENDING,
-        VIEWED,
-        REPLIED,
-        ARCHIVED
+        REPLIED
     }
 
     public enum Privacy{
-        GENERAL,
         PUBLIC,
-        PRIVATE
+        ADMINISTRATOR,
+        CONVENER
     }
 }
