@@ -86,14 +86,14 @@ public class CreateQueryWindow extends CreateWindow
 
                     switch((String) privacyComboBox.getValue())
                     {
-                        case "General" :
-                            query.setPrivacy(Query.Privacy.GENERAL);
-                            break;
                         case "Public" :
                             query.setPrivacy(Query.Privacy.PUBLIC);
                             break;
-                        case "Private" :
-                            query.setPrivacy(Query.Privacy.PRIVATE);
+                        case "Administrator" :
+                            query.setPrivacy(Query.Privacy.ADMINISTRATOR);
+                            break;
+                        case "Convener" :
+                            query.setPrivacy(Query.Privacy.CONVENER);
                             break;
                     }
 
@@ -209,9 +209,9 @@ public class CreateQueryWindow extends CreateWindow
     private List<String> getAvailablePrivacySettings()
     {
         ArrayList<String> privacySettings = new ArrayList<>();
-        privacySettings.add("General");
         privacySettings.add("Public");
-        privacySettings.add("Private");
+        privacySettings.add("Administrator");
+        privacySettings.add("Convener");
         return privacySettings;
     }
 }
