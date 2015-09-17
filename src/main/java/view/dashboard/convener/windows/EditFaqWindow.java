@@ -22,7 +22,7 @@ public class EditFaqWindow extends CreateWindow {
     public EditFaqWindow(final Faq faq)
     {
         this.faq = faq;
-        setCaption("View Faq");
+        setCaption("Edit Faq");
         setModal(true);
         setClosable(false);
         setResizable(false);

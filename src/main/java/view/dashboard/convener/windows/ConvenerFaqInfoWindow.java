@@ -1,25 +1,23 @@
 package view.dashboard.convener.windows;
 
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import model.domain.category.Category;
+import model.domain.faq.Faq;
 import view.dashboard.InfoWindow;
 
 /**
- * A popup window that gives shows relevant information for a category
- * Created by Michael on 2015/08/30.
+ * A simple window to see the information for an FAQ for a convener
+ * Created by Michael on 2015/09/17.
  */
+public class ConvenerFaqInfoWindow extends InfoWindow{
 
-public class CategoryInfoWindow extends InfoWindow
-{
-    private final Category category;
+    private final Faq faq;
 
-    public CategoryInfoWindow(final Category category)
+    public ConvenerFaqInfoWindow(final Faq faq)
     {
-        this.category = category;
-        setCaption("Category Information");
+        this.faq = faq;
+        setCaption("View Faq");
         setModal(true);
         setClosable(false);
         setResizable(false);
@@ -33,21 +31,17 @@ public class CategoryInfoWindow extends InfoWindow
         view.setMargin(true);
         view.setSpacing(true);
 
-        Label title = new Label(category.getCategoryName());
+        Label title = new Label(faq.getQuestion());
         title.addStyleName(ValoTheme.LABEL_H3);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         view.addComponent(title);
 
-        Label description = new Label(category.getCategoryDescription());
-        view.addComponent(description);
+        Label content = new Label(faq.getAnswer());
+        view.addComponent(content);
 
-        if(category.getTemplateAnswer() != null && !category.getTemplateAnswer().isEmpty())
-        {
-            Label answerHeading = new Label("Template Answer:");
-            Label templateAnswer = new Label(category.getTemplateAnswer(), ContentMode.HTML);
-            view.addComponent(answerHeading);
-            view.addComponent(templateAnswer);
-        }
+        Label date = new Label("(last modified " + faq.getDate().toString() + ")");
+        date.addStyleName(ValoTheme.LABEL_SMALL);
+        view.addComponent(date);
 
         view.addComponent(buildFooter());
         return view;
@@ -70,21 +64,18 @@ public class CategoryInfoWindow extends InfoWindow
         });
         okay.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
 
-        Button edit = new Button("Edit Category");
+        Button edit = new Button("Edit Faq");
         edit.addStyleName(ValoTheme.BUTTON_PRIMARY);
         edit.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 close();
-                UI.getCurrent().addWindow(new EditCategoryWindow(category));
+                UI.getCurrent().addWindow(new EditFaqWindow(faq));
             }
         });
         footer.addComponents(okay, edit);
         footer.setExpandRatio(okay, 1);
         footer.setComponentAlignment(okay, Alignment.TOP_RIGHT);
         return footer;
-
     }
-
-
 }
