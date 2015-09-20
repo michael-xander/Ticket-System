@@ -24,7 +24,28 @@ public class TemplateAnswer implements Serializable{
         this.answer = answer;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+
+    public void setID(int ID)
+    {
+        this.ID = ID;
+    }
+
+    public int getID()
+    {
+        return ID;
+    }
+    private int ID;
     private String question;
     private String answer;
+
+    private String user;
 
 }
