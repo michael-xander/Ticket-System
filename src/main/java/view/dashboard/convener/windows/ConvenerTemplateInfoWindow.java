@@ -77,6 +77,7 @@ public class ConvenerTemplateInfoWindow extends InfoWindow {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 close();
+                UI.getCurrent().addWindow(new EditTemplateWindow(template));
             }
         });
         footer.addComponents(okay, edit);
