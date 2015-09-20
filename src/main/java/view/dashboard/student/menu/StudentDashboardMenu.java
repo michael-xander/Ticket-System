@@ -3,6 +3,7 @@ package view.dashboard.student.menu;
 
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import model.domain.user.Role;
 import view.dashboard.DashboardMenu;
 
 /**
@@ -36,6 +37,16 @@ public class StudentDashboardMenu extends DashboardMenu
                     UI.getCurrent().getNavigator().navigateTo(courseID);
                 }
             });
+
+            if(getUser().getRoleForCourse(courseID).equals(Role.TA))
+            {
+                course.addItem("Templates", new MenuBar.Command() {
+                    @Override
+                    public void menuSelected(MenuBar.MenuItem menuItem) {
+                        UI.getCurrent().getNavigator().navigateTo("templates");
+                    }
+                });
+            }
 
             course.addItem("FAQs", new MenuBar.Command() {
                 @Override

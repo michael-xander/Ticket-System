@@ -9,6 +9,7 @@ import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
 import view.dashboard.convener.views.AdminCourseQueryView;
+import view.dashboard.convener.views.AdminTemplatesTableView;
 import view.dashboard.student.views.StudentCourseFaqView;
 import view.dashboard.student.views.StudentCourseQueryView;
 import view.dashboard.student.views.StudentDefaultQueryView;
@@ -43,6 +44,13 @@ public class StudentViewNavigator extends TicketSystemNavigator
                     {
                         return new AdminCourseQueryView(courseID);
                     }
+                };
+                addProvider(viewProvider);
+
+                viewProvider = new ClassBasedViewProvider("templates", AdminTemplatesTableView.class)
+                {
+                    @Override
+                    public View getView(final String viewName){return new AdminTemplatesTableView();}
                 };
                 addProvider(viewProvider);
             }
