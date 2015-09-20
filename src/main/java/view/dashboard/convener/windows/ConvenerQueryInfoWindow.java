@@ -21,6 +21,7 @@ public class ConvenerQueryInfoWindow  extends InfoWindow{
 
     private final Query query;
     private Label category;
+    private boolean refresh = false;
     public ConvenerQueryInfoWindow(final Query query)
     {
         this.query = query;
@@ -109,7 +110,10 @@ public class ConvenerQueryInfoWindow  extends InfoWindow{
             public void buttonClick(Button.ClickEvent clickEvent) {
 
                 close();
-                UI.getCurrent().getNavigator().navigateTo(query.getCourseID());
+                if(refresh)
+                {
+                    UI.getCurrent().getNavigator().navigateTo(query.getCourseID());
+                }
             }
         });
         ok.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
@@ -162,6 +166,7 @@ public class ConvenerQueryInfoWindow  extends InfoWindow{
         category.setValue(
                 "<u>Query Category</u>: " + query.getCategoryName()
         );
+        refresh = true;
     }
 
     private Collection<Reply> getQueryReplies()
