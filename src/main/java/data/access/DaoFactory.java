@@ -1,5 +1,7 @@
 package data.access;
 
+import data.access.answer.template.TemplateAnswerDao;
+import data.access.answer.template.TemplateAnswerDaoImpl;
 import data.access.category.CategoryDao;
 import data.access.category.CategoryDaoImpl;
 import data.access.course.CourseDao;
@@ -43,6 +45,7 @@ public class DaoFactory implements Serializable
     private ReplyDao replyDao;
     private CategoryDao categoryDao;
     private FaqDao faqDao;
+    private TemplateAnswerDao templateAnswerDao;
 
     public DaoFactory(String DbUrl, String userName, String password)
     {
@@ -76,6 +79,18 @@ public class DaoFactory implements Serializable
                 logger.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
+    }
+
+    /**
+     * Get the Template DAO instance
+     * @return - Template DAO instance
+     */
+    public TemplateAnswerDao getTemplateAnswerDao()
+    {
+        if(templateAnswerDao == null)
+            templateAnswerDao = new TemplateAnswerDaoImpl(dbUrl, userName, password);
+
+        return  templateAnswerDao;
     }
 
     /**
