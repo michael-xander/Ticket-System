@@ -14,10 +14,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A class that implements the TemplateAnswerDao interface
+ * A class that implements the TemplateAnswerDAO interface
  * Created by Michael on 2015/09/20.
  */
-public class TemplateAnswerDaoImpl extends Dao implements TemplateAnswerDao, Serializable{
+public class TemplateAnswerDaoImpl extends Dao implements TemplateAnswerDAO, Serializable{
 
     private transient Logger logger = Logger.getLogger(TemplateAnswerDaoImpl.class.getName());
 

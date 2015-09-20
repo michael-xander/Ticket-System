@@ -147,7 +147,7 @@ public class AdminTemplatesTableView extends UserTableView{
      */
     public Collection<TemplateAnswer> getTemplates()
     {
-        return TicketSystemUI.getDaoFactory().getTemplateAnswerDao().getTemplateAnswersForUser(getUser().getUserID());
+        return TicketSystemUI.getDaoFactory().getTemplateAnswerDAO().getTemplateAnswersForUser(getUser().getUserID());
     }
 
     /**
