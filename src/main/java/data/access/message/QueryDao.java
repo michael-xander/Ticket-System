@@ -25,6 +25,8 @@ public interface QueryDao {
 
     void deleteQuery(int queryID);
 
+    void updateQuery(Query query);
+
     void updateQueryRole(Query query);
 
     void updateQueryForwardStatus(Query query);
