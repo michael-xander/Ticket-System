@@ -147,7 +147,7 @@ public class ConvenerQueryInfoWindow  extends InfoWindow{
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 close();
-                UI.getCurrent().addWindow(new CreateQueryReplyWindow(query));
+                UI.getCurrent().addWindow(new ConvenerQueryReplyWindow(query));
             }
         });
         footer.addComponents(ok, changeCategory,forward, addMessage);
