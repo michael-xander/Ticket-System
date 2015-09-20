@@ -11,6 +11,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import model.domain.answer.template.TemplateAnswer;
 import view.TicketSystemUI;
 import view.dashboard.UserTableView;
+import view.dashboard.convener.windows.CreateTemplateWindow;
 
 import java.util.Collection;
 
@@ -134,7 +135,7 @@ public class AdminTemplatesTableView extends UserTableView{
         createTemplate.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-
+                UI.getCurrent().addWindow(new CreateTemplateWindow());
             }
         });
 

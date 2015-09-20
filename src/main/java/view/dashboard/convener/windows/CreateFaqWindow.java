@@ -91,13 +91,13 @@ public class CreateFaqWindow extends CreateWindow
         question.setComponentError(null);
         richTextArea.setComponentError(null);
 
-        if(question.getValue().isEmpty())
+        if(question.getValue().trim().isEmpty())
         {
             isValid = false;
             question.setComponentError(new UserError("A question has to be specified for an FAQ"));
         }
 
-        if(richTextArea.getValue().isEmpty())
+        if(richTextArea.getValue().trim().isEmpty())
         {
             isValid = false;
             richTextArea.setComponentError(new UserError("An answer has to be specified for an FAQ"));
