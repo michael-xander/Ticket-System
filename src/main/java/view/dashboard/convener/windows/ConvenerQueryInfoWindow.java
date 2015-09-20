@@ -20,6 +20,7 @@ import java.util.Collection;
 public class ConvenerQueryInfoWindow  extends InfoWindow{
 
     private final Query query;
+    private Label category;
     public ConvenerQueryInfoWindow(final Query query)
     {
         this.query = query;
@@ -27,7 +28,7 @@ public class ConvenerQueryInfoWindow  extends InfoWindow{
         setModal(true);
         setClosable(false);
         setResizable(false);
-        setWidth("40%");
+        setWidth("50%");
         setContent(buildContent());
     }
 
@@ -40,7 +41,7 @@ public class ConvenerQueryInfoWindow  extends InfoWindow{
         if(query.isForwarded())
         {
             Label forwarded = new Label("This query has been marked as forwarded");
-            forwarded.addStyleName(ValoTheme.LABEL_H2);
+            forwarded.addStyleName(ValoTheme.LABEL_H3);
             forwarded.addStyleName(ValoTheme.LABEL_NO_MARGIN);
             view.addComponent(forwarded);
         }
@@ -51,6 +52,12 @@ public class ConvenerQueryInfoWindow  extends InfoWindow{
         title.addStyleName(ValoTheme.LABEL_H3);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         view.addComponent(title);
+
+        category = new Label(
+                "<u>Query Category</u>: " + query.getCategoryName(),
+                ContentMode.HTML
+        );
+        view.addComponent(category);
 
         Label content = new Label(query.getText(), ContentMode.HTML);
         view.addComponent(content);
@@ -100,10 +107,21 @@ public class ConvenerQueryInfoWindow  extends InfoWindow{
         ok.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+
                 close();
+                UI.getCurrent().getNavigator().navigateTo(query.getCourseID());
             }
         });
         ok.setClickShortcut(ShortcutAction.KeyCode.ESCAPE, null);
+
+        Button changeCategory = new Button("Update Category");
+        changeCategory.setDescription("Update the category of this query");
+        changeCategory.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                UI.getCurrent().addWindow(new UpdateQueryCategoryWindow(query, ConvenerQueryInfoWindow.this));
+            }
+        });
 
         Button forward = new Button("Forward Query");
         forward.setDescription("Queries will be forwarded to the TA but will still appear as pending till dealt with");
@@ -132,10 +150,18 @@ public class ConvenerQueryInfoWindow  extends InfoWindow{
                 UI.getCurrent().addWindow(new CreateQueryReplyWindow(query));
             }
         });
-        footer.addComponents(ok, forward, addMessage);
+        footer.addComponents(ok, changeCategory,forward, addMessage);
         footer.setExpandRatio(ok, 1);
         footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
         return footer;
+    }
+
+    public void updateQueryCategoryLabel()
+    {
+        category.setContentMode(ContentMode.HTML);
+        category.setValue(
+                "<u>Query Category</u>: " + query.getCategoryName()
+        );
     }
 
     private Collection<Reply> getQueryReplies()

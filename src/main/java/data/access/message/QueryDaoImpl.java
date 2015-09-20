@@ -291,6 +291,47 @@ public class QueryDaoImpl extends Dao implements QueryDao, Serializable {
     }
 
     /**
+     * Updates a query in the database
+     * @param query to be updated
+     */
+    @Override
+    public void updateQuery(Query query)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            connection = getConnection();
+            preparedStatement = connection.prepareStatement(
+                "UPDATE Queries SET CategoryName = ?, QueryStatus = ?, ForwardedStatus = ? WHERE QueryID = ?"
+            );
+            preparedStatement.setString(1, query.getCategoryName());
+            preparedStatement.setString(2, query.getStatus().toString());
+            preparedStatement.setString(3, Boolean.toString(query.isForwarded()));
+            preparedStatement.setInt(4, query.getMessageID());
+
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException ex)
+        {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            catch (SQLException ex)
+            {
+                logger.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
+
+    /**
      * A method that updates the forwarding status of the given Query in the database
      * @param query - the Query with the new forwarding status
      */
