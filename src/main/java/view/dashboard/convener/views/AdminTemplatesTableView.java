@@ -11,6 +11,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import model.domain.answer.template.TemplateAnswer;
 import view.TicketSystemUI;
 import view.dashboard.UserTableView;
+import view.dashboard.convener.windows.ConvenerTemplateInfoWindow;
 import view.dashboard.convener.windows.CreateTemplateWindow;
 
 import java.util.Collection;
@@ -33,7 +34,9 @@ public class AdminTemplatesTableView extends UserTableView{
         super.getTable().addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(ItemClickEvent itemClickEvent) {
-
+                int templateID = (Integer) itemClickEvent.getItemId();
+                TemplateAnswer template = TicketSystemUI.getDaoFactory().getTemplateAnswerDAO().getTemplateAnswer(templateID);
+                getUI().addWindow(new ConvenerTemplateInfoWindow(template));
             }
         });
     }
