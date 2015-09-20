@@ -11,6 +11,7 @@ import view.dashboard.CreateWindow;
 import java.time.LocalDate;
 
 /**
+ * A window to edit the contents of an FAQ
  * Created by marcelo on 01-09-2015.
  */
 public class EditFaqWindow extends CreateWindow {

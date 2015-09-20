@@ -6,7 +6,6 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import model.domain.message.Message;
 import model.domain.message.Query;
 import model.domain.message.Reply;
 import model.domain.user.Role;
@@ -20,7 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A window through which a lecturer can reply to a query
+ * A window through which a user can reply to a query
  * Created by Michael on 2015/09/12.
  */
 public class CreateQueryReplyWindow extends CreateWindow {
@@ -31,6 +30,7 @@ public class CreateQueryReplyWindow extends CreateWindow {
     public CreateQueryReplyWindow(final Query query)
     {
         this.query = query;
+
         setCaption("Create Reply");
         setModal(true);
         setClosable(false);

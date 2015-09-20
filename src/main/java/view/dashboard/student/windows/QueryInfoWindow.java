@@ -7,9 +7,11 @@ import com.vaadin.ui.themes.ValoTheme;
 import model.domain.message.Message;
 import model.domain.message.Query;
 import model.domain.message.Reply;
+import model.domain.user.Role;
 import model.domain.user.User;
 import view.TicketSystemUI;
 import view.dashboard.InfoWindow;
+import view.dashboard.convener.windows.ConvenerQueryReplyWindow;
 import view.dashboard.convener.windows.CreateQueryReplyWindow;
 
 import java.util.Collection;
@@ -107,7 +109,15 @@ public class QueryInfoWindow extends InfoWindow
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 close();
-                UI.getCurrent().addWindow(new CreateQueryReplyWindow(query));
+                if(getUser().getRoleForCourse(query.getCourseID()).equals(Role.TA))
+                {
+                    UI.getCurrent().addWindow(new ConvenerQueryReplyWindow(query));
+                }
+                else
+                {
+                    UI.getCurrent().addWindow(new CreateQueryReplyWindow(query));
+
+                }
             }
         });
         footer.addComponents(okay, addMessage);

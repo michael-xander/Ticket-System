@@ -7,11 +7,7 @@ import com.vaadin.ui.ComponentContainer;
 import model.domain.user.User;
 import view.TicketSystemNavigator;
 import view.TicketSystemUI;
-import view.dashboard.convener.views.AdminCourseCategoryView;
-import view.dashboard.convener.views.AdminCourseFaqView;
-import view.dashboard.convener.views.AdminCourseQueryView;
-import view.dashboard.convener.views.AdminDefaultQueryView;
-import view.dashboard.convener.views.AdminFaqTableView;
+import view.dashboard.convener.views.*;
 
 /**
  * A navigator for the different views available to the course convener
@@ -31,6 +27,7 @@ public class ConvenerViewNavigator extends TicketSystemNavigator {
     private void initViews()
     {
         addProvider(initDashboardViewProvider());
+        addProvider(initTemplatesViewProvider());
 
         for(String courseID : user.getCourseIDs())
         {
@@ -75,6 +72,16 @@ public class ConvenerViewNavigator extends TicketSystemNavigator {
             }
         };
 
+        return viewProvider;
+    }
+
+    private ViewProvider initTemplatesViewProvider()
+    {
+        ViewProvider viewProvider = new ClassBasedViewProvider("templates", AdminTemplatesTableView.class)
+        {
+            @Override
+            public View getView(final String viewName){return new AdminTemplatesTableView();}
+        };
         return viewProvider;
     }
 }

@@ -3,11 +3,15 @@ package view.dashboard.convener.windows;
 import com.vaadin.data.Property;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
+import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import model.domain.answer.template.TemplateAnswer;
 import model.domain.message.Query;
 import model.domain.message.Reply;
+import model.domain.user.Role;
+import model.domain.user.User;
 import view.TicketSystemUI;
 import view.dashboard.CreateWindow;
 
@@ -18,54 +22,55 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * A window that enables a user to reply to multiple queries
- * Created by Michael on 2015/09/12.
+ * A window through which a convener can reply to a query
+ * Created by Michael on 2015/09/20.
  */
-public class CreateMultiQueryReplyWindow extends CreateWindow {
-    private final Collection<Query> queries;
+public class ConvenerQueryReplyWindow extends CreateWindow {
+    private final Query query;
     private RichTextArea richTextArea;
     private ComboBox templateComboBox;
     private List<TemplateAnswer> templates;
 
-    public CreateMultiQueryReplyWindow(final Collection<Query> queries)
-    {
-        this.queries = queries;
+    public ConvenerQueryReplyWindow(final Query query) {
+        this.query = query;
         templates = TicketSystemUI.getDaoFactory().getTemplateAnswerDAO().getTemplateAnswersForUser(getUser().getUserID());
 
         setCaption("Create Reply");
         setModal(true);
         setClosable(false);
         setResizable(false);
-        setWidth("50%");
+        setWidth("40%");
         setContent(buildContent());
         setSaveButtonFunction();
     }
 
     @Override
-    public void setSaveButtonFunction()
-    {
+    public void setSaveButtonFunction() {
         getSaveButton().setCaption("Reply");
         getSaveButton().addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 getSaveButton().setComponentError(null);
-                if(inputIsValid())
-                {
+                if (inputIsValid()) {
+
+                    if(getUser().getRoleForCourse(query.getCourseID()).equals(Role.STUDENT))
+                    {
+                        query.setStatus(Query.Status.PENDING);
+                    }
+                    else
+                    {
+                        query.setStatus(Query.Status.REPLIED);
+                    }
+
+                    TicketSystemUI.getDaoFactory().getQueryDao().updateQueryRole(query);
+
                     Reply reply = new Reply();
                     reply.setText(richTextArea.getValue());
-                    reply.setSender(getUser().getUserID());
+                    reply.setSender((String) VaadinSession.getCurrent().getAttribute("userID"));
                     reply.setDate(LocalDate.now());
 
                     Set<Integer> queryIds = new HashSet<>();
-                    Query tempQuery = null;
-                    for(Query query : queries)
-                    {
-                        queryIds.add(query.getMessageID());
-                        query.setStatus(Query.Status.REPLIED);
-                        TicketSystemUI.getDaoFactory().getQueryDao().updateQueryRole(query);
-                        tempQuery = query;
-                    }
-
+                    queryIds.add(query.getMessageID());
                     reply.setQueryIds(queryIds);
                     TicketSystemUI.getDaoFactory().getReplyDao().addReply(reply);
 
@@ -73,15 +78,14 @@ public class CreateMultiQueryReplyWindow extends CreateWindow {
                     notification.setDescription("Your reply has successfully been submitted.");
                     notification.setDelayMsec(2500);
                     notification.show(Page.getCurrent());
-                    UI.getCurrent().getNavigator().navigateTo(tempQuery.getCourseID());
+                    UI.getCurrent().getNavigator().navigateTo(query.getCourseID());
                     close();
-                }
-                else
-                {
+                } else {
                     getSaveButton().setComponentError(new UserError("Input provided is invalid"));
                 }
             }
         });
+
     }
 
     @Override
@@ -104,25 +108,40 @@ public class CreateMultiQueryReplyWindow extends CreateWindow {
         view.setMargin(true);
         view.setSpacing(true);
 
-        for(Query query : queries)
+        Label title = new Label(query.getSubject());
+        title.setCaptionAsHtml(true);
+        title.setCaption("<u>Query</u>");
+        title.addStyleName(ValoTheme.LABEL_H3);
+        title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
+        view.addComponent(title);
+
+        Label content = new Label(query.getText(), ContentMode.HTML);
+        view.addComponent(content);
+
+        Collection<Reply> replies = getQueryReplies();
+
+        if(!replies.isEmpty())
         {
-            VerticalLayout tempView = new VerticalLayout();
-            tempView.setSpacing(true);
+            Label conversationLabel = new Label("<u>Conversation</u>", ContentMode.HTML);
+            view.addComponent(conversationLabel);
+        }
 
-            Label author = new Label("Query by: " + query.getSenderID());
-            author.addStyleName(ValoTheme.LABEL_H2);
-            author.addStyleName(ValoTheme.LABEL_NO_MARGIN);
-            tempView.addComponent(author);
+        for(Reply reply : replies)
+        {
+            User user;
 
-            Label title = new Label("Subject: " + query.getSubject());
-            title.addStyleName(ValoTheme.LABEL_H3);
-            title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
-            tempView.addComponent(title);
+            if(reply.getSenderID().equals(getUser().getUserID()))
+            {
+                user = getUser();
+            }
+            else
+            {
+                user = TicketSystemUI.getDaoFactory().getUserDao().getUser(reply.getSenderID());
+            }
 
-            Label content = new Label(query.getText());
-            tempView.addComponent(content);
-
-            view.addComponent(tempView);
+            Label replyLabel = new Label(reply.getText(), ContentMode.HTML);
+            replyLabel.setCaption(user.getFirstName() + " " + user.getLastName() + ":");
+            view.addComponent(replyLabel);
         }
 
         templateComboBox = new ComboBox("Templates");
@@ -136,11 +155,16 @@ public class CreateMultiQueryReplyWindow extends CreateWindow {
             @Override
             public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
 
-                if (valueChangeEvent.getProperty().getValue() == null) {
+                if(valueChangeEvent.getProperty().getValue() == null)
+                {
                     richTextArea.setValue("");
-                } else {
-                    for (TemplateAnswer templateAnswer : templates) {
-                        if (valueChangeEvent.getProperty().getValue().equals(templateAnswer.getID())) {
+                }
+                else
+                {
+                    for(TemplateAnswer templateAnswer : templates)
+                    {
+                        if(valueChangeEvent.getProperty().getValue().equals(templateAnswer.getID()))
+                        {
                             richTextArea.setValue(templateAnswer.getAnswer());
                         }
                     }
@@ -156,4 +180,10 @@ public class CreateMultiQueryReplyWindow extends CreateWindow {
         view.addComponent(buildFooter());
         return view;
     }
+
+    private Collection<Reply> getQueryReplies()
+    {
+        return TicketSystemUI.getDaoFactory().getReplyDao().getAllRepliesForQueryID(query.getMessageID());
+    }
 }
+
