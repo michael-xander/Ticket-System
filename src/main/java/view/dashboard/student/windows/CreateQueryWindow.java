@@ -76,8 +76,8 @@ public class CreateQueryWindow extends CreateWindow
                 {
 
                     Query query = new Query();
-                    query.setSubject(subject.getValue());
-                    query.setText(richTextArea.getValue());
+                    query.setSubject(subject.getValue().trim());
+                    query.setText(richTextArea.getValue().trim());
                     query.setDate(LocalDate.now());
                     query.setCourseID(courseID);
                     query.setSender((String) VaadinSession.getCurrent().getAttribute("userID"));
@@ -147,13 +147,13 @@ public class CreateQueryWindow extends CreateWindow
             categoryComboBox.setComponentError(new UserError("A newly created query should fall under a category"));
         }
 
-        if(subject.getValue().isEmpty())
+        if(subject.getValue().trim().isEmpty())
         {
             isValid = false;
             subject.setComponentError(new UserError("A newly created query should have a subject"));
         }
 
-        if(richTextArea.getValue().isEmpty())
+        if(richTextArea.getValue().trim().isEmpty())
         {
             isValid = false;
             richTextArea.setComponentError(new UserError("A newly created query should have content"));

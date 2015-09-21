@@ -63,8 +63,8 @@ public class CreateFaqWindow extends CreateWindow
                     if(inputIsValid())
                     {
                         Faq faq = new Faq();
-                        faq.setQuestion(question.getValue());
-                        faq.setAnswer(richTextArea.getValue());
+                        faq.setQuestion(question.getValue().trim());
+                        faq.setAnswer(richTextArea.getValue().trim());
                         faq.setDate(LocalDate.now());
                         faq.setCourseID(courseID);
 
