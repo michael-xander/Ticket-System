@@ -52,7 +52,7 @@ public class CreateMultiQueryReplyWindow extends CreateWindow {
                 if(inputIsValid())
                 {
                     Reply reply = new Reply();
-                    reply.setText(richTextArea.getValue());
+                    reply.setText(richTextArea.getValue().trim());
                     reply.setSender(getUser().getUserID());
                     reply.setDate(LocalDate.now());
 

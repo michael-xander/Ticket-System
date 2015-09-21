@@ -65,7 +65,7 @@ public class ConvenerQueryReplyWindow extends CreateWindow {
                     TicketSystemUI.getDaoFactory().getQueryDao().updateQueryRole(query);
 
                     Reply reply = new Reply();
-                    reply.setText(richTextArea.getValue());
+                    reply.setText(richTextArea.getValue().trim());
                     reply.setSender((String) VaadinSession.getCurrent().getAttribute("userID"));
                     reply.setDate(LocalDate.now());
 

@@ -68,8 +68,8 @@ public class EditFaqWindow extends CreateWindow {
                 getSaveButton().setComponentError(null);
                 if(inputIsValid())
                 {
-                    faq.setQuestion(question.getValue());
-                    faq.setAnswer(richTextArea.getValue());
+                    faq.setQuestion(question.getValue().trim());
+                    faq.setAnswer(richTextArea.getValue().trim());
                     faq.setDate(LocalDate.now());
                     faq.setCourseID(faq.getCourseID());
 
@@ -96,7 +96,7 @@ public class EditFaqWindow extends CreateWindow {
         question.setComponentError(null);
         richTextArea.setComponentError(null);
 
-        if(question.getValue().isEmpty())
+        if(question.getValue().trim().isEmpty())
         {
             isValid = false;
             question.setComponentError(new UserError("A question has to be specified for an FAQ"));

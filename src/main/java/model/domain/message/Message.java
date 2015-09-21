@@ -57,15 +57,6 @@ public class Message implements Serializable,Comparable {
     }
 
     @Override
-    public Message clone() throws CloneNotSupportedException {
-        try {
-            return this.clone();
-        } catch (Exception ex) {
-            throw new CloneNotSupportedException();
-        }
-    }
-
-    @Override
     public boolean equals(Object object)
     {
         if(object == null || !object.getClass().equals(this.getClass()))

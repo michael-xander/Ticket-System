@@ -45,10 +45,10 @@ public class CreateCategoryWindow extends CreateWindow
                 if(inputIsValid())
                 {
                     Category category = new Category();
-                    category.setCategoryName(name.getValue());
-                    category.setCategoryDescription(description.getValue());
+                    category.setCategoryName(name.getValue().trim());
+                    category.setCategoryDescription(description.getValue().trim());
                     category.setCourse(courseID);
-                    category.setTemplateAnswer(templateAnswer.getValue());
+                    category.setTemplateAnswer(templateAnswer.getValue().trim());
                     TicketSystemUI.getDaoFactory().getCategoryDao().addCategory(category);
 
                     Notification notification = new Notification("Category created", Notification.Type.HUMANIZED_MESSAGE);
@@ -79,7 +79,7 @@ public class CreateCategoryWindow extends CreateWindow
         name.setComponentError(null);
         description.setComponentError(null);
 
-        if(name.getValue().isEmpty())
+        if(name.getValue().trim().isEmpty())
         {
             isValid = false;
             name.setComponentError(new UserError("A new category should have a name!"));
@@ -96,7 +96,7 @@ public class CreateCategoryWindow extends CreateWindow
             }
         }
 
-        if(description.getValue().isEmpty())
+        if(description.getValue().trim().isEmpty())
         {
             isValid = false;
             description.setComponentError(new UserError("A new category should have a description!"));

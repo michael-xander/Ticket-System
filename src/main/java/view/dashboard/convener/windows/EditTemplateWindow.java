@@ -31,7 +31,7 @@ public class EditTemplateWindow extends CreateWindow
     }
 
     /**
-     * Set the funtionality of the save button
+     * Set the functionality of the save button
      */
     @Override
     public void setSaveButtonFunction() {
