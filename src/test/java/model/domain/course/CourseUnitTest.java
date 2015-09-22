@@ -1,6 +1,5 @@
 package model.domain.course;
 
-import model.domain.course.Course;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -8,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * CourseUnitTest.java
- * A class to test the funct
+ * A class to contains the unit tests of the Course class
  * Created by Michael on 2015/08/07.
  */
 public class CourseUnitTest

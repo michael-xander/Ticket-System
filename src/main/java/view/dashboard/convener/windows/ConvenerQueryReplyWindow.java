@@ -1,11 +1,13 @@
 package view.dashboard.convener.windows;
 
+import com.vaadin.data.Property;
 import com.vaadin.server.Page;
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import model.domain.answer.template.TemplateAnswer;
 import model.domain.message.Query;
 import model.domain.message.Reply;
 import model.domain.user.Role;
@@ -16,20 +18,22 @@ import view.dashboard.CreateWindow;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
- * A window through which a user can reply to a query
- * Created by Michael on 2015/09/12.
+ * A window through which a convener can reply to a query
+ * Created by Michael on 2015/09/20.
  */
-public class CreateQueryReplyWindow extends CreateWindow {
-
+public class ConvenerQueryReplyWindow extends CreateWindow {
     private final Query query;
     private RichTextArea richTextArea;
+    private ComboBox templateComboBox;
+    private List<TemplateAnswer> templates;
 
-    public CreateQueryReplyWindow(final Query query)
-    {
+    public ConvenerQueryReplyWindow(final Query query) {
         this.query = query;
+        templates = TicketSystemUI.getDaoFactory().getTemplateAnswerDAO().getTemplateAnswersForUser(getUser().getUserID());
 
         setCaption("Create Reply");
         setModal(true);
@@ -140,6 +144,35 @@ public class CreateQueryReplyWindow extends CreateWindow {
             view.addComponent(replyLabel);
         }
 
+        templateComboBox = new ComboBox("Templates");
+        templateComboBox.setWidth("100%");
+        for(TemplateAnswer templateAnswer : templates)
+        {
+            templateComboBox.addItem(templateAnswer.getID());
+            templateComboBox.setItemCaption(templateAnswer.getID(), templateAnswer.getQuestion());
+        }
+        templateComboBox.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+
+                if(valueChangeEvent.getProperty().getValue() == null)
+                {
+                    richTextArea.setValue("");
+                }
+                else
+                {
+                    for(TemplateAnswer templateAnswer : templates)
+                    {
+                        if(valueChangeEvent.getProperty().getValue().equals(templateAnswer.getID()))
+                        {
+                            richTextArea.setValue(templateAnswer.getAnswer());
+                        }
+                    }
+                }
+            }
+        });
+        view.addComponent(templateComboBox);
+
         richTextArea = new RichTextArea("Reply");
         richTextArea.setWidth("100%");
         view.addComponent(richTextArea);
@@ -153,3 +186,4 @@ public class CreateQueryReplyWindow extends CreateWindow {
         return TicketSystemUI.getDaoFactory().getReplyDao().getAllRepliesForQueryID(query.getMessageID());
     }
 }
+

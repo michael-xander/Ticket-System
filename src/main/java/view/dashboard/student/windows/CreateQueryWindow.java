@@ -76,8 +76,8 @@ public class CreateQueryWindow extends CreateWindow
                 {
 
                     Query query = new Query();
-                    query.setSubject(subject.getValue());
-                    query.setText(richTextArea.getValue());
+                    query.setSubject(subject.getValue().trim());
+                    query.setText(richTextArea.getValue().trim());
                     query.setDate(LocalDate.now());
                     query.setCourseID(courseID);
                     query.setSender((String) VaadinSession.getCurrent().getAttribute("userID"));
@@ -86,14 +86,14 @@ public class CreateQueryWindow extends CreateWindow
 
                     switch((String) privacyComboBox.getValue())
                     {
-                        case "General" :
-                            query.setPrivacy(Query.Privacy.GENERAL);
-                            break;
                         case "Public" :
                             query.setPrivacy(Query.Privacy.PUBLIC);
                             break;
-                        case "Private" :
-                            query.setPrivacy(Query.Privacy.PRIVATE);
+                        case "Administrator" :
+                            query.setPrivacy(Query.Privacy.ADMINISTRATOR);
+                            break;
+                        case "Convener" :
+                            query.setPrivacy(Query.Privacy.CONVENER);
                             break;
                     }
 
@@ -147,13 +147,13 @@ public class CreateQueryWindow extends CreateWindow
             categoryComboBox.setComponentError(new UserError("A newly created query should fall under a category"));
         }
 
-        if(subject.getValue().isEmpty())
+        if(subject.getValue().trim().isEmpty())
         {
             isValid = false;
             subject.setComponentError(new UserError("A newly created query should have a subject"));
         }
 
-        if(richTextArea.getValue().isEmpty())
+        if(richTextArea.getValue().trim().isEmpty())
         {
             isValid = false;
             richTextArea.setComponentError(new UserError("A newly created query should have content"));
@@ -209,9 +209,9 @@ public class CreateQueryWindow extends CreateWindow
     private List<String> getAvailablePrivacySettings()
     {
         ArrayList<String> privacySettings = new ArrayList<>();
-        privacySettings.add("General");
         privacySettings.add("Public");
-        privacySettings.add("Private");
+        privacySettings.add("Administrator");
+        privacySettings.add("Convener");
         return privacySettings;
     }
 }

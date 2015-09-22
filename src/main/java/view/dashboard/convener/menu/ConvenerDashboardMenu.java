@@ -17,6 +17,10 @@ public class ConvenerDashboardMenu extends DashboardMenu
         super();
     }
 
+    /**
+     * Build the menu items on the side bar
+     * @return - the layout containing the menu items
+     */
     @Override
     public Component buildMenuItems() {
         CssLayout menuItemsLayout = new CssLayout();
@@ -55,6 +59,30 @@ public class ConvenerDashboardMenu extends DashboardMenu
             menuItemsLayout.addComponent(courseMenu);
         }
         return menuItemsLayout;
+    }
+
+    @Override
+    public Component buildDashboardMenuItem()
+    {
+        final MenuBar dashboardMenu = new MenuBar();
+        dashboardMenu.addStyleName("user-menu");
+        dashboardMenu.setWidth("100%");
+
+        MenuBar.MenuItem dashboardMenuItem = dashboardMenu.addItem("Dashboard", null);
+
+        dashboardMenuItem.addItem("All Queries", new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                UI.getCurrent().getNavigator().navigateTo("dashboard");
+            }
+        });
+        dashboardMenuItem.addItem("Templates", new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem menuItem) {
+                UI.getCurrent().getNavigator().navigateTo("templates");
+            }
+        });
+        return dashboardMenu;
     }
 
 }

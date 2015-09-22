@@ -93,6 +93,7 @@ public class QueryDaoImpl extends Dao implements QueryDao, Serializable {
         query.setCategoryName(resultSet.getString(7));
         query.setStatus(Query.Status.valueOf(resultSet.getString(8)));
         query.setPrivacy(Query.Privacy.valueOf(resultSet.getString(9)));
+        query.setForwarded(Boolean.parseBoolean(resultSet.getString(10)));
         return query;
     }
 
@@ -209,13 +210,13 @@ public class QueryDaoImpl extends Dao implements QueryDao, Serializable {
             if(courseID == null) {
                 preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE SenderID = ? OR PrivacySetting = ?");
                 preparedStatement.setString(1, userID);
-                preparedStatement.setString(2, Query.Privacy.GENERAL.toString());
+                preparedStatement.setString(2, Query.Privacy.PUBLIC.toString());
             }
             else
             {
                 preparedStatement = connection.prepareStatement("SELECT * FROM Queries WHERE (SenderID = ? OR PrivacySetting = ?) AND CourseID = ?");
                 preparedStatement.setString(1, userID);
-                preparedStatement.setString(2, Query.Privacy.GENERAL.toString());
+                preparedStatement.setString(2, Query.Privacy.PUBLIC.toString());
                 preparedStatement.setString(3, courseID);
             }
 
@@ -290,6 +291,86 @@ public class QueryDaoImpl extends Dao implements QueryDao, Serializable {
     }
 
     /**
+     * Updates a query in the database
+     * @param query to be updated
+     */
+    @Override
+    public void updateQuery(Query query)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            connection = getConnection();
+            preparedStatement = connection.prepareStatement(
+                "UPDATE Queries SET CategoryName = ?, QueryStatus = ?, ForwardedStatus = ? WHERE QueryID = ?"
+            );
+            preparedStatement.setString(1, query.getCategoryName());
+            preparedStatement.setString(2, query.getStatus().toString());
+            preparedStatement.setString(3, Boolean.toString(query.isForwarded()));
+            preparedStatement.setInt(4, query.getMessageID());
+
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException ex)
+        {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+            }
+            catch (SQLException ex)
+            {
+                logger.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
+
+    /**
+     * A method that updates the forwarding status of the given Query in the database
+     * @param query - the Query with the new forwarding status
+     */
+    @Override
+    public void updateQueryForwardStatus(Query query) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try
+        {
+            connection = super.getConnection();
+            preparedStatement = connection.prepareStatement("UPDATE Queries SET ForwardedStatus = ? WHERE QueryID = ?");
+            preparedStatement.setString(1, Boolean.toString(query.isForwarded()));
+            preparedStatement.setInt(2, query.getMessageID());
+            preparedStatement.executeUpdate();
+
+        }
+        catch (SQLException ex)
+        {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        finally
+        {
+            try
+            {
+                if(preparedStatement != null)
+                    preparedStatement.close();
+
+                if(connection != null)
+                    connection.close();
+            }
+            catch(SQLException ex)
+            {
+                logger.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
+
+    /**
      * A method that adds provided Query to the database
      * @param query- Query to be added
      */
@@ -301,7 +382,7 @@ public class QueryDaoImpl extends Dao implements QueryDao, Serializable {
         try
         {
             connection = getConnection();
-            preparedStatement = connection.prepareStatement("INSERT INTO Queries (SenderID, Subject, Content, QueryDate, CourseID, CategoryName, QueryStatus, PrivacySetting) VALUES (?,?,?,?,?,?,?,?)");
+            preparedStatement = connection.prepareStatement("INSERT INTO Queries (SenderID, Subject, Content, QueryDate, CourseID, CategoryName, QueryStatus, PrivacySetting, ForwardedStatus) VALUES (?,?,?,?,?,?,?,?,?)");
             preparedStatement.setString(1, query.getSenderID());
             preparedStatement.setString(2, query.getSubject());
             preparedStatement.setString(3, query.getText());
@@ -310,6 +391,7 @@ public class QueryDaoImpl extends Dao implements QueryDao, Serializable {
             preparedStatement.setString(6, query.getCategoryName());
             preparedStatement.setString(7, query.getStatus().toString());
             preparedStatement.setString(8, query.getPrivacy().toString());
+            preparedStatement.setString(9, Boolean.toString(query.isForwarded()));
             preparedStatement.executeUpdate();
 
         }

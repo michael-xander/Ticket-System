@@ -5,6 +5,7 @@ import com.vaadin.event.ItemClickEvent;
 import model.domain.faq.Faq;
 import view.TicketSystemUI;
 import view.dashboard.UserFaqTableView;
+import view.dashboard.convener.windows.ConvenerFaqInfoWindow;
 import view.dashboard.convener.windows.EditFaqWindow;
 
 /**
@@ -22,7 +23,7 @@ public abstract class AdminFaqTableView extends UserFaqTableView
             public void itemClick(ItemClickEvent itemClickEvent) {
                 int faqID = (Integer) itemClickEvent.getItemId();
                 Faq faq = TicketSystemUI.getDaoFactory().getFaqDao().getFaq(faqID);
-                getUI().addWindow(new EditFaqWindow(faq));
+                getUI().addWindow(new ConvenerFaqInfoWindow(faq));
             }
         });
     }

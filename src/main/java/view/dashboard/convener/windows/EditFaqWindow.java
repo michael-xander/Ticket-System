@@ -11,6 +11,7 @@ import view.dashboard.CreateWindow;
 import java.time.LocalDate;
 
 /**
+ * A window to edit the contents of an FAQ
  * Created by marcelo on 01-09-2015.
  */
 public class EditFaqWindow extends CreateWindow {
@@ -22,7 +23,7 @@ public class EditFaqWindow extends CreateWindow {
     public EditFaqWindow(final Faq faq)
     {
         this.faq = faq;
-        setCaption("View Faq");
+        setCaption("Edit Faq");
         setModal(true);
         setClosable(false);
         setResizable(false);
@@ -67,8 +68,8 @@ public class EditFaqWindow extends CreateWindow {
                 getSaveButton().setComponentError(null);
                 if(inputIsValid())
                 {
-                    faq.setQuestion(question.getValue());
-                    faq.setAnswer(richTextArea.getValue());
+                    faq.setQuestion(question.getValue().trim());
+                    faq.setAnswer(richTextArea.getValue().trim());
                     faq.setDate(LocalDate.now());
                     faq.setCourseID(faq.getCourseID());
 
@@ -95,7 +96,7 @@ public class EditFaqWindow extends CreateWindow {
         question.setComponentError(null);
         richTextArea.setComponentError(null);
 
-        if(question.getValue().isEmpty())
+        if(question.getValue().trim().isEmpty())
         {
             isValid = false;
             question.setComponentError(new UserError("A question has to be specified for an FAQ"));
