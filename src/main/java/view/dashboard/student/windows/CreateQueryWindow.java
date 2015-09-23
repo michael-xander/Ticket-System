@@ -89,7 +89,7 @@ public class CreateQueryWindow extends CreateWindow
                         case "Public" :
                             query.setPrivacy(Query.Privacy.PUBLIC);
                             break;
-                        case "Administrator" :
+                        case "Convener/TA" :
                             query.setPrivacy(Query.Privacy.ADMINISTRATOR);
                             break;
                         case "Convener" :
@@ -210,7 +210,7 @@ public class CreateQueryWindow extends CreateWindow
     {
         ArrayList<String> privacySettings = new ArrayList<>();
         privacySettings.add("Public");
-        privacySettings.add("Administrator");
+        privacySettings.add("Convener/TA");
         privacySettings.add("Convener");
         return privacySettings;
     }
